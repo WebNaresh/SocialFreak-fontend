@@ -1,30 +1,28 @@
-import React, { useState } from "react";
-import VisibilitySensor from "react-visibility-sensor";
+import React from "react";
+import Profile from "../Component/Profile/Profile";
+import { Paper, Stack } from "@mui/material";
 
 const VisibilitySensorImage = () => {
-  const [state, setState] = useState(false);
-
   return (
-    <VisibilitySensor
-      onChange={(isVisible) => {
-        console.log(isVisible);
-        setState(isVisible);
-      }}
+    <Stack
+      variant="elevation"
+      justifyContent={"center"}
+      alignItems={"center"}
+      width={"100%"}
+      elevation="4"
     >
-      <img
-        // alt={this.props.alt}
-        // src={this.props.src}
-        style={{
-          display: "block",
-          maxWidth: "100%",
+      <Paper
+        elevation={0}
+        sx={{
           width: "100%",
-          height: "100vh",
-          opacity: state ? 1 : 0.25,
-          transition: "opacity 500ms linear",
-          background: "blue",
+          height: "100%",
+          background: "#eee",
+          overflowY: "scroll",
         }}
-      />
-    </VisibilitySensor>
+      >
+        <Profile />
+      </Paper>
+    </Stack>
   );
 };
 

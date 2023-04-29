@@ -69,10 +69,12 @@ const ChatDisplay = ({ data }) => {
       sx={{
         cursor: "pointer",
         padding: "8px 16px",
+
         borderRadius: "5px",
         ":hover": {
           background: "#e9e4e4",
         },
+        justifyContent: "space-between",
       }}
     >
       <Stack

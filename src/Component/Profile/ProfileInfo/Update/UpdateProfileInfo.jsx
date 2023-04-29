@@ -39,7 +39,6 @@ const UpdateProfileInfo = React.forwardRef(() => {
     taggedPeople: me.taggedPeople,
     hashTags: me.hashTags,
   });
-  console.log(data.birthDate.$d);
   return (
     <div>
       <Card

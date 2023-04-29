@@ -19,6 +19,9 @@ export const SocketState = (props) => {
     userVideo,
     peerInstance,
     redirect,
+    callInstance,
+    setCallAlert,
+    callAlert,
   } = useContext(UseContext);
   useEffect(() => {
     socket.current = SocketIoClient(process.env.REACT_APP_SOCKET_SERVER_LINK, {
@@ -31,13 +34,11 @@ export const SocketState = (props) => {
       setPosts((array) => [...array, ...commingPost]);
     });
     socket.current.on("users", (map) => {
-      console.log(`🚀 ~ map:`, map);
       var newMap = new Map(JSON.parse(map));
       setUtils((utils) => ({ ...utils, onlineUser: newMap }));
     });
 
     socket.current.on("get-msg", (data) => {
-      console.log(`🚀 ~ data:`, data);
       if (userId.current === data.sender._id) {
         setChats((chat) => [...chat, data]);
         if (
@@ -58,26 +59,15 @@ export const SocketState = (props) => {
     // socket connection
 
     peerInstance.current.on("open", (id) => {
-      console.log(`🚀 ~ id:`, id);
       setPeerId(id);
     });
+    peerInstance.current.on("close", (id) => {
+      console.log(id + "hello");
+    });
     peerInstance.current.on("call", (call) => {
-      console.log("someone is calling");
+      callInstance.current = call;
+      setCallAlert({ ...callAlert, alert: true });
       redirect("/chat");
-      var getUserMedia =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
-
-      getUserMedia({ video: true, audio: true }, (mediaStream) => {
-        userVideo.current.srcObject = mediaStream;
-        userVideo.current.play();
-        call.answer(mediaStream);
-        call.on("stream", function (remoteStream) {
-          myVideo.current.srcObject = remoteStream;
-          myVideo.current.play();
-        });
-      });
     });
     //eslint-disable-next-line
   }, []);

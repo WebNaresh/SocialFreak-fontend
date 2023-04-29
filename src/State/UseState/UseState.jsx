@@ -14,19 +14,20 @@ export const UseState = (props) => {
 
   const chat = useRef([]);
   const myVideo = useRef(null);
-  console.log(`🚀 ~ myVideo:`, myVideo);
   const userVideo = useRef(null);
-  console.log(`🚀 ~ userVideo:`, userVideo);
   const peerInstance = useRef(null);
-  // console.log(`🚀 ~ peerInstance:`, peerInstance);
-
+  const callInstance = useRef(null);
+  console.log(`🚀 ~ callInstance:`, callInstance);
   // ALL STATE
 
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const [backdrop, setBackdrop] = useState(false);
-
+  const [callAlert, setCallAlert] = useState({
+    alert: false,
+    type: "info",
+    user: "omkar",
+  });
   const [peerId, setPeerId] = useState(null);
-  // console.log(`🚀 ~ peerId:`, peerId);
 
   const location = useLocation();
   const redirect = useNavigate();
@@ -126,7 +127,6 @@ export const UseState = (props) => {
     chat: [],
     messageNotification: 0,
   });
-  // console.log(`🚀 ~ utils:`, utils);
 
   const [chats, setChats] = useState([]);
 
@@ -199,6 +199,9 @@ export const UseState = (props) => {
         peerId,
         setPeerId,
         peerInstance,
+        callAlert,
+        setCallAlert,
+        callInstance,
       }}
     >
       {props.children}

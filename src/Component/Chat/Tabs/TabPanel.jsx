@@ -97,6 +97,7 @@ export default function TabPanel1() {
       sx={{
         width: "100%",
         height: "99.8%",
+        position: "relative",
       }}
     >
       <Box
@@ -140,6 +141,8 @@ export default function TabPanel1() {
         style={{
           height: "77%",
           overflowY: "scroll",
+          position: "absolute",
+          width: "100%",
         }}
       >
         <TabPanel value={value} index={0}>

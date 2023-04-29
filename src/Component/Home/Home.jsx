@@ -29,7 +29,16 @@ const Home = () => {
         alignItems={"center"}
         width={"30%"}
         elevation="4"
-        sx={{ margin: "8px 8px 0px 8px" }}
+        sx={{
+          margin: "8px 8px 0px 8px",
+          display: {
+            sm: "none",
+            md: "none",
+            xs: "none",
+            lg: "flex",
+            xl: "flex",
+          },
+        }}
       >
         <Paper
           elevation={0}
@@ -46,16 +55,29 @@ const Home = () => {
       </Stack>
       <Stack
         style={{
-          margin: "8px 8px 0px 8px",
-          width: "40%",
+          width: {
+            sm: "100%",
+            md: "100%",
+            xs: "100%",
+            lg: "40%",
+            xl: "40%",
+          },
+          height: {
+            sm: "100vh",
+            md: "100vh",
+            xs: "100vh",
+            lg: "100vh",
+            xl: "100vh",
+          },
+          padding: "10px",
         }}
       >
         <InfiniteScroll
           dataLength={posts.length}
           next={fetchMoreData}
           hasMore={true}
+          height={"88vh"}
           loader={<h4>Loading...</h4>}
-          height={"86vh"}
           endMessage={
             <p style={{ textAlign: "center" }}>
               <b>Yay! You have seen it all</b>
@@ -67,13 +89,8 @@ const Home = () => {
             variant="elevation"
             justifyContent={"center"}
             alignItems={"center"}
-            // width={"40%"}
+            width={"100%"}
             elevation="4"
-            sx={{
-              margin: "4px 0px",
-              padding: "4px",
-              // overflowY: "scroll",
-            }}
           >
             <Stack
               sx={{
@@ -96,6 +113,13 @@ const Home = () => {
           margin: 2,
           height: "84vh",
           padding: "4px",
+          display: {
+            sm: "none",
+            md: "none",
+            xs: "none",
+            lg: "flex",
+            xl: "flex",
+          },
         }}
       >
         <Stack

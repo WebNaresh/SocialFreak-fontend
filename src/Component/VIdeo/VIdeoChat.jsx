@@ -16,6 +16,7 @@ const VIdeoChat = () => {
               height: "100%",
             }}
             ref={myVideo}
+            muted
           ></video>
         </Stack>
         <Stack

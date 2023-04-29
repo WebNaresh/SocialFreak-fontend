@@ -57,6 +57,7 @@ export default function Post({ data }) {
 
     // eslint-disable-next-line
   }, []);
+  console.log();
   useEffect(() => {
     if (data.views.includes(me._id) !== true) {
       requestToView(data._id);
@@ -90,29 +91,51 @@ export default function Post({ data }) {
           }}
           indicators={false}
         >
-          {data.image.map((item, i) => (
-            <VisibilitySensor
-              key={i}
-              onChange={(isVisible) => {
-                setState2(isVisible);
-              }}
-            >
-              <CardMedia
-                src={item}
-                image={item}
-                sx={{
-                  height: "24rem",
-                  display: "flex",
-                  flexDirection: "row-reverse",
-                }}
-                style={{
-                  backgroundPosition: "center",
-                  objectFit: "cover",
-                  zIndex: "-1",
-                }}
-              />
-            </VisibilitySensor>
-          ))}
+          {!data.views.includes(me._id)
+            ? data.image.map((item, i) => (
+                <VisibilitySensor
+                  key={i}
+                  onChange={(isVisible) => {
+                    setState2(isVisible);
+                  }}
+                >
+                  <CardMedia
+                    src={item}
+                    image={item}
+                    sx={{
+                      height: "24rem",
+                      display: "flex",
+                      flexDirection: "row-reverse",
+                      backgroundColor: "#b0bec5",
+                    }}
+                    style={{
+                      backgroundPosition: "center",
+                      objectFit: "cover",
+                      zIndex: "-1",
+                      backgroundSize: "contain",
+                    }}
+                  />
+                </VisibilitySensor>
+              ))
+            : data.image.map((item, i) => (
+                <CardMedia
+                  key={i}
+                  src={item}
+                  image={item}
+                  sx={{
+                    height: "24rem",
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    backgroundColor: "#b0bec5",
+                  }}
+                  style={{
+                    backgroundPosition: "center",
+                    objectFit: "cover",
+                    zIndex: "-1",
+                    backgroundSize: "contain",
+                  }}
+                />
+              ))}
         </Carousel>
         <Stack
           position={"relative"}
@@ -271,7 +294,7 @@ export default function Post({ data }) {
                   padding: "4px",
                 }}
                 aria-label="share"
-                onMouseOver={() => {
+                onClick={() => {
                   setUtils({
                     ...utils,
                     commentArray: data.comments,

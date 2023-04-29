@@ -44,12 +44,6 @@ const UpdateProfileCard = React.forwardRef(() => {
       selectedBackgroundPic: e.target.files[0],
     });
   };
-  console.log(
-    formData.selectedBackgroundPic === null ||
-      formData.selectedProfilePic === null
-      ? false
-      : true
-  );
 
   // };
   return (

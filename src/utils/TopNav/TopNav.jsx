@@ -141,7 +141,7 @@ export default function TopNav() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ width: 120 }}>
             <Typewriter
@@ -169,19 +169,19 @@ export default function TopNav() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { md: "flex" } }}>
+          <Box sx={{ display: "flex" }}>
             <Button
               sx={{
                 borderRadius: 5,
                 paddingX: 4,
                 height: 35,
                 margin: "auto",
-                display: { xs: "none", md: "flex" },
+                display: { xs: "flex", md: "flex" },
               }}
               variant="contained"
               color="secondary"
               startIcon={<AddAPhotoOutlined />}
-              onMouseOver={() => {
+              onClick={() => {
                 handleOpenCreate(setOpen, open);
                 setData({
                   ...data,
@@ -213,7 +213,7 @@ export default function TopNav() {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onMouseOver={handleProfileMenuOpen}
+              onClick={handleProfileMenuOpen}
               color="inherit"
             >
               <Badge badgeContent={<Add fontSize="0.9rem" />} color="error">

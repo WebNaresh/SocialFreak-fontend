@@ -54,7 +54,7 @@ export default function BasicSpeedDial() {
       <SpeedDial
         id="speedo"
         ariaLabel="SpeedDial basic example"
-        onMouseEnter={() => setBackdrop(true)}
+        onClick={() => setBackdrop(true)}
         sx={{
           transition: "transform 0.8s ease-out",
           ":hover": {

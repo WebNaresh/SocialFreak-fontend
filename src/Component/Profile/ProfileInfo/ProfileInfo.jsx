@@ -43,7 +43,7 @@ export default function ProfileInfo({ me }) {
         <IconButton
           aria-label="Edit Profile"
           sx={{ borderRadius: "10px" }}
-          onMouseOver={() => handleOpenInfo(setOpen, open)}
+          onClick={() => handleOpenInfo(setOpen, open)}
           style={{
             margin: "auto",
             position: "relative",

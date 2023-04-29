@@ -38,7 +38,7 @@ export default function ProfileCard() {
         <IconButton
           aria-label="Edit Profile"
           style={{ borderRadius: "10px" }}
-          onMouseOver={() => {
+          onClick={() => {
             handleOpenCard(setOpen, open);
             setFormData({
               ...formData,

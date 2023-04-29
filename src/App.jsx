@@ -13,6 +13,7 @@ import Backdrop from "./utils/Backdrop/Backdrop";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { LoginState } from "./State/Login/LoginState";
 import SocketState from "./State/Socket/ScoketState";
+import CallAlert from "./utils/AppAlert/CallAlert";
 // mulitple screen size xs,sm,md,lg,xl
 
 function App() {
@@ -26,6 +27,11 @@ function App() {
       },
     },
   });
+  //   xs, extra-small: 0px
+  // sm, small: 600px
+  // md, medium: 900px
+  // lg, large: 1200px
+  // xl, extra-large: 1536px
   return (
     <GoogleOAuthProvider clientId="94683515394-hmvlt9807662a50ott2jiro8ukitq6n0.apps.googleusercontent.com">
       <ThemeProvider theme={theme}>
@@ -38,9 +44,12 @@ function App() {
                     <TopLoadingBar />
                     <AppLoader />
                     <AppAlert />
+                    <CallAlert />
                     <TopNav />
                     <Backdrop />
-                    <Route />
+                    <div style={{ marginTop: "60px" }}>
+                      <Route />
+                    </div>
                     <BasicSpeedDial />
                   </SocketState>
                 </UseEffectState>

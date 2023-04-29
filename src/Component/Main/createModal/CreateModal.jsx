@@ -32,7 +32,6 @@ const CreateModal = React.forwardRef(() => {
     let arrayofImage = [];
     let arrayOfFiles = [];
     for (let i = 0; i < images.length; i++) {
-      console.log(images[i]);
       let url = URL.createObjectURL(images[i]);
       arrayofImage.push(url);
       arrayOfFiles.push(images[i]);
@@ -244,7 +243,6 @@ const CreateModal = React.forwardRef(() => {
                   freeSolo
                   multiple
                   onChange={(event, newValue) => {
-                    console.log(newValue);
                     setData({
                       ...data,
                       hashtagArray: newValue,

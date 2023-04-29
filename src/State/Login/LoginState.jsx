@@ -31,7 +31,6 @@ export const LoginState = (props) => {
   const { handleLoader } = useContext(TestContext);
 
   const handleFaceBookLogin = (responese) => {
-    console.log(`🚀 ~ responese:`, responese);
     const data = {
       userName: responese.name,
       profilePicture: responese.picture.data.url,
@@ -71,9 +70,7 @@ export const LoginState = (props) => {
         redirect("/");
       });
   };
-  const handleFacebookComponentClicked = (response) => {
-    console.log(`🚀 ~ response:`, response);
-  };
+  const handleFacebookComponentClicked = (response) => {};
   const handleGoogleLogin = (e) => {
     let responese = jwtDecode(e.credential);
     const data = {
@@ -87,7 +84,6 @@ export const LoginState = (props) => {
       .post(process.env.REACT_APP_REGISTER_USER, data, config)
       .catch((errors) => {})
       .then((response) => {
-        console.log(`🚀 ~ response:`, response);
         setMe({
           ...me,
           backgroundPicture: response.data.user.backgroundPicture,
@@ -297,10 +293,8 @@ export const LoginState = (props) => {
   };
   const myFun = (data) => {
     if (utils.cuurentUserIdForMsg === data.sender._id) {
-      console.log("ia ma he");
       setChats((chat) => [...chat, data]);
     } else {
-      console.log("ia ma he2");
       setUtils((copy) => ({
         ...copy,
         messageNotification: utils.messageNotification + 1,
@@ -316,7 +310,7 @@ export const LoginState = (props) => {
       navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia;
 
-    getUserMedia({ video: true, audio: false }, (mediaStream) => {
+    getUserMedia({ video: true, audio: true }, (mediaStream) => {
       userVideo.current.srcObject = mediaStream;
       userVideo.current.play();
 

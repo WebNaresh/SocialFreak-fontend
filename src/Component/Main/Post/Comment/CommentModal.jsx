@@ -35,15 +35,11 @@ const CommentModal = () => {
         data,
         config
       )
-      .catch((errors) => {
-        console.log(errors);
-      })
       .then((response) => {
         setUtils({
           ...utils,
           commentArray: response.data.comment,
         });
-        console.log(posts);
         for (var i = 0; i < posts.length; i++) {
           if (posts[i]._id === utils.currentPostId) {
             posts[i].comments = response.data.comment;
