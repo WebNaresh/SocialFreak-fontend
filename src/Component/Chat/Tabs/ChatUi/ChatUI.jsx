@@ -5,18 +5,18 @@ import UseContext from "../../../../State/UseState/UseContext";
 import dayjs from "dayjs";
 
 const ChatUI = () => {
-  const { chats, me, oneRef } = useContext(UseContext);
+  const { chat, me, oneRef, chats } = useContext(UseContext);
   useEffect(() => {
     oneRef.current.scrollTop = oneRef.current.scrollHeight;
 
     // eslint-disable-next-line
-  }, [chats.length]);
+  }, [chats]);
 
   return (
     <div>
-      <Stack marginTop={"2rem"}>
-        {chats !== undefined
-          ? chats.map((item, i) => {
+      <Stack>
+        {chat.current !== undefined
+          ? chat.current.map((item, i) => {
               return (
                 <div key={i}>
                   {item.sender._id === me._id ? (

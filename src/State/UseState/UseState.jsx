@@ -4,13 +4,32 @@ import { useCookies } from "react-cookie";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const UseState = (props) => {
+  // ALL REF
+
+  const socket = useRef(null);
+
+  const oneRef = useRef(null);
+
+  const userId = useRef(null);
+
+  const chat = useRef([]);
+  const myVideo = useRef(null);
+  console.log(`🚀 ~ myVideo:`, myVideo);
+  const userVideo = useRef(null);
+  console.log(`🚀 ~ userVideo:`, userVideo);
+  const peerInstance = useRef(null);
+  // console.log(`🚀 ~ peerInstance:`, peerInstance);
+
+  // ALL STATE
+
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const [backdrop, setBackdrop] = useState(false);
 
+  const [peerId, setPeerId] = useState(null);
+  // console.log(`🚀 ~ peerId:`, peerId);
+
   const location = useLocation();
   const redirect = useNavigate();
-  const socket = useRef(null);
-  console.log(`🚀 ~ socket:`, socket);
 
   const [appAlert, setAppAlert] = useState({
     alert: true,
@@ -22,8 +41,6 @@ export const UseState = (props) => {
     load: false,
     color: "#fff",
   });
-
-  const oneRef = useRef(null);
 
   const [progress, setProgress] = useState(0);
 
@@ -109,9 +126,7 @@ export const UseState = (props) => {
     chat: [],
     messageNotification: 0,
   });
-
-  const userId = useRef(null);
-  console.log(`🚀 ~ userId:`, userId);
+  // console.log(`🚀 ~ utils:`, utils);
 
   const [chats, setChats] = useState([]);
 
@@ -178,6 +193,12 @@ export const UseState = (props) => {
         setPageNumber,
         oneRef,
         userId,
+        chat,
+        myVideo,
+        userVideo,
+        peerId,
+        setPeerId,
+        peerInstance,
       }}
     >
       {props.children}

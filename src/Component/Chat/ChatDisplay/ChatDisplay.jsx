@@ -1,12 +1,24 @@
-import { Avatar, Badge, Stack, ButtonGroup, Typography } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Stack,
+  ButtonGroup,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import UseContext from "../../../State/UseState/UseContext";
+import LoginContext from "../../../State/Login/LoginContext";
 import { useContext } from "react";
 import axios from "axios";
+import { CallOutlined, VideoChatOutlined } from "@mui/icons-material";
 
 const ChatDisplay = ({ data }) => {
-  const { setUtils, utils, me, setChats, userId } = useContext(UseContext);
+  const { setUtils, utils, me, setChats, userId, chat } =
+    useContext(UseContext);
+  const { callVideoCall } = useContext(LoginContext);
+
   const StyledBadge = styled(Badge)(({ theme }) => ({
     "& .MuiBadge-badge": {
       backgroundColor: "#44b700",
@@ -34,6 +46,8 @@ const ChatDisplay = ({ data }) => {
       .catch((errors) => {})
       .then((response) => {
         setChats((chats) => [...response.data.messages, ...chats]);
+        chat.current = [...chat.current, ...response.data.messages];
+
         setUtils((utils) => ({
           ...utils,
           chatSpinner: false,
@@ -106,13 +120,26 @@ const ChatDisplay = ({ data }) => {
               {data.userName}
             </Typography>
           </Stack>
-          <Stack>
+          {/* <Stack>
             {" "}
             <Typography variant="subtitle2" color={"GrayText"}>
               {data.userEmail}
             </Typography>
-          </Stack>
+          </Stack> */}
         </ButtonGroup>
+      </Stack>
+      <Stack flexDirection={"row"} marginLeft={"15px"}>
+        <IconButton
+          aria-label="VidoChat"
+          onClick={() => {
+            callVideoCall(data._id);
+          }}
+        >
+          <VideoChatOutlined color="success" />
+        </IconButton>
+        <IconButton aria-label="VidoChat" onClick={() => console.log("hello")}>
+          <CallOutlined color="success" />
+        </IconButton>
       </Stack>
     </Stack>
   );

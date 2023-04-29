@@ -22,6 +22,10 @@ export const LoginState = (props) => {
     allLink,
     socket,
     setChats,
+    peerInstance,
+    peerId,
+    myVideo,
+    userVideo,
   } = useContext(UseContext);
   const imageArray = [];
   const { handleLoader } = useContext(TestContext);
@@ -63,6 +67,7 @@ export const LoginState = (props) => {
           userSuggestion: response.data.user.userSuggestion,
         });
         socket.current.emit("add-user", response.data.user._id);
+        socket.current.emit("peer", peerId, response.data.user._id);
         redirect("/");
       });
   };
@@ -108,6 +113,7 @@ export const LoginState = (props) => {
         });
         redirect("/");
         socket.current.emit("add-user", response.data.user._id);
+        socket.current.emit("peer", peerId, response.data.user._id);
       });
   };
   const handleGoogleLoginFail = (e) => {};
@@ -301,6 +307,30 @@ export const LoginState = (props) => {
       }));
     }
   };
+
+  const callVideoCall = (id) => {
+    redirect("/chat");
+
+    var getUserMedia =
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia;
+
+    getUserMedia({ video: true, audio: false }, (mediaStream) => {
+      userVideo.current.srcObject = mediaStream;
+      userVideo.current.play();
+
+      const call = peerInstance.current.call(
+        utils.onlineUser.get(id)[1],
+        mediaStream
+      );
+
+      call.on("stream", (remoteStream) => {
+        myVideo.current.srcObject = remoteStream;
+        myVideo.current.play();
+      });
+    });
+  };
   return (
     <LoginContext.Provider
       value={{
@@ -317,6 +347,7 @@ export const LoginState = (props) => {
         getPosts,
         getFriends,
         myFun,
+        callVideoCall,
       }}
     >
       {props.children}

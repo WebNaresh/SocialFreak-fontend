@@ -4,8 +4,17 @@ import LoginContext from "../Login/LoginContext";
 import UseContext from "../UseState/UseContext";
 import UseEffectContext from "./UseEffectContext";
 export const UseEffectState = (props) => {
-  const { setProgress, location, me, redirect, data, setData } =
-    useContext(UseContext);
+  const {
+    setProgress,
+    location,
+    me,
+    redirect,
+    data,
+    setData,
+    socket,
+    peerInstance,
+    setPeerId,
+  } = useContext(UseContext);
   const { getPosts, getFriends } = useContext(LoginContext);
   const state = { name: "harry", class: "5b" };
   useEffect(() => {
@@ -22,8 +31,12 @@ export const UseEffectState = (props) => {
       getPosts("firstTime");
       getFriends();
     }
-    // eslint-disable-next-line
   }, [me._id]);
+  useEffect(() => {
+    if (me._id !== null) {
+    }
+  }, [me._id]);
+
   useEffect(() => {
     if (
       data.uploadedImages.length >= 1 &&

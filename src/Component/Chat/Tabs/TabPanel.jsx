@@ -65,7 +65,7 @@ function a11yProps(index) {
 
 export default function TabPanel1() {
   const [value, setValue] = React.useState(0);
-  const { utils, setUtils, me, setChats, oneRef, socket, userId } =
+  const { utils, setUtils, me, setChats, oneRef, socket, userId, chat } =
     useContext(UseContext);
 
   const [msg, setMsg] = useState("");
@@ -84,6 +84,7 @@ export default function TabPanel1() {
     socket.current.emit("send-Message", data);
 
     setChats((chat) => [...chat, data1]);
+    chat.current = [...chat.current, data1];
 
     setMsg("");
   };
@@ -120,6 +121,7 @@ export default function TabPanel1() {
               }));
               userId.current = null;
               setChats([]);
+              chat.current = [];
             }}
             label={`Message ${
               utils.messageNotification < 1
@@ -145,8 +147,8 @@ export default function TabPanel1() {
             <Stack
               style={{
                 width: "100%",
-                height: "0px",
-                position: "unset",
+                height: "40px",
+                position: "fixed",
               }}
             >
               <IconButton
@@ -162,6 +164,7 @@ export default function TabPanel1() {
                   }));
                   userId.current = null;
                   setChats([]);
+                  chat.current = [];
                 }}
               >
                 <ArrowBackIosNew />
