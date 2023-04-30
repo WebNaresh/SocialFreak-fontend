@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-// import Chat from "./Component/Chat/Chat";
+import Chat from "./Component/Chat/Chat";
 import Home from "./Component/Home/Home";
 import Login from "./Component/Login/Login";
 import Test from "./utils/Test";
@@ -15,6 +15,7 @@ const App = () => {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/map" element={<Test />} />
         <Route exact path="/videoChat" element={<VIdeoChat />} />
+        <Route exact path="/messages" element={<Chat />} />
       </Routes>
     </>
   );
