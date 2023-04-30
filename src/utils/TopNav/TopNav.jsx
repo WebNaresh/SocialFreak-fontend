@@ -123,7 +123,7 @@ export default function TopNav() {
         </Link>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
-        <Link to={"/chat"}>
+        <Link to={"/messages"}>
           <Chat sx={{ marginX: 1 }} fontSize="small" />
           Chat{" "}
         </Link>
