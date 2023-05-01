@@ -4,22 +4,25 @@ import UseContext from "../../State/UseState/UseContext";
 import Snackbar from "@mui/material/Snackbar";
 import { AlertTitle, Button, IconButton, Slide, Stack } from "@mui/material";
 import { Call, CallEnd, Close, Phone } from "@mui/icons-material";
+import LoginContext from "../../State/Login/LoginContext";
 
 export default function CallAlert() {
-  const { callAlert, setCallAlert, callInstance, userVideo, myVideo } =
-    useContext(UseContext);
+  const {
+    callAlert,
+    redirect,
+    callInstance,
+    caller,
+    socket,
+    me,
+    setCallAlert,
+  } = useContext(UseContext);
+  const { acceptCall } = useContext(LoginContext);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
-      return setCallAlert({
-        ...callAlert,
-        alert: false,
-      });
+      return setCallAlert(false);
       // setBackdrop(false)
     }
-    setCallAlert({
-      ...callAlert,
-      alert: false,
-    });
+    setCallAlert(false);
   };
   function TransitionLeft(props) {
     return <Slide {...props} direction="left" />;
@@ -32,12 +35,12 @@ export default function CallAlert() {
       <Alert severity="success">This is a success alert — check it out!</Alert> */}
       <Snackbar
         TransitionComponent={TransitionLeft}
-        open={callAlert.alert}
+        open={callAlert}
         onClose={handleClose}
       >
         <Alert
           onClose={handleClose}
-          severity={callAlert.type}
+          severity={"info"}
           sx={{ width: "100%", alignItems: "center" }}
           action={
             <>
@@ -51,28 +54,10 @@ export default function CallAlert() {
                   color="success"
                   size="medium"
                   onClick={() => {
-                    var getUserMedia =
-                      navigator.getUserMedia ||
-                      navigator.webkitGetUserMedia ||
-                      navigator.mozGetUserMedia;
-
-                    getUserMedia(
-                      { video: true, audio: true },
-                      (mediaStream) => {
-                        userVideo.current.srcObject = mediaStream;
-                        userVideo.current.play();
-
-                        callInstance.current.answer(mediaStream);
-
-                        callInstance.current.on(
-                          "stream",
-                          function (remoteStream) {
-                            myVideo.current.srcObject = remoteStream;
-                            myVideo.current.play();
-                          }
-                        );
-                      }
-                    );
+                    setCallAlert(false);
+                    if (callInstance !== null) {
+                      acceptCall();
+                    }
                   }}
                 >
                   <Call />
@@ -83,7 +68,10 @@ export default function CallAlert() {
                   size="medium"
                   onClick={() => {
                     callInstance.current.close();
-                    handleClose();
+                    setCallAlert(false);
+                    redirect("/");
+                    socket.emit("callEnded", me._id);
+                    callInstance.current = null;
                   }}
                 >
                   <CallEnd />
@@ -92,7 +80,7 @@ export default function CallAlert() {
             </>
           }
         >
-          <AlertTitle>{callAlert.user}</AlertTitle>
+          <AlertTitle>{caller}</AlertTitle>
           &nbsp; is&nbsp;— &nbsp;<strong> &nbsp;calling You &nbsp;</strong>
         </Alert>
       </Snackbar>

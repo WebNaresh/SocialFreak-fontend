@@ -140,7 +140,6 @@ export default function TabPanel1() {
         ref={oneRef}
         style={{
           height: "77%",
-          overflowY: "scroll",
           position: "absolute",
           width: "100%",
         }}

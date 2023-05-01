@@ -17,16 +17,15 @@ export const UseState = (props) => {
   const userVideo = useRef(null);
   const peerInstance = useRef(null);
   const callInstance = useRef(null);
-  console.log(`🚀 ~ callInstance:`, callInstance);
   // ALL STATE
 
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const [backdrop, setBackdrop] = useState(false);
-  const [callAlert, setCallAlert] = useState({
-    alert: false,
-    type: "info",
-    user: "omkar",
-  });
+
+  const [stream, setStream] = useState();
+
+  const [callAlert, setCallAlert] = useState(false);
+
   const [peerId, setPeerId] = useState(null);
 
   const location = useLocation();
@@ -127,6 +126,7 @@ export const UseState = (props) => {
     chat: [],
     messageNotification: 0,
   });
+  console.log(`🚀 ~ utils:`, utils);
 
   const [chats, setChats] = useState([]);
 
@@ -200,8 +200,10 @@ export const UseState = (props) => {
         setPeerId,
         peerInstance,
         callAlert,
-        setCallAlert,
         callInstance,
+        stream,
+        setStream,
+        setCallAlert,
       }}
     >
       {props.children}

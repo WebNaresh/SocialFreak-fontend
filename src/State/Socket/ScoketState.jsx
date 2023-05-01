@@ -33,6 +33,13 @@ export const SocketState = (props) => {
     socket.current.on("take-posts", (commingPost) => {
       setPosts((array) => [...array, ...commingPost]);
     });
+    socket.current.on("redirect", (string) => {
+      console.log(string);
+      redirect("/");
+    });
+    socket.current.on("setCallerId", (id) => {
+      setUtils((utils) => ({ ...utils, cuurentUserIdForMsg: id }));
+    });
     socket.current.on("users", (map) => {
       var newMap = new Map(JSON.parse(map));
       setUtils((utils) => ({ ...utils, onlineUser: newMap }));
@@ -62,11 +69,12 @@ export const SocketState = (props) => {
       setPeerId(id);
     });
     peerInstance.current.on("close", (id) => {
-      console.log(id + "hello");
+      console.log("hello" + id);
     });
     peerInstance.current.on("call", (call) => {
+      console.log("someone is callingyou");
       callInstance.current = call;
-      setCallAlert({ ...callAlert, alert: true });
+      setCallAlert(true);
       redirect("/chat");
     });
     //eslint-disable-next-line

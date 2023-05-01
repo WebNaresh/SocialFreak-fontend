@@ -24,8 +24,10 @@ export const LoginState = (props) => {
     setChats,
     peerInstance,
     peerId,
-    myVideo,
+    stream,
+    callInstance,
     userVideo,
+    setCallAlert,
   } = useContext(UseContext);
   const imageArray = [];
   const { handleLoader } = useContext(TestContext);
@@ -304,26 +306,38 @@ export const LoginState = (props) => {
 
   const callVideoCall = (id) => {
     redirect("/chat");
+    socket.current.emit("callerId", { from: me._id, to: id });
 
-    var getUserMedia =
-      navigator.getUserMedia ||
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia;
+    // var getUserMedia =
+    //   navigator.getUserMedia ||
+    //   navigator.webkitGetUserMedia ||
+    //   navigator.mozGetUserMedia;
 
-    getUserMedia({ video: true, audio: true }, (mediaStream) => {
-      userVideo.current.srcObject = mediaStream;
-      userVideo.current.play();
+    // getUserMedia({ video: true, audio: true }, (mediaStream) => {
+    //   userVideo.current.srcObject = mediaStream;
+    //   userVideo.current.play();
 
-      const call = peerInstance.current.call(
-        utils.onlineUser.get(id)[1],
-        mediaStream
-      );
+    //   const call = peerInstance.current.call(
+    //     utils.onlineUser.get(id)[1],
+    //     mediaStream
+    //   );
 
-      call.on("stream", (remoteStream) => {
-        myVideo.current.srcObject = remoteStream;
-        myVideo.current.play();
-      });
+    //   call.on("stream", (remoteStream) => {
+    //     myVideo.current.srcObject = remoteStream;
+    //     myVideo.current.play();
+    //   });
+    // });
+    peerInstance.current.call(utils.onlineUser.get(id)[1], stream);
+  };
+
+  const acceptCall = () => {
+    callInstance.current.answer(stream);
+    callInstance.current.on("stream", function (stream) {
+      if (userVideo.current) {
+        userVideo.current.srcObject = stream;
+      }
     });
+    setCallAlert(false);
   };
   return (
     <LoginContext.Provider
@@ -342,6 +356,7 @@ export const LoginState = (props) => {
         getFriends,
         myFun,
         callVideoCall,
+        acceptCall,
       }}
     >
       {props.children}
