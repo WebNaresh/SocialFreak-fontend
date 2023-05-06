@@ -5,7 +5,6 @@ import Home from "./Component/Home/Home";
 import Login from "./Component/Login/Login";
 import Test from "./utils/Test";
 import VIdeoChat from "./Component/VIdeo/VIdeoChat";
-import { Call, NameInput, Overview } from "./utils/test/test1";
 const App = () => {
   return (
     <>
