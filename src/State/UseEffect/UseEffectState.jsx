@@ -3,9 +3,18 @@ import { useContext } from "react";
 import LoginContext from "../Login/LoginContext";
 import UseContext from "../UseState/UseContext";
 import UseEffectContext from "./UseEffectContext";
+import Peer from "peerjs";
 export const UseEffectState = (props) => {
-  const { setProgress, location, me, redirect, data, setData } =
-    useContext(UseContext);
+  const {
+    setProgress,
+    location,
+    me,
+    redirect,
+    data,
+    setData,
+    socket,
+    peerInstance,
+  } = useContext(UseContext);
   const { getPosts, getFriends } = useContext(LoginContext);
   const state = { name: "harry", class: "5b" };
   useEffect(() => {
@@ -13,8 +22,13 @@ export const UseEffectState = (props) => {
     setTimeout(() => {
       setProgress(100);
     }, 1000);
+    if (me._id === null) {
+      redirect("/login");
+      console.log(location);
+    }
+
     // eslint-disable-next-line
-  }, [location]);
+  }, [location.pathname]);
   useEffect(() => {
     if (me._id === null) {
       redirect("/login");

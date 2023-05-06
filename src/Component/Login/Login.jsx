@@ -50,7 +50,6 @@ const Login = () => {
               shape="square"
               width="400"
               theme="filled"
-              auto_select="true"
               onSuccess={handleGoogleLogin}
               useOneTap={true}
               onError={handleGoogleLoginFail}

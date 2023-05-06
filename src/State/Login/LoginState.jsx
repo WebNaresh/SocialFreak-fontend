@@ -4,6 +4,7 @@ import TestContext from "../Test/TestContext";
 import UseContext from "../UseState/UseContext";
 import LoginContext from "./LoginContext";
 import jwtDecode from "jwt-decode";
+import Peer from "peerjs";
 export const LoginState = (props) => {
   const {
     me,
@@ -25,9 +26,10 @@ export const LoginState = (props) => {
     peerInstance,
     peerId,
     stream,
-    callInstance,
+    availableConnection,
     userVideo,
     setCallAlert,
+    callingRef,
   } = useContext(UseContext);
   const imageArray = [];
   const { handleLoader } = useContext(TestContext);
@@ -67,8 +69,13 @@ export const LoginState = (props) => {
           friends: response.data.user.friends,
           userSuggestion: response.data.user.userSuggestion,
         });
+        console.log(response.data.user._id);
+        const peer = new Peer(response.data.user._id);
+        peerInstance.current = peer;
         socket.current.emit("add-user", response.data.user._id);
-        socket.current.emit("peer", peerId, response.data.user._id);
+        if (peerId !== null) {
+          socket.current.emit("peer", peerId, response.data.user._id);
+        }
         redirect("/");
       });
   };
@@ -109,9 +116,13 @@ export const LoginState = (props) => {
           friends: response.data.user.friends,
           userSuggestion: response.data.user.userSuggestion,
         });
+        const peer = new Peer(response.data.user._id);
+        peerInstance.current = peer;
         redirect("/");
         socket.current.emit("add-user", response.data.user._id);
-        socket.current.emit("peer", peerId, response.data.user._id);
+        if (peerId !== null) {
+          socket.current.emit("peer", peerId, response.data.user._id);
+        }
       });
   };
   const handleGoogleLoginFail = (e) => {};
@@ -306,39 +317,35 @@ export const LoginState = (props) => {
 
   const callVideoCall = (id) => {
     redirect("/chat");
-    socket.current.emit("callerId", { from: me._id, to: id });
 
-    // var getUserMedia =
-    //   navigator.getUserMedia ||
-    //   navigator.webkitGetUserMedia ||
-    //   navigator.mozGetUserMedia;
+    const connection = peerInstance.current.connect(id);
+    connection["caller"] = me._id;
+    availableConnection.current = connection;
 
-    // getUserMedia({ video: true, audio: true }, (mediaStream) => {
-    //   userVideo.current.srcObject = mediaStream;
-    //   userVideo.current.play();
-
-    //   const call = peerInstance.current.call(
-    //     utils.onlineUser.get(id)[1],
-    //     mediaStream
-    //   );
-
-    //   call.on("stream", (remoteStream) => {
-    //     myVideo.current.srcObject = remoteStream;
-    //     myVideo.current.play();
-    //   });
-    // });
-    peerInstance.current.call(utils.onlineUser.get(id)[1], stream);
+    const call = peerInstance.current.call(id, stream);
+    call.on("stream", (remoteStream) => {
+      if (userVideo.current) {
+        userVideo.current.srcObject = remoteStream;
+      }
+    });
+    console.log(`🚀 ~ caavailableConnectionll:`, availableConnection);
   };
 
   const acceptCall = () => {
-    callInstance.current.answer(stream);
-    callInstance.current.on("stream", function (stream) {
+    callingRef.current.answer(stream);
+    callingRef.current.on("stream", function (remoteStream) {
       if (userVideo.current) {
-        userVideo.current.srcObject = stream;
+        userVideo.current.srcObject = remoteStream;
       }
     });
+
     setCallAlert(false);
   };
+  const disconnect = React.useCallback(() => {
+    availableConnection.current.close();
+    availableConnection.current = undefined;
+  }, [availableConnection.current]);
+
   return (
     <LoginContext.Provider
       value={{

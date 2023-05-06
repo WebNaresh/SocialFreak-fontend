@@ -1,7 +1,13 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import PeerJs from "peerjs";
-import { Switch, Route, BrowserRouter, useHistory } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  BrowserRouter,
+  useHistory,
+  useNavigate,
+} from "react-router-dom";
 
 let peer;
 let connection;
@@ -10,8 +16,8 @@ const getUserMedia =
   navigator["webkitGetUserMedia"] ||
   navigator["mozGetUserMedia"];
 
-const NameInput = () => {
-  const history = useHistory();
+export const NameInput = () => {
+  const history = useNavigate();
   const [availablePeer, setAvailablePeer] = React.useState(peer);
 
   const submit = React.useCallback((ev) => {
@@ -25,12 +31,12 @@ const NameInput = () => {
     peer = availablePeer;
 
     if (availablePeer) {
-      history.replace("/overview");
+      history("/overview");
     }
   }, [availablePeer]);
 
   return (
-    <form onSubmit={submit}>
+    <form style={{ marginTop: "5rem" }} onSubmit={submit}>
       <label>Your name:</label>
       <input name="name" />
       <button>Save</button>
@@ -38,17 +44,19 @@ const NameInput = () => {
   );
 };
 
-const Overview = () => {
-  const history = useHistory();
+export const Overview = () => {
+  const history = useNavigate();
   const [availablePeer] = React.useState(peer);
   const [availableConnection, setAvailableConnection] =
     React.useState(connection);
 
   const submit = React.useCallback(
     (ev) => {
+      console.log("ian calling");
       const input = ev.currentTarget.elements.namedItem("name");
       const otherUser = input.value;
       const connection = availablePeer.connect(otherUser);
+      console.log(`🚀 ~ connection:`, connection);
       connection["caller"] = availablePeer.id;
       ev.preventDefault();
       setAvailableConnection(connection);
@@ -60,11 +68,12 @@ const Overview = () => {
     connection = availableConnection;
 
     if (!availablePeer) {
-      history.replace("/");
+      history("/");
     } else if (availableConnection) {
-      history.replace("/call");
+      history("/call");
     } else {
       const handler = (connection) => {
+        console.log("you have connection");
         connection["caller"] = connection.peer;
         setAvailableConnection(connection);
       };
@@ -100,8 +109,8 @@ function showStream(call, otherVideo) {
   return () => call.off("stream", handler);
 }
 
-const Call = () => {
-  const history = useHistory();
+export const Call = () => {
+  const history = useNavigate();
   const otherVideo = React.useRef();
   const selfVideo = React.useRef();
   const [messages, setMessages] = React.useState([]);
@@ -128,11 +137,18 @@ const Call = () => {
     if (availableConnection && availablePeer) {
       let dispose = () => {};
       const handler = (call) => {
+        console.log("you have vall");
+
         getUserMedia(
           { video: true, audio: true },
           (stream) => {
-            showVideo(stream, selfVideo.current, true);
-            call.answer(stream);
+            let answer = confirm("dou you wanna pick call");
+            if (answer) {
+              showVideo(stream, selfVideo.current, true);
+              call.answer(stream);
+            } else {
+              connection.close();
+            }
           },
           (error) => {
             console.log("Failed to get local stream", error);
@@ -171,7 +187,7 @@ const Call = () => {
     connection = availableConnection;
 
     if (!availableConnection) {
-      history.replace("/overview");
+      history("/overview");
     } else {
       const dataHandler = (message) => {
         appendMessage(message, false);
@@ -227,17 +243,3 @@ const Call = () => {
     </div>
   );
 };
-
-const App = () => {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={NameInput} />
-        <Route exact path="/overview" component={Overview} />
-        <Route exact path="/call" component={Call} />
-      </Switch>
-    </BrowserRouter>
-  );
-};
-
-ReactDom.render(<App />, document.querySelector("#app"));

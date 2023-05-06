@@ -9,8 +9,9 @@ const VIdeoChat = () => {
     userVideo,
     setStream,
     callInstance,
+    callInstance2,
     redirect,
-    socket,
+    availableConnection,
     utils,
   } = useContext(UseContext);
   useEffect(() => {
@@ -58,13 +59,13 @@ const VIdeoChat = () => {
             }}
             onClick={() => {
               console.log("helo");
-              if (callInstance.current !== null) {
-                callInstance.current.close();
-                callInstance.current = null;
-                redirect("/");
+              redirect("/");
+
+              if (availableConnection.current !== null) {
+                availableConnection.current.close();
+                availableConnection.current = null;
               }
               redirect("/");
-              socket.current.emit("callEnded", utils.cuurentUserIdForMsg);
             }}
           >
             <CallEnd color="primary" fontSize="large" />

@@ -12,21 +12,15 @@ export default function CallAlert() {
     redirect,
     callInstance,
     caller,
-    socket,
+    availableConnection,
     me,
     setCallAlert,
   } = useContext(UseContext);
   const { acceptCall } = useContext(LoginContext);
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return setCallAlert(false);
-      // setBackdrop(false)
-    }
-    setCallAlert(false);
-  };
-  function TransitionLeft(props) {
-    return <Slide {...props} direction="left" />;
-  }
+
+  // function TransitionLeft(props) {
+  //   return <Slide {...props} direction="left" />;
+  // }
   return (
     <>
       {/* <Alert severity="error">This is an error alert — check it out!</Alert>
@@ -34,12 +28,10 @@ export default function CallAlert() {
       <Alert severity="info">This is an info alert — check it out!</Alert>
       <Alert severity="success">This is a success alert — check it out!</Alert> */}
       <Snackbar
-        TransitionComponent={TransitionLeft}
+        // TransitionComponent={TransitionLeft}
         open={callAlert}
-        onClose={handleClose}
       >
         <Alert
-          onClose={handleClose}
           severity={"info"}
           sx={{ width: "100%", alignItems: "center" }}
           action={
@@ -67,11 +59,13 @@ export default function CallAlert() {
                   color="warning"
                   size="medium"
                   onClick={() => {
-                    callInstance.current.close();
-                    setCallAlert(false);
+                    availableConnection.current.close();
+                    console.log(
+                      `🚀 ~ availableConnection:`,
+                      availableConnection
+                    );
+                    availableConnection.current = null;
                     redirect("/");
-                    socket.emit("callEnded", me._id);
-                    callInstance.current = null;
                   }}
                 >
                   <CallEnd />

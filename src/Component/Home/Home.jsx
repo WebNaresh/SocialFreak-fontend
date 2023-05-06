@@ -20,7 +20,7 @@ const Home = () => {
     <Stack
       flexDirection={"row"}
       sx={{ background: "#eeeeee" }}
-      width={"100%"}
+      width={"100vw"}
       height={"88vh"}
     >
       <Stack
@@ -56,9 +56,9 @@ const Home = () => {
       <Stack
         style={{
           width: {
-            sm: "100%",
-            md: "100%",
-            xs: "100%",
+            sm: "100vw",
+            md: "100vw",
+            xs: "100vw",
             lg: "40%",
             xl: "40%",
           },
@@ -69,7 +69,7 @@ const Home = () => {
             lg: "100vh",
             xl: "100vh",
           },
-          padding: "10px",
+          // padding: "10px",
         }}
       >
         <InfiniteScroll
