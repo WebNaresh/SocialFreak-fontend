@@ -4,18 +4,12 @@ import LoginContext from "../Login/LoginContext";
 import UseContext from "../UseState/UseContext";
 import UseEffectContext from "./UseEffectContext";
 import Peer from "peerjs";
+import { useNavigate } from "react-router-dom";
 export const UseEffectState = (props) => {
-  const {
-    setProgress,
-    location,
-    me,
-    redirect,
-    data,
-    setData,
-    socket,
-    peerInstance,
-  } = useContext(UseContext);
+  const { setProgress, location, me, data, setData, stream, setStream } =
+    useContext(UseContext);
   const { getPosts, getFriends } = useContext(LoginContext);
+  const redirect = useNavigate();
   const state = { name: "harry", class: "5b" };
   useEffect(() => {
     setProgress(10);
@@ -24,7 +18,14 @@ export const UseEffectState = (props) => {
     }, 1000);
     if (me._id === null) {
       redirect("/login");
-      console.log(location);
+    }
+    if (location.pathname !== "/chat") {
+      if (stream !== null) {
+        stream.getTracks().forEach(function (track) {
+          track.stop();
+        });
+        setStream(null);
+      }
     }
 
     // eslint-disable-next-line
@@ -35,10 +36,6 @@ export const UseEffectState = (props) => {
     } else {
       getPosts("firstTime");
       getFriends();
-    }
-  }, [me._id]);
-  useEffect(() => {
-    if (me._id !== null) {
     }
   }, [me._id]);
 
