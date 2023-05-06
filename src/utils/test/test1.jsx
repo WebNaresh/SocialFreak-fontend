@@ -1,13 +1,7 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import PeerJs from "peerjs";
-import {
-  Switch,
-  Route,
-  BrowserRouter,
-  useHistory,
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 let peer;
 let connection;
