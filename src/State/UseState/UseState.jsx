@@ -16,8 +16,8 @@ export const UseState = (props) => {
   const myVideo = useRef(null);
   const userVideo = useRef(null);
   const peerInstance = useRef(null);
-  console.log(`🚀 ~ peerInstance:`, peerInstance);
   const availableConnection = useRef(null);
+  console.log(`🚀 ~ availableConnection:`, availableConnection);
   const callingRef = useRef(null);
 
   // ALL STATE
@@ -25,7 +25,7 @@ export const UseState = (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const [backdrop, setBackdrop] = useState(false);
 
-  const [stream, setStream] = useState();
+  const [stream, setStream] = useState(null);
 
   const [callAlert, setCallAlert] = useState(false);
 

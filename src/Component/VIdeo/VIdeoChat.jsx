@@ -15,7 +15,7 @@ const VIdeoChat = () => {
     utils,
   } = useContext(UseContext);
   useEffect(() => {
-    navigator.mediaDevices
+    const streamMain = navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
@@ -58,7 +58,6 @@ const VIdeoChat = () => {
               width: "60px",
             }}
             onClick={() => {
-              console.log("helo");
               redirect("/");
 
               if (availableConnection.current !== null) {

@@ -19,17 +19,18 @@ export const UseEffectState = (props) => {
     if (me._id === null) {
       redirect("/login");
     }
-    if (location.pathname !== "/chat") {
-      if (stream !== null) {
-        stream.getTracks().forEach(function (track) {
-          track.stop();
-        });
-        setStream(null);
-      }
-    }
+    // if (location.pathname !== "/chat") {
+    //   // if (stream !== null || undefined) {
+    //   //   stream.getTracks().forEach(function (track) {
+    //   //     track.stop();
+    //   //   });
+    //   //   setStream(null);
+    //   // }
+    // }
 
     // eslint-disable-next-line
   }, [location.pathname]);
+
   useEffect(() => {
     if (me._id === null) {
       redirect("/login");
@@ -38,6 +39,12 @@ export const UseEffectState = (props) => {
       getFriends();
     }
   }, [me._id]);
+  useEffect(() => {
+    if (me._id === null) {
+      redirect("/login");
+    } else {
+    }
+  }, []);
 
   useEffect(() => {
     if (

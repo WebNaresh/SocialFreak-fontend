@@ -60,10 +60,7 @@ export default function CallAlert() {
                   size="medium"
                   onClick={() => {
                     availableConnection.current.close();
-                    console.log(
-                      `🚀 ~ availableConnection:`,
-                      availableConnection
-                    );
+
                     availableConnection.current = null;
                     redirect("/");
                   }}

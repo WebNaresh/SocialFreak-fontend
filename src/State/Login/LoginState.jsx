@@ -69,7 +69,6 @@ export const LoginState = (props) => {
           friends: response.data.user.friends,
           userSuggestion: response.data.user.userSuggestion,
         });
-        console.log(response.data.user._id);
         const peer = new Peer(response.data.user._id);
         peerInstance.current = peer;
         socket.current.emit("add-user", response.data.user._id);
@@ -319,16 +318,16 @@ export const LoginState = (props) => {
     redirect("/chat");
 
     const connection = peerInstance.current.connect(id);
+    connection.send("data");
     connection["caller"] = me._id;
     availableConnection.current = connection;
-
     const call = peerInstance.current.call(id, stream);
+
     call.on("stream", (remoteStream) => {
       if (userVideo.current) {
         userVideo.current.srcObject = remoteStream;
       }
     });
-    console.log(`🚀 ~ caavailableConnectionll:`, availableConnection);
   };
 
   const acceptCall = () => {

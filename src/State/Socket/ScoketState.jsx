@@ -16,10 +16,10 @@ export const SocketState = (props) => {
     chat,
     availableConnection,
     callingRef,
-    userVideo,
+    setStream,
     peerInstance,
     redirect,
-    callInstance,
+    stream,
     setCallAlert,
     me,
     peerId,
@@ -62,36 +62,20 @@ export const SocketState = (props) => {
     //eslint-disable-next-line
   }, []);
 
-  // peerInstance.current.on("call", (call) => {
-  //   callInstance.current = call;
-  //   redirect("/chat");
-  //   console.log(call);
-  //   callInstance.current.on("close", () => {
-  //     console.log("call disconnect");
-  //   });
-  //   callInstance.current.on("error", (err) => {
-  //     console.log("call disconnect err" + err);
-  //   });
-  //   setCallAlert(true);
-  // });
-  // peerInstance.current.on("connection", (connection) => {
-  //   conn.current = connection;
-  //   console.log("conection establish");
-  //   conn.on("close", () => {
-  //     console.log("call close event");
-  //   });
-  // });
   useEffect(() => {
     const closeHandler = () => {
-      console.log("connection is close");
+      console.log("closing from another side");
       availableConnection.current.close();
       availableConnection.current = null;
       redirect("/");
+      stream.getTracks().forEach(function (track) {
+        track.stop();
+      });
+      setStream(null);
     };
     if (availableConnection.current !== null) {
-      console.log(availableConnection);
-
       availableConnection.current.on("close", closeHandler);
+      availableConnection.current.on("data", (data) => {});
     }
     return () => {
       if (availableConnection.current !== null) {
@@ -103,7 +87,7 @@ export const SocketState = (props) => {
   useEffect(() => {
     if (peerInstance.current !== null) {
       const handler = (call) => {
-        console.log("you have vall");
+        console.log("you have call");
         redirect("/chat");
         callingRef.current = call;
         setCallAlert(true);
@@ -112,8 +96,10 @@ export const SocketState = (props) => {
       peerInstance.current.on("call", handler);
       peerInstance.current.on("connection", (connection) => {
         console.log("you have connection");
+        connection.send();
         connection["caller"] = connection.peer;
         availableConnection.current = connection;
+        connection.send("connection establish");
       });
 
       return () => {
