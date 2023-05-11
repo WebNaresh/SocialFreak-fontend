@@ -37,7 +37,6 @@ const VIdeoChat = () => {
               width: "99vw",
             }}
             ref={userVideo}
-            muted
             autoPlay
           ></video>
         </Stack>

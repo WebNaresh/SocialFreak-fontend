@@ -69,8 +69,7 @@ export const LoginState = (props) => {
           friends: response.data.user.friends,
           userSuggestion: response.data.user.userSuggestion,
         });
-        const peer = new Peer(response.data.user._id);
-        peerInstance.current = peer;
+
         socket.current.emit("add-user", response.data.user._id);
         if (peerId !== null) {
           socket.current.emit("peer", peerId, response.data.user._id);
@@ -115,8 +114,7 @@ export const LoginState = (props) => {
           friends: response.data.user.friends,
           userSuggestion: response.data.user.userSuggestion,
         });
-        const peer = new Peer(response.data.user._id);
-        peerInstance.current = peer;
+
         redirect("/");
         socket.current.emit("add-user", response.data.user._id);
         if (peerId !== null) {
@@ -288,11 +286,17 @@ export const LoginState = (props) => {
       axios
         .post(allLink.getPostLink + me._id + "/?page=" + utils.pageNumber)
         .then((res) => {
-          // handleLoader();
+          handleLoader();
           setPosts([...posts, ...res.data.posts]);
         });
     } else {
-      socket.current.emit("get-post", utils.pageNumber, me._id);
+      axios
+        .post(allLink.getPostLink + me._id + "/?page=" + utils.pageNumber)
+        .then((res) => {
+          handleLoader();
+          setPosts([...posts, ...res.data.posts]);
+        });
+      // socket.current.emit("get-post", utils.pageNumber, me._id);
     }
     setUtils((value) => ({ ...value, pageNumber: value.pageNumber + 1 }));
   }
@@ -321,13 +325,6 @@ export const LoginState = (props) => {
     connection.send("data");
     connection["caller"] = me._id;
     availableConnection.current = connection;
-    const call = peerInstance.current.call(id, stream);
-
-    call.on("stream", (remoteStream) => {
-      if (userVideo.current) {
-        userVideo.current.srcObject = remoteStream;
-      }
-    });
   };
 
   const acceptCall = () => {

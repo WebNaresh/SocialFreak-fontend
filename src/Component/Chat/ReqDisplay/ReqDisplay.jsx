@@ -26,30 +26,15 @@ export default function ReqDisplay({ data }) {
         console.log(response);
         setMe({
           ...me,
-          backgroundPicture: response.data.user.backgroundPicture,
-          birthDate: response.data.user.birthDate,
-          collegeName: response.data.user.collegeName,
-          descriptionHighLight: response.data.user.descriptionHighLight,
-          followers: response.data.user.followers,
-          following: response.data.user.following,
-          hashTags: response.data.user.hashTags,
-          hobby: response.data.user.hobby,
-          memories: response.data.user.memories,
-          post: response.data.user.post,
-          profilePicture: response.data.user.profilePicture,
-          relationShip: response.data.user.relationShip,
-          taggedPeople: response.data.user.taggedPeople,
-          userEmail: response.data.user.userEmail,
-          userName: response.data.user.userName,
-          _id: response.data.user._id,
-          location: response.data.user.location,
-          nickName: response.data.user.nickName,
           friends: response.data.user.friends,
           userSuggestion: response.data.user.userSuggestion,
         });
       });
   };
   const handleClick2 = () => {
+    console.log(data._id);
+
+    console.log(me.userSuggestion.filter((ele) => ele === data._id));
     setMe({
       ...me,
       userSuggestion: me.userSuggestion.filter((ele) => ele === data._id),

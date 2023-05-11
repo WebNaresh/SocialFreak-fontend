@@ -135,7 +135,7 @@ const ChatDisplay = ({ data }) => {
         </ButtonGroup>
       </Stack>
       <Stack flexDirection={"row"} marginLeft={"15px"}>
-        {peerInstance.current._id !== null ? (
+        {peerInstance.current?.id !== undefined || null ? (
           <IconButton
             aria-label="VidoChat"
             onClick={() => {

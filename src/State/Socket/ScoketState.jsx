@@ -23,7 +23,7 @@ export const SocketState = (props) => {
     setCallAlert,
     me,
     peerId,
-    conn,
+    userVideo,
   } = useContext(UseContext);
   useEffect(() => {
     socket.current = SocketIoClient(process.env.REACT_APP_SOCKET_SERVER_LINK, {
@@ -64,7 +64,6 @@ export const SocketState = (props) => {
 
   useEffect(() => {
     const closeHandler = () => {
-      console.log("closing from another side");
       availableConnection.current.close();
       availableConnection.current = null;
       redirect("/");
@@ -87,7 +86,6 @@ export const SocketState = (props) => {
   useEffect(() => {
     if (peerInstance.current !== null) {
       const handler = (call) => {
-        console.log("you have call");
         redirect("/chat");
         callingRef.current = call;
         setCallAlert(true);
@@ -95,11 +93,9 @@ export const SocketState = (props) => {
 
       peerInstance.current.on("call", handler);
       peerInstance.current.on("connection", (connection) => {
-        console.log("you have connection");
         connection.send();
         connection["caller"] = connection.peer;
         availableConnection.current = connection;
-        connection.send("connection establish");
       });
 
       return () => {
@@ -107,6 +103,28 @@ export const SocketState = (props) => {
       };
     }
   }, [peerInstance.current]);
+  useEffect(() => {
+    if (me?._id !== null && me?._id !== undefined) {
+      const peer = new Peer(me._id);
+      peerInstance.current = peer;
+    }
+  }, [me]);
+  useEffect(() => {
+    if (availableConnection.current?.caller !== undefined) {
+      setTimeout(() => {
+        const call = peerInstance.current.call(
+          utils.cuurentUserIdForMsg,
+          stream
+        );
+
+        call.on("stream", (remoteStream) => {
+          if (userVideo.current) {
+            userVideo.current.srcObject = remoteStream;
+          }
+        });
+      }, 1000);
+    }
+  }, [availableConnection.current]);
 
   return (
     <SocketContext.Provider value={{}}>{props.children}</SocketContext.Provider>
