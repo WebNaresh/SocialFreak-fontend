@@ -156,7 +156,7 @@ export const SocketState = (props) => {
             userVideo.current.srcObject = remoteStream;
           }
         });
-      }, 2000);
+      }, 3000);
     }
   }, [availableConnection.current]);
 
