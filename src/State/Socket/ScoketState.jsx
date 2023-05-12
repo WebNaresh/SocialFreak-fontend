@@ -61,16 +61,34 @@ export const SocketState = (props) => {
 
     //eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    if (peerInstance.current?._id === null) {
+      while (true) {
+        const peer = new Peer(me._id);
+        console.log(`🚀 ~ new Peer:`, peer);
+        peerInstance.current = peer;
+        if (peerInstance.current._id !== null) {
+          break;
+        }
+      }
+    }
+    if (peerInstance.current?._disconnected === true || undefined) {
+      peerInstance.current.reconnect();
+    }
+  }, [peerInstance.current]);
 
   useEffect(() => {
     const closeHandler = () => {
       availableConnection.current.close();
       availableConnection.current = null;
       redirect("/");
-      stream.getTracks().forEach(function (track) {
-        track.stop();
-      });
-      setStream(null);
+      setCallAlert(false);
+      if (stream?.getTracks() !== undefined) {
+        stream.getTracks().forEach(function (track) {
+          track.stop();
+        });
+        setStream(null);
+      }
     };
     if (availableConnection.current !== null) {
       availableConnection.current.on("close", closeHandler);
@@ -92,10 +110,20 @@ export const SocketState = (props) => {
       };
 
       peerInstance.current.on("call", handler);
+      peerInstance.current.on("disconnected", () => {
+        console.log("disconnected");
+      });
+      peerInstance.current.on("open", (id) => {
+        console.log(id);
+      });
       peerInstance.current.on("connection", (connection) => {
+        console.log("connection establish");
         connection.send();
         connection["caller"] = connection.peer;
         availableConnection.current = connection;
+        connection.on("data", function (data) {
+          console.log("Received", data);
+        });
       });
 
       return () => {
@@ -112,17 +140,23 @@ export const SocketState = (props) => {
   useEffect(() => {
     if (availableConnection.current?.caller !== undefined) {
       setTimeout(() => {
+        console.log(`🚀 ~ stream:`, stream);
+        console.log(
+          `🚀 ~ utils.cuurentUserIdForMsg:`,
+          utils.cuurentUserIdForMsg
+        );
         const call = peerInstance.current.call(
           utils.cuurentUserIdForMsg,
           stream
         );
+        console.log(`🚀 ~ call:`, call);
 
         call.on("stream", (remoteStream) => {
           if (userVideo.current) {
             userVideo.current.srcObject = remoteStream;
           }
         });
-      }, 1000);
+      }, 2000);
     }
   }, [availableConnection.current]);
 

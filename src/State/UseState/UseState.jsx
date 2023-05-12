@@ -18,6 +18,7 @@ export const UseState = (props) => {
   const peerInstance = useRef(null);
   console.log(`🚀 ~ peerInstance:`, peerInstance);
   const availableConnection = useRef(null);
+  console.log(`🚀 ~ availableConnection:`, availableConnection);
   const callingRef = useRef(null);
 
   // ALL STATE

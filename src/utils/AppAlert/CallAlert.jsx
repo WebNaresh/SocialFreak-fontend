@@ -63,6 +63,7 @@ export default function CallAlert() {
 
                     availableConnection.current = null;
                     redirect("/");
+                    setCallAlert(false);
                   }}
                 >
                   <CallEnd />
