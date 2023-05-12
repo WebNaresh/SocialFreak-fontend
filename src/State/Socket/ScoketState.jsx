@@ -22,7 +22,7 @@ export const SocketState = (props) => {
     stream,
     setCallAlert,
     me,
-    peerId,
+    myVideo,
     userVideo,
   } = useContext(UseContext);
   useEffect(() => {
@@ -138,25 +138,30 @@ export const SocketState = (props) => {
     }
   }, [me]);
   useEffect(() => {
-    if (availableConnection.current?.caller !== undefined) {
-      setTimeout(() => {
+    const streamMain = navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        const call = peerInstance.current.call(
+          utils.cuurentUserIdForMsg,
+          stream
+        );
         console.log(`🚀 ~ stream:`, stream);
         console.log(
           `🚀 ~ utils.cuurentUserIdForMsg:`,
           utils.cuurentUserIdForMsg
         );
-        const call = peerInstance.current.call(
-          utils.cuurentUserIdForMsg,
-          stream
-        );
         console.log(`🚀 ~ call:`, call);
-
         call.on("stream", (remoteStream) => {
           if (userVideo.current) {
             userVideo.current.srcObject = remoteStream;
           }
         });
-      }, 5000);
+        if (myVideo.current) {
+          myVideo.current.srcObject = stream;
+        }
+      });
+    if (availableConnection.current?.caller !== undefined) {
     }
   }, [availableConnection.current]);
 
