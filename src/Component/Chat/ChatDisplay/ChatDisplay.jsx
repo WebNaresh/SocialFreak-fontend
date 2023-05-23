@@ -19,7 +19,7 @@ import {
 } from "@mui/icons-material";
 
 const ChatDisplay = ({ data }) => {
-  const { setUtils, utils, me, setChats, userId, chat, peerInstance, socket } =
+  const { setUtils, utils, me, setChats, userId, chat, peerInstance } =
     useContext(UseContext);
   const { callVideoCall } = useContext(LoginContext);
   // console.log(utils.onlineUser.get(data._id)?.length > 1);

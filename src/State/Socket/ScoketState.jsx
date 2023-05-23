@@ -58,44 +58,26 @@ export const SocketState = (props) => {
       }
     });
     socket.current.on("request", (commingPost) => {
-      console.log(`🚀 ~ me.userSuggestion:`, me.userSuggestion);
-      console.log(`🚀 ~ commingPost:`, commingPost);
       let suggestedUser = me.userSuggestion.filter(
         (ele) => ele._id !== commingPost._id
       );
-      console.log(`🚀 ~ suggestedUser:`, suggestedUser);
-      let newFollow = me.followers.push(commingPost);
-      console.log(me.followers);
-      console.log(`🚀 ~ newFollow:`, newFollow);
       setMe((Copy) => ({
         ...Copy,
         userSuggestion: suggestedUser,
-        followers: me.followers,
+        followers: [...me.followers, commingPost],
       }));
     });
     socket.current.on("followBack", (commingPost) => {
-      // console.log(`🚀 ~ me.userSuggestion:`, me.userSuggestion);
-      // console.log(`🚀 ~ commingPost:`, commingPost);
-      // let suggestedUser = me.userSuggestion.filter(
-      //   (ele) => ele._id !== commingPost._id
-      // );
-      // console.log(`🚀 ~ suggestedUser:`, suggestedUser);
-      // let newFollow = me.followers.push(commingPost);
-      // console.log(me.followers);
-      // console.log(`🚀 ~ newFollow:`, newFollow);
-      if (!me.followers.includes(commingPost)) {
-        setMe((Copy) => ({
-          ...Copy,
-          friends: [...Copy.friends, commingPost],
-          userSuggestion: Copy.userSuggestion.filter(
-            (ele) => ele._id !== commingPost._id
-          ),
-          following: Copy.following.filter(
-            (ele) => ele._id !== commingPost._id
-          ),
-          followers: [...Copy.friends, commingPost],
-        }));
-      }
+      me.following.push(commingPost);
+      me.followers.push(commingPost);
+      setMe((Copy) => ({
+        ...Copy,
+        userSuggestion: Copy.userSuggestion.filter(
+          (ele) => ele._id !== commingPost._id
+        ),
+        following: me.following,
+        followers: me.followers,
+      }));
     });
 
     // socket connection
@@ -182,3 +164,21 @@ export const SocketState = (props) => {
   );
 };
 export default SocketState;
+
+// let suggestedUser = me.userSuggestion.filter(
+//   (ele) => ele._id !== commingPost._id
+// );
+// let newFollow = me.followers.push(commingPost);
+// if (!me.followers.includes(commingPost)) {
+//   setMe((Copy) => ({
+//     ...Copy,
+//     friends: [...Copy.friends, commingPost],
+//     userSuggestion: Copy.userSuggestion.filter(
+//       (ele) => ele._id !== commingPost._id
+//     ),
+//     following: Copy.following.filter(
+//       (ele) => ele._id !== commingPost._id
+//     ),
+//     followers: [...Copy.friends, commingPost],
+//   }));
+// }

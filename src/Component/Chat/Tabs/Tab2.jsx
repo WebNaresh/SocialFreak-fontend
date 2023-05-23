@@ -5,7 +5,6 @@ import UseContext from "../../../State/UseState/UseContext";
 
 const Tab2 = () => {
   const { me } = useContext(UseContext);
-  console.log(`🚀 ~ me:`, me);
   return (
     <Stack>
       {me.userSuggestion !== null

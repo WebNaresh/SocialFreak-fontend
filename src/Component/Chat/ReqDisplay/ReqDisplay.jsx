@@ -25,10 +25,10 @@ export default function ReqDisplay({ data }) {
     };
     socket.current.emit("userwantofriend", data1);
     let suggestedUser = me.userSuggestion.filter((ele) => ele._id !== data._id);
-    let newFollow = me.following.push(data);
     setMe({
       ...me,
       userSuggestion: suggestedUser,
+      following: [me.following, data],
     });
   };
   const handleClick2 = () => {

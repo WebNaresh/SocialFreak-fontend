@@ -31,7 +31,7 @@ export default function ReqTab({ data }) {
     setMe((Copy) => ({
       ...Copy,
       userSuggestion: me.userSuggestion.filter((ele) => ele._id !== data._id),
-      following: me.following.filter((ele) => ele._id !== data._id),
+      following: [...Copy.following, data],
     }));
   };
   const handleClick2 = () => {
@@ -41,6 +41,7 @@ export default function ReqTab({ data }) {
     setMe({
       ...me,
       userSuggestion: me.following.filter((ele) => ele === data._id),
+      following: [...following, data],
     });
   };
   const [index, setIndex] = useState(0);

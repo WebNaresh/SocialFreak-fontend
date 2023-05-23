@@ -28,7 +28,6 @@ export const UseEffectState = (props) => {
     setTimeout(() => {
       setProgress(100);
     }, 1000);
-    console.log(`🚀 ~ cookies["login"]:`, cookies["login"]);
 
     if (me._id === null) {
       if (cookies["login"]) {
@@ -40,7 +39,6 @@ export const UseEffectState = (props) => {
         axios
           .post(process.env.REACT_APP_REGISTER_WITH_ID, data, config)
           .catch((errors) => {
-            console.log(errors);
             redirect("/login");
           })
           .then((response) => {

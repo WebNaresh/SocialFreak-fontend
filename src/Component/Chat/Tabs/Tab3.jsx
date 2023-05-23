@@ -8,17 +8,19 @@ import { useEffect } from "react";
 const Tab3 = () => {
   const { me } = useContext(UseContext);
   const [diff, setDiff] = useState([]);
-  console.log(`🚀 ~ diff:`, diff);
 
   useEffect(() => {
-    console.log(`🚀 ~ me.followers:`, me.followers);
-    console.log(`🚀 ~ me.following:`, me.following);
-    console.log(`🚀 ~ me.followers.length > 1:`, me.followers.length > 1);
-    const difference = me.followers.filter(
-      (element) => !me.following.includes(element)
-    );
-    console.log(`🚀 ~ difference:`, difference);
-    setDiff(difference);
+    if (me.following.length < 1) {
+      console.log(me.following.length < 1);
+
+      setDiff(me.followers);
+    } else {
+      const difference = me.followers.filter(
+        (element) => element._id !== element._id
+      );
+      console.log(`🚀 ~ difference:`, difference);
+      setDiff(difference);
+    }
   }, [me.followers, me.following]);
 
   // const difference = arr1.filter((element) => !arr2.includes(element));

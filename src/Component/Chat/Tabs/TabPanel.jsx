@@ -107,6 +107,12 @@ export default function TabPanel1() {
       color: "white",
     },
   }));
+  let handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      // Check for Enter key (keycode 13)
+      sendMessage(); // Call your function here
+    }
+  };
 
   return (
     <Box
@@ -224,6 +230,7 @@ export default function TabPanel1() {
           ) : (
             <>
               <TextField
+                onKeyDown={handleKeyDown}
                 value={msg}
                 onChange={(e) => {
                   setMsg(e.currentTarget.value);
