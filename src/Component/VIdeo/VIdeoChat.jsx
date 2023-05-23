@@ -12,18 +12,21 @@ const VIdeoChat = () => {
     callInstance2,
     redirect,
     availableConnection,
-    utils,
+
+    setUtils,
+    stream,
   } = useContext(UseContext);
-  useEffect(() => {
-    const streamMain = navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        setStream(stream);
-        if (myVideo.current) {
-          myVideo.current.srcObject = stream;
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   navigator.mediaDevices
+  //     .getUserMedia({ video: true, audio: true })
+  //     .then((stream) => {
+  //       setStream(stream);
+  //       if (myVideo.current) {
+  //         myVideo.current.srcObject = stream;
+  //       }
+  //     });
+
+  // }, []);
 
   return (
     <>
@@ -58,6 +61,7 @@ const VIdeoChat = () => {
             }}
             onClick={() => {
               redirect("/");
+              setUtils((utils) => ({ ...utils, cuurentUserIdForMsg: null }));
 
               if (availableConnection.current !== null) {
                 availableConnection.current.close();

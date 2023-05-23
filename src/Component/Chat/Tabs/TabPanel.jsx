@@ -11,24 +11,32 @@ import { useContext } from "react";
 import { Stack } from "@mui/system";
 import IconButton from "@mui/material/IconButton";
 import { ArrowBackIosNew, Send } from "@mui/icons-material";
-import { Avatar, InputAdornment, TextField } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  InputAdornment,
+  TextField,
+  styled,
+} from "@mui/material";
 import { useState } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  const { utils } = useContext(UseContext);
+  const { utils, oneRef } = useContext(UseContext);
 
   return (
     <div
       role="tabpanel"
+      style={{ height: "100%" }}
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      // style={{ overflowY: "scroll" }}
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: "20px 10px" }}>
-          <Stack>{children}</Stack>
+        <Box sx={{ p: "7px 10px 0px 10px", height: "100%" }}>
+          <Stack sx={{ height: "100%" }}>{children}</Stack>
         </Box>
       )}
       {utils.chatSpinner === true ? (
@@ -90,12 +98,21 @@ export default function TabPanel1() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      right: -6,
+      top: -6,
+      padding: "0 4px",
+      background: "#d32f2f",
+      color: "white",
+    },
+  }));
 
   return (
     <Box
       sx={{
         width: "100%",
-        height: "99.8%",
+        height: "100%",
         position: "relative",
       }}
     >
@@ -104,13 +121,14 @@ export default function TabPanel1() {
           borderColor: "divider",
           display: "flex",
           justifyContent: "center",
-          height: "10%",
+          height: "8%",
         }}
       >
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          onFocus={() => setValue(0)}
         >
           <Tab
             onClick={() => {
@@ -123,22 +141,48 @@ export default function TabPanel1() {
               setChats([]);
               chat.current = [];
             }}
-            label={`Message ${
-              utils.messageNotification < 1
-                ? ""
-                : `(${utils.messageNotification})`
-            }`}
+            label={
+              <>
+                <StyledBadge
+                  badgeContent={utils.messageNotification.length}
+                  color="error"
+                >
+                  Messages
+                </StyledBadge>
+              </>
+            }
             sx={{ fontSize: "12px" }}
             {...a11yProps(0)}
           />
-          <Tab label="Request(2)" sx={{ fontSize: "12px" }} {...a11yProps(1)} />
-          <Tab label="Recent" sx={{ fontSize: "12px" }} {...a11yProps(2)} />
+          <Tab
+            // disabled={me.userSuggestion?.length === 0 ? true : false}
+            label={
+              <StyledBadge
+                badgeContent={me.userSuggestion?.length}
+                color="error"
+              >
+                Suggestion
+              </StyledBadge>
+            }
+            sx={{ fontSize: "12px" }}
+            {...a11yProps(1)}
+          />
+          <Tab
+            // disabled={me.followers?.length === 0 ? true : false}
+            label={
+              <StyledBadge badgeContent={me.followers?.length} color="error">
+                Request
+              </StyledBadge>
+            }
+            sx={{ fontSize: "12px" }}
+            {...a11yProps(2)}
+          />
         </Tabs>
       </Box>
       <Stack
-        ref={oneRef}
+        // ref={oneRef}
         style={{
-          height: "77%",
+          height: "92%",
           position: "absolute",
           width: "100%",
         }}
@@ -190,7 +234,7 @@ export default function TabPanel1() {
                 sx={{
                   position: "fixed",
                   width: "22rem",
-                  bottom: "10px",
+                  bottom: "2rem",
                   right: "10px",
                 }}
                 InputProps={{
@@ -207,7 +251,7 @@ export default function TabPanel1() {
                       position="start"
                     >
                       <IconButton
-                        // disabled={msg.length >= 1 ? false : true}
+                        disabled={msg.length >= 1 ? false : true}
                         onClick={sendMessage}
                         sx={{ padding: "0px" }}
                       >

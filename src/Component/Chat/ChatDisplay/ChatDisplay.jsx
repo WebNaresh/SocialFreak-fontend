@@ -126,12 +126,12 @@ const ChatDisplay = ({ data }) => {
               {data.userName}
             </Typography>
           </Stack>
-          {/* <Stack>
+          <Stack>
             {" "}
             <Typography variant="subtitle2" color={"GrayText"}>
               {data.userEmail}
             </Typography>
-          </Stack> */}
+          </Stack>
         </ButtonGroup>
       </Stack>
       <Stack flexDirection={"row"} marginLeft={"15px"}>
@@ -155,8 +155,12 @@ const ChatDisplay = ({ data }) => {
           </IconButton>
         )}
 
-        <IconButton aria-label="VidoChat" onClick={() => console.log("hello")}>
-          <CallOutlined color="success" />
+        <IconButton
+          disabled
+          aria-label="VidoChat"
+          onClick={() => console.log("hello")}
+        >
+          <CallOutlined color="disabled" />
         </IconButton>
       </Stack>
     </Stack>

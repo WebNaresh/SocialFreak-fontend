@@ -21,7 +21,7 @@ const Home = () => {
       flexDirection={"row"}
       sx={{ background: "#eeeeee" }}
       width={"100vw"}
-      height={"88vh"}
+      height={"90vh"}
     >
       <Stack
         variant="elevation"
@@ -32,9 +32,9 @@ const Home = () => {
         sx={{
           margin: "8px 8px 0px 8px",
           display: {
+            xs: "none",
             sm: "none",
             md: "none",
-            xs: "none",
             lg: "flex",
             xl: "flex",
           },
@@ -54,29 +54,28 @@ const Home = () => {
         </Paper>
       </Stack>
       <Stack
-        style={{
+        sx={{
           width: {
+            xs: "100vw",
             sm: "100vw",
             md: "100vw",
-            xs: "100vw",
             lg: "40%",
             xl: "40%",
           },
           height: {
-            sm: "100vh",
-            md: "100vh",
-            xs: "100vh",
-            lg: "100vh",
-            xl: "100vh",
+            xs: "92vh",
+            sm: "92vh",
+            md: "91vh",
+            lg: "91vh",
+            xl: "91vh",
           },
-          // padding: "10px",
         }}
       >
         <InfiniteScroll
           dataLength={posts.length}
           next={fetchMoreData}
           hasMore={true}
-          height={"88vh"}
+          height={"90vh"}
           loader={<h4>Loading...</h4>}
           endMessage={
             <p style={{ textAlign: "center" }}>

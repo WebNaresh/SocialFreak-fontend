@@ -1,10 +1,11 @@
 import * as React from "react";
-import { SpeedDialAction, SpeedDial, Box } from "@mui/material/";
+import { SpeedDialAction, SpeedDial, Box, Badge, styled } from "@mui/material/";
 import {
   AccountCircleOutlined,
   Home,
   MarkChatUnread,
   NavigationOutlined,
+  NotificationAdd,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import UseContextAnother from "../../State/UseState/UseContext";
@@ -30,18 +31,38 @@ const actions = [
   },
   {
     icon: (
-      <Link to={"/chat"}>
+      <Link to={"/messages"}>
         {" "}
         <MarkChatUnread />
       </Link>
     ),
     name: "Chat",
   },
+  {
+    icon: (
+      <Link to={"/notification"}>
+        {" "}
+        <NotificationAdd />
+      </Link>
+    ),
+    name: "Notification",
+  },
 ];
 
 export default function BasicSpeedDial() {
-  const { setBackdrop } = React.useContext(UseContextAnother);
+  const { setBackdrop, utils } = React.useContext(UseContextAnother);
+
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      right: -10,
+      top: -10,
+      padding: "0 4px",
+      background: "#d32f2f",
+      color: "white",
+    },
+  }));
   return (
+    //
     <Box
       sx={{
         flexGrow: 1,
@@ -65,13 +86,18 @@ export default function BasicSpeedDial() {
           },
         }}
         icon={
-          <NavigationOutlined
-            sx={{
-              transition: "transform 0.8s ease-out",
-            }}
-            id="but"
-            color="action"
-          />
+          <StyledBadge
+            badgeContent={utils.appNotification.length}
+            color="primary"
+          >
+            <NavigationOutlined
+              sx={{
+                transition: "transform 0.8s ease-out",
+              }}
+              id="but"
+              color="action"
+            />
+          </StyledBadge>
         }
       >
         {actions.map((action) => (
@@ -89,5 +115,6 @@ export default function BasicSpeedDial() {
         ))}
       </SpeedDial>
     </Box>
+    //
   );
 }

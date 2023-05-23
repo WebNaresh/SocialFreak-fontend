@@ -119,7 +119,7 @@ export default function ProfileCard() {
               variant="body2"
               component="div"
             >
-              {me.followers}
+              {me.followers?.length}
             </Typography>
             <Typography
               fontSize="0.7rem"
@@ -143,7 +143,7 @@ export default function ProfileCard() {
               variant="body2"
               component="div"
             >
-              {me.following}
+              {me.following?.length}
             </Typography>
             <Typography
               margin={"auto"}
@@ -161,7 +161,7 @@ export default function ProfileCard() {
               variant="body2"
               component="div"
             >
-              {me.postCount}
+              {me.post?.length}
             </Typography>
             <Typography
               margin={"auto"}

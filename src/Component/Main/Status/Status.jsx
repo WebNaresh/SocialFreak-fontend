@@ -125,10 +125,12 @@ const Status = () => {
   return (
     <Stack
       direction={"row"}
+      
       sx={{
         width: "100%",
         height: "170px",
         position: "relative",
+        paddingTop:"5px"
       }}
       id="yellow"
     >

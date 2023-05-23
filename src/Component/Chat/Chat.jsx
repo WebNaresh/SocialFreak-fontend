@@ -13,11 +13,16 @@ const Chat = () => {
   return (
     <Paper
       sx={{
-        height: "100%",
-        // overflowY: "scroll",
+        height: {
+          xs: "92vh",
+          sm: "92vh",
+          md: "91vh",
+          lg: "91vh",
+          xl: "91vh",
+        },
       }}
     >
-      <div style={{ height: "22%" }}>
+      <div style={{ height: "14%" }}>
         <Stack>
           <Typography
             variant="subtitle2"
@@ -55,7 +60,7 @@ const Chat = () => {
         </Stack>
       </div>
 
-      <Stack height={"78%"}>
+      <Stack height={"85%"}>
         <TabPanel1 />
       </Stack>
     </Paper>

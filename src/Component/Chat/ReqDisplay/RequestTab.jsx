@@ -6,6 +6,9 @@ import {
   Check,
   Clear,
   ClearOutlined,
+  Done,
+  DoneOutline,
+  DoneTwoTone,
   RemoveDone,
   Send,
   SendTwoTone,
@@ -16,28 +19,28 @@ import UseContext from "../../../State/UseState/UseContext";
 import { useState } from "react";
 import axios from "axios";
 
-export default function ReqDisplay({ data }) {
+export default function ReqTab({ data }) {
   const { me, setMe, socket } = useContext(UseContext);
   const handleClick = () => {
     const data1 = {
       addableId: data._id,
       userId: me._id,
     };
-    socket.current.emit("userwantofriend", data1);
-    let suggestedUser = me.userSuggestion.filter((ele) => ele._id !== data._id);
-    let newFollow = me.following.push(data);
-    setMe({
-      ...me,
-      userSuggestion: suggestedUser,
-    });
+    socket.current.emit("userwantofollowback", data1);
+    console.log(me.following.filter((ele) => ele._id !== data._id));
+    setMe((Copy) => ({
+      ...Copy,
+      userSuggestion: me.userSuggestion.filter((ele) => ele._id !== data._id),
+      following: me.following.filter((ele) => ele._id !== data._id),
+    }));
   };
   const handleClick2 = () => {
     console.log(data._id);
 
-    console.log(me.userSuggestion.filter((ele) => ele === data._id));
+    console.log(me.following.filter((ele) => ele === data._id));
     setMe({
       ...me,
-      userSuggestion: me.userSuggestion.filter((ele) => ele === data._id),
+      userSuggestion: me.following.filter((ele) => ele === data._id),
     });
   };
   const [index, setIndex] = useState(0);
@@ -57,30 +60,17 @@ export default function ReqDisplay({ data }) {
             <Typography variant="body2" color="text.primary">
               {data.userName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {data.friends.forEach((element1) => {
-                me.friends.forEach((element) => {
-                  if (element1 === element) {
-                    return setIndex(index + 1);
-                  }
-                });
-              })}{" "}
-              {index > 0
-                ? `${index} mutual friends`
-                : " 🚀 🚀 Your Choices are simmillar"}
-            </Typography>
           </Stack>
         </Stack>
         <Stack direction={"row"}>
           <Chip
-            label="Send Request"
+            label="Accept Request"
             variant="contained"
             icon={
-              <SendTwoTone
+              <Done
                 color="white"
                 fontSize="small"
                 sx={{
-                  transform: "rotate(-35deg)",
                   paddingLeft: "5px",
                   paddingBottom: "5px",
                 }}

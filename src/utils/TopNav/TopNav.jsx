@@ -6,6 +6,7 @@ import {
   AddAPhotoOutlined,
   Chat,
   Login,
+  Logout,
   Search as SearchIcon,
 } from "@mui/icons-material/";
 
@@ -25,6 +26,7 @@ import {
 import Typewriter from "typewriter-effect";
 import { useContext } from "react";
 import UseContext from "../../State/UseState/UseContext";
+import TestContext from "../../State/Test/TestContext";
 import { Link } from "react-router-dom";
 import CreateModal from "../../Component/Main/createModal/CreateModal";
 import {
@@ -74,7 +76,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function TopNav() {
-  const { me, setOpen, open, data, setData } = useContext(UseContext);
+  const { me, setOpen, open, data, setData, utils, removeCookie, setMe } =
+    useContext(UseContext);
+  const { handleLoader } = useContext(TestContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   // const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -87,6 +91,35 @@ export default function TopNav() {
   // const handleMobileMenuClose = () => {
   //   setMobileMoreAnchorEl(null);
   // };
+  const removeCookieFromBack = () => {
+    handleLoader(true, "#E36049", 4000);
+    removeCookie("login");
+    console.log("worked");
+    setTimeout(() => {
+      setMe({
+        backgroundPicture: null,
+        birthDate: null,
+        collegeName: null,
+        descriptionHighLight: null,
+        followers: [],
+        following: [],
+        hashTags: null,
+        hobby: null,
+        memories: null,
+        post: null,
+        profilePicture: null,
+        relationShip: null,
+        taggedPeople: null,
+        userEmail: null,
+        userName: null,
+        location: null,
+        nickName: null,
+        friends: null,
+        userSuggestion: [],
+        _id: null,
+      });
+    }, 3000);
+  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -119,7 +152,7 @@ export default function TopNav() {
             src={me.profilePicture}
             alt="wait"
           />{" "}
-          Profile{" "}
+          Setting{" "}
         </Link>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
@@ -129,10 +162,17 @@ export default function TopNav() {
         </Link>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>
-        <Link to={"/login"}>
-          {" "}
-          <Login sx={{ marginX: 1 }} fontSize="small"></Login> Login{" "}
-        </Link>
+        {me?._id === null || undefined ? (
+          <Link to={"/login"}>
+            {" "}
+            <Login sx={{ marginX: 1 }} fontSize="small"></Login> Login
+          </Link>
+        ) : (
+          <Link onClick={removeCookieFromBack} to={"/login"}>
+            {" "}
+            <Logout sx={{ marginX: 1 }} fontSize="small"></Logout> Logout
+          </Link>
+        )}
       </MenuItem>
     </Menu>
   );
@@ -140,8 +180,30 @@ export default function TopNav() {
   // const mobileMenuId = "primary-search-account-menu-mobile";
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+    <Box
+      sx={{
+        flexGrow: 1,
+        height: {
+          sm: "8vh",
+          md: "9vh",
+          xs: "8vh",
+          lg: "9vh",
+          xl: "9vh",
+        },
+      }}
+    >
+      <AppBar
+        sx={{
+          height: {
+            sm: "8vh",
+            md: "9vh",
+            xs: "8vh",
+            lg: "9vh",
+            xl: "9vh",
+          },
+        }}
+        position="fixed"
+      >
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ width: 120 }}>
             <Typewriter
@@ -216,7 +278,10 @@ export default function TopNav() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Badge badgeContent={<Add fontSize="0.9rem" />} color="error">
+              <Badge
+                badgeContent={utils.messageNotification.length}
+                color="error"
+              >
                 <Avatar variant="circular" src={me.profilePicture} alt="wait" />
               </Badge>
             </IconButton>

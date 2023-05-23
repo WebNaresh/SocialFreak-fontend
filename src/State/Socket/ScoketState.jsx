@@ -24,6 +24,7 @@ export const SocketState = (props) => {
     me,
     myVideo,
     userVideo,
+    setMe,
   } = useContext(UseContext);
   useEffect(() => {
     socket.current = SocketIoClient(process.env.REACT_APP_SOCKET_SERVER_LINK, {
@@ -56,6 +57,46 @@ export const SocketState = (props) => {
         }));
       }
     });
+    socket.current.on("request", (commingPost) => {
+      console.log(`🚀 ~ me.userSuggestion:`, me.userSuggestion);
+      console.log(`🚀 ~ commingPost:`, commingPost);
+      let suggestedUser = me.userSuggestion.filter(
+        (ele) => ele._id !== commingPost._id
+      );
+      console.log(`🚀 ~ suggestedUser:`, suggestedUser);
+      let newFollow = me.followers.push(commingPost);
+      console.log(me.followers);
+      console.log(`🚀 ~ newFollow:`, newFollow);
+      setMe((Copy) => ({
+        ...Copy,
+        userSuggestion: suggestedUser,
+        followers: me.followers,
+      }));
+    });
+    socket.current.on("followBack", (commingPost) => {
+      // console.log(`🚀 ~ me.userSuggestion:`, me.userSuggestion);
+      // console.log(`🚀 ~ commingPost:`, commingPost);
+      // let suggestedUser = me.userSuggestion.filter(
+      //   (ele) => ele._id !== commingPost._id
+      // );
+      // console.log(`🚀 ~ suggestedUser:`, suggestedUser);
+      // let newFollow = me.followers.push(commingPost);
+      // console.log(me.followers);
+      // console.log(`🚀 ~ newFollow:`, newFollow);
+      if (!me.followers.includes(commingPost)) {
+        setMe((Copy) => ({
+          ...Copy,
+          friends: [...Copy.friends, commingPost],
+          userSuggestion: Copy.userSuggestion.filter(
+            (ele) => ele._id !== commingPost._id
+          ),
+          following: Copy.following.filter(
+            (ele) => ele._id !== commingPost._id
+          ),
+          followers: [...Copy.friends, commingPost],
+        }));
+      }
+    });
 
     // socket connection
 
@@ -65,7 +106,6 @@ export const SocketState = (props) => {
     if (peerInstance.current?._id === null) {
       while (true) {
         const peer = new Peer(me._id);
-        console.log(`🚀 ~ new Peer:`, peer);
         peerInstance.current = peer;
         if (peerInstance.current._id !== null) {
           break;
@@ -87,7 +127,9 @@ export const SocketState = (props) => {
         stream.getTracks().forEach(function (track) {
           track.stop();
         });
-        setStream(null);
+        myVideo.current.srcObject = null;
+        userVideo.current.srcObject = null;
+        // setStream(null);
       }
     };
     if (availableConnection.current !== null) {
@@ -110,20 +152,13 @@ export const SocketState = (props) => {
       };
 
       peerInstance.current.on("call", handler);
-      peerInstance.current.on("disconnected", () => {
-        console.log("disconnected");
-      });
-      peerInstance.current.on("open", (id) => {
-        console.log(id);
-      });
+      peerInstance.current.on("disconnected", () => {});
+      peerInstance.current.on("open", (id) => {});
       peerInstance.current.on("connection", (connection) => {
-        console.log("connection establish");
         connection.send();
         connection["caller"] = connection.peer;
         availableConnection.current = connection;
-        connection.on("data", function (data) {
-          console.log("Received", data);
-        });
+        connection.on("data", function (data) {});
       });
 
       return () => {
@@ -138,29 +173,6 @@ export const SocketState = (props) => {
     }
   }, [me]);
   useEffect(() => {
-    const streamMain = navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        setStream(stream);
-        const call = peerInstance.current.call(
-          utils.cuurentUserIdForMsg,
-          stream
-        );
-        console.log(`🚀 ~ stream:`, stream);
-        console.log(
-          `🚀 ~ utils.cuurentUserIdForMsg:`,
-          utils.cuurentUserIdForMsg
-        );
-        console.log(`🚀 ~ call:`, call);
-        call.on("stream", (remoteStream) => {
-          if (userVideo.current) {
-            userVideo.current.srcObject = remoteStream;
-          }
-        });
-        if (myVideo.current) {
-          myVideo.current.srcObject = stream;
-        }
-      });
     if (availableConnection.current?.caller !== undefined) {
     }
   }, [availableConnection.current]);

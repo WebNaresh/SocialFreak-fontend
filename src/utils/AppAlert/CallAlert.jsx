@@ -14,7 +14,7 @@ export default function CallAlert() {
     caller,
     availableConnection,
     me,
-    setCallAlert,
+    setCallAlert,setUtils
   } = useContext(UseContext);
   const { acceptCall } = useContext(LoginContext);
 
@@ -60,7 +60,7 @@ export default function CallAlert() {
                   size="medium"
                   onClick={() => {
                     availableConnection.current.close();
-
+setUtils((utils) => ({ ...utils, cuurentUserIdForMsg: null }));
                     availableConnection.current = null;
                     redirect("/");
                     setCallAlert(false);

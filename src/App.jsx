@@ -20,6 +20,7 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
+        // main: colors.blueGrey[200],
         main: colors.blueGrey[200],
       },
       secondary: {
@@ -47,9 +48,7 @@ function App() {
                     <CallAlert />
                     <TopNav />
                     <Backdrop />
-                    <div style={{ marginTop: "60px" }}>
-                      <Route />
-                    </div>
+                    <Route />
                     <BasicSpeedDial />
                   </SocketState>
                 </UseEffectState>

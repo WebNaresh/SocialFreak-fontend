@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import UseContext from "./UseContext";
 import { useCookies } from "react-cookie";
+import { colors } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const UseState = (props) => {
@@ -16,14 +17,13 @@ export const UseState = (props) => {
   const myVideo = useRef(null);
   const userVideo = useRef(null);
   const peerInstance = useRef(null);
-  console.log(`🚀 ~ peerInstance:`, peerInstance);
   const availableConnection = useRef(null);
-  console.log(`🚀 ~ availableConnection:`, availableConnection);
   const callingRef = useRef(null);
 
   // ALL STATE
 
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+
   const [backdrop, setBackdrop] = useState(false);
 
   const [stream, setStream] = useState(null);
@@ -53,8 +53,8 @@ export const UseState = (props) => {
     birthDate: null,
     collegeName: null,
     descriptionHighLight: null,
-    followers: null,
-    following: null,
+    followers: [],
+    following: [],
     hashTags: null,
     hobby: null,
     memories: null,
@@ -68,8 +68,9 @@ export const UseState = (props) => {
     location: null,
     nickName: null,
     friends: null,
-    userSuggestion: null,
+    userSuggestion: [],
   });
+  console.log(`🚀 ~ me:`, me);
   const [moments, SetMoments] = useState([
     {
       coverPhoto:
@@ -128,7 +129,12 @@ export const UseState = (props) => {
     onlineUser: new Map(),
     chatSpinner: false,
     chat: [],
-    messageNotification: 0,
+    messageNotification: [],
+    appNotification: [],
+  });
+  const [theme, setTheme] = useState({
+    primary: "#b0bec5",
+    body: "",
   });
 
   const [chats, setChats] = useState([]);
@@ -208,6 +214,8 @@ export const UseState = (props) => {
         setCallAlert,
         availableConnection,
         callingRef,
+        theme,
+        setTheme,
       }}
     >
       {props.children}

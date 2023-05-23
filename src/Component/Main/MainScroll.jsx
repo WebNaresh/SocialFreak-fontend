@@ -11,7 +11,7 @@ const MainScroll = () => {
   const { posts, open, setOpen } = useContext(UseContext);
 
   return (
-    <Stack id={"height"} width={"99vw"} margin={"auto"}>
+    <Stack width={"100%"} margin={"auto"}>
       <Status />
       {/* <InfiniteScroll
         dataLength={posts.length}

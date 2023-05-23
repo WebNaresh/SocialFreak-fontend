@@ -12,13 +12,47 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link href="/index.css" rel="stylesheet" />
 
     <title>Naresh App</title>
   </head>
-  <body>
+  <body onload="myFunction()">
     <!-- <noscript>You need to enable JavaScript to run this app.</noscript> -->
+    <div id="wrapper">
+      <div class="face">
+        <div class="eyes">
+          <div class="eye"></div>
+          <div class="eye"></div>
+        </div>
+        <div class="eyelash1"></div>
+        <div class="eyelash2"></div>
+        <div class="nose"></div>
+        <div class="burger1"></div>
+        <div class="burger2"></div>
+        <div class="mouth"></div>
+        <div class="mouth2"></div>
+        <div class="patch1"></div>
+        <div class="patch2"></div>
+      </div>
+    </div>
     <div id="root"></div>
-    <div id="map"></div>
+    <script>
+      document.querySelector("body").addEventListener("mousemove", eyeball);
+      function eyeball() {
+        var eye = document.querySelectorAll(".eye");
+        eye.forEach(function (eye) {
+          let x = eye.getBoundingClientRect().left + eye.clientWidth / 2;
+          let y = eye.getBoundingClientRect().top + eye.clientHeight / 2;
+          let radian = Math.atan2(event.pageX - x, event.pageY - y);
+          let rot = radian * (180 / Math.PI) * -1 + 270;
+          eye.style.transform = "rotate(" + rot + "deg)";
+        });
+      }
+      function myFunction() {
+        var eye = document.getElementById("wrapper");
+        eye.style.display = "none";
+      }
+    </script>
     <!-- for  image hit link https://manifest-gen.netlify.app/ -->
   </body>
 </html>

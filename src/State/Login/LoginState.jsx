@@ -25,11 +25,14 @@ export const LoginState = (props) => {
     setChats,
     peerInstance,
     peerId,
-    stream,
+    setCookie,
     availableConnection,
     userVideo,
     setCallAlert,
     callingRef,
+    setStream,
+    myVideo,
+    removeCookie,
   } = useContext(UseContext);
   const imageArray = [];
   const { handleLoader } = useContext(TestContext);
@@ -46,6 +49,9 @@ export const LoginState = (props) => {
       .post(process.env.REACT_APP_REGISTER_USER, data, config)
       .catch((errors) => {})
       .then((response) => {
+        setCookie("login", response.data.token, {
+          maxAge: 30 * 24 * 60 * 60,
+        });
         setMe({
           ...me,
           backgroundPicture: response.data.user.backgroundPicture,
@@ -71,9 +77,6 @@ export const LoginState = (props) => {
         });
 
         socket.current.emit("add-user", response.data.user._id);
-        if (peerId !== null) {
-          socket.current.emit("peer", peerId, response.data.user._id);
-        }
         redirect("/");
       });
   };
@@ -91,6 +94,9 @@ export const LoginState = (props) => {
       .post(process.env.REACT_APP_REGISTER_USER, data, config)
       .catch((errors) => {})
       .then((response) => {
+        setCookie("login", response.data.token, {
+          maxAge: 30 * 24 * 60 * 60,
+        });
         setMe({
           ...me,
           backgroundPicture: response.data.user.backgroundPicture,
@@ -117,9 +123,6 @@ export const LoginState = (props) => {
 
         redirect("/");
         socket.current.emit("add-user", response.data.user._id);
-        if (peerId !== null) {
-          socket.current.emit("peer", peerId, response.data.user._id);
-        }
       });
   };
   const handleGoogleLoginFail = (e) => {};
@@ -286,14 +289,12 @@ export const LoginState = (props) => {
       axios
         .post(allLink.getPostLink + me._id + "/?page=" + utils.pageNumber)
         .then((res) => {
-          handleLoader();
           setPosts([...posts, ...res.data.posts]);
         });
     } else {
       axios
         .post(allLink.getPostLink + me._id + "/?page=" + utils.pageNumber)
         .then((res) => {
-          handleLoader();
           setPosts([...posts, ...res.data.posts]);
         });
       // socket.current.emit("get-post", utils.pageNumber, me._id);
@@ -325,10 +326,34 @@ export const LoginState = (props) => {
     connection.send("data");
     connection["caller"] = me._id;
     availableConnection.current = connection;
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+        const call = peerInstance.current.call(id, stream);
+
+        call.on("stream", (remoteStream) => {
+          if (userVideo.current) {
+            userVideo.current.srcObject = remoteStream;
+          }
+        });
+        if (myVideo.current) {
+          myVideo.current.srcObject = stream;
+        }
+      });
   };
 
   const acceptCall = () => {
-    callingRef.current.answer(stream);
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        setStream(stream);
+
+        callingRef.current.answer(stream);
+        if (myVideo.current) {
+          myVideo.current.srcObject = stream;
+        }
+      });
     callingRef.current.on("stream", function (remoteStream) {
       if (userVideo.current) {
         userVideo.current.srcObject = remoteStream;

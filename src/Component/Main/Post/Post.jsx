@@ -50,6 +50,7 @@ export default function Post({ data }) {
         }
       });
   };
+  
   useEffect(() => {
     if (data.likes.includes(me._id)) {
       setLike(true);
@@ -57,7 +58,6 @@ export default function Post({ data }) {
 
     // eslint-disable-next-line
   }, []);
-  console.log();
   useEffect(() => {
     if (data.views.includes(me._id) !== true) {
       requestToView(data._id);
@@ -90,6 +90,8 @@ export default function Post({ data }) {
             backgroundColor: "#dadada",
           }}
           indicators={false}
+          navButtonsAlwaysVisible={data.image.length>1}
+          navButtonsAlwaysInvisible={data.image.length<=1}
         >
           {!data.views.includes(me._id)
             ? data.image.map((item, i) => (

@@ -10,7 +10,7 @@ const Tab1 = () => {
       {utils.cuurentUserIdForMsg === null ? (
         <div>
           {me.friends !== null
-            ? me.friends.map((data, i) => {
+            ? me.followers.map((data, i) => {
                 return <ChatDisplay key={i} data={data} />;
               })
             : ""}

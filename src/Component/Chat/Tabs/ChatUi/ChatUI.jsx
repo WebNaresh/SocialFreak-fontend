@@ -7,14 +7,22 @@ import dayjs from "dayjs";
 const ChatUI = () => {
   const { chat, me, oneRef, chats } = useContext(UseContext);
   useEffect(() => {
-    oneRef.current.scrollTop = oneRef.current.scrollHeight;
-
+    oneRef.current.scrollIntoView();
+    console.log(
+      `🚀 ~  oneRef.current.scrollHeight:`,
+      (oneRef.current.scrollTop += oneRef.current.scrollHeight)
+    );
+    console.log(`🚀 ~  oneRef.current.scrollTop:`, oneRef);
     // eslint-disable-next-line
   }, [chats]);
 
   return (
-    <div>
-      <Stack>
+    <div style={{ height: "100%" }}>
+      <Stack
+        sx={{ height: "90%", overflowY: "auto" }}
+        ref={oneRef}
+        padding={"0rem 0rem 3rem 0rem"}
+      >
         {chat.current !== undefined
           ? chat.current.map((item, i) => {
               return (
