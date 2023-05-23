@@ -41,7 +41,7 @@ export default function ReqTab({ data }) {
     setMe({
       ...me,
       userSuggestion: me.following.filter((ele) => ele === data._id),
-      following: [...following, data],
+      following: [...me.following, data],
     });
   };
   const [index, setIndex] = useState(0);
