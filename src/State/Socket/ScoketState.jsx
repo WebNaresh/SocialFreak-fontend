@@ -25,6 +25,8 @@ export const SocketState = (props) => {
     myVideo,
     userVideo,
     setMe,
+    peerState,
+    setPeerState,
   } = useContext(UseContext);
   useEffect(() => {
     socket.current = SocketIoClient(process.env.REACT_APP_SOCKET_SERVER_LINK, {
@@ -34,6 +36,9 @@ export const SocketState = (props) => {
     socket.current.on("take-posts", (commingPost) => {
       setPosts((array) => [...array, ...commingPost]);
     });
+    socket.current.on("newUser", (commingPost) => {
+      console.log("newUser", commingPost);
+    });
 
     socket.current.on("users", (map) => {
       var newMap = new Map(JSON.parse(map));
@@ -41,10 +46,12 @@ export const SocketState = (props) => {
     });
 
     socket.current.on("get-msg", (data) => {
-      if (userId.current === data.sender._id) {
+      console.log(`🚀 ~ get-msg:`, data.sender);
+      console.log(`🚀 ~ data.sender :`, data.sender);
+      if (userId.current === data.sender?._id) {
         setChats((chat) => [...chat, data]);
         if (
-          chat.current[chat.current.length - 1].sender._id === data.sender._id
+          chat.current[chat.current?.length - 1].sender._id === data.sender._id
         ) {
           chat.current[chat.current.length - 1].message.push(data.message);
         } else {
@@ -85,19 +92,18 @@ export const SocketState = (props) => {
     //eslint-disable-next-line
   }, []);
   useEffect(() => {
-    if (peerInstance.current?._id === null) {
-      while (true) {
-        const peer = new Peer(me._id);
-        peerInstance.current = peer;
-        if (peerInstance.current._id !== null) {
-          break;
-        }
-      }
+    if (peerState?._id === null) {
+      console.log(`🚀 ~ peerState?._id: is null`, peerState._id);
+      // while (true) {
+      const peer = new Peer(me._id);
+      setPeerState(peer);
+      console.log(`🚀 ~ peer:`, peer);
+      // if (peerState._id !== null) {
+      //   break;
+      // }
+      // }
     }
-    if (peerInstance.current?._disconnected === true || undefined) {
-      peerInstance.current.reconnect();
-    }
-  }, [peerInstance.current]);
+  }, [peerState]);
 
   useEffect(() => {
     const closeHandler = () => {
@@ -126,17 +132,17 @@ export const SocketState = (props) => {
   }, [availableConnection.current]);
 
   useEffect(() => {
-    if (peerInstance.current !== null) {
+    if (peerState !== null) {
       const handler = (call) => {
         redirect("/chat");
         callingRef.current = call;
         setCallAlert(true);
       };
 
-      peerInstance.current.on("call", handler);
-      peerInstance.current.on("disconnected", () => {});
-      peerInstance.current.on("open", (id) => {});
-      peerInstance.current.on("connection", (connection) => {
+      peerState.on("call", handler);
+      peerState.on("disconnected", () => {});
+      peerState.on("open", (id) => {});
+      peerState.on("connection", (connection) => {
         connection.send();
         connection["caller"] = connection.peer;
         availableConnection.current = connection;
@@ -144,14 +150,15 @@ export const SocketState = (props) => {
       });
 
       return () => {
-        peerInstance.current.off("call", handler);
+        peerState.off("call", handler);
       };
     }
-  }, [peerInstance.current]);
+  }, [peerState]);
   useEffect(() => {
     if (me?._id !== null && me?._id !== undefined) {
       const peer = new Peer(me._id);
-      peerInstance.current = peer;
+      // peerState = peer;
+      setPeerState(peer);
     }
   }, [me]);
   useEffect(() => {

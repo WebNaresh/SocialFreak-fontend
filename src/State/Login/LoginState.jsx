@@ -33,11 +33,18 @@ export const LoginState = (props) => {
     setStream,
     myVideo,
     removeCookie,
+    peerState,
+    setPeerState,
   } = useContext(UseContext);
   const imageArray = [];
   const { handleLoader } = useContext(TestContext);
 
   const handleFaceBookLogin = (responese) => {
+    function addDays(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
     const data = {
       userName: responese.name,
       profilePicture: responese.picture.data.url,
@@ -49,8 +56,9 @@ export const LoginState = (props) => {
       .post(process.env.REACT_APP_REGISTER_USER, data, config)
       .catch((errors) => {})
       .then((response) => {
+        const expirationDate = addDays(new Date(), 30);
         setCookie("login", response.data.token, {
-          maxAge: 30 * 24 * 60 * 60,
+          expires: expirationDate,
         });
         setMe({
           ...me,
@@ -318,11 +326,16 @@ export const LoginState = (props) => {
       }));
     }
   };
-
+  const addPeerId = async () => {};
   const callVideoCall = (id) => {
     redirect("/chat");
+    // console.log(peerState?._id === null || undefined);
+    // if (peerState?._id) {
+    //   const peer = new Peer(me._id);
+    //   peerState = peer;
+    // }
 
-    const connection = peerInstance.current.connect(id);
+    const connection = peerState.connect(id);
     connection.send("data");
     connection["caller"] = me._id;
     availableConnection.current = connection;
@@ -330,7 +343,7 @@ export const LoginState = (props) => {
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         setStream(stream);
-        const call = peerInstance.current.call(id, stream);
+        const call = peerState.call(id, stream);
 
         call.on("stream", (remoteStream) => {
           if (userVideo.current) {

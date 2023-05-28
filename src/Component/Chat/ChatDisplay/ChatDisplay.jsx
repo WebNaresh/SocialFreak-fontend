@@ -19,7 +19,7 @@ import {
 } from "@mui/icons-material";
 
 const ChatDisplay = ({ data }) => {
-  const { setUtils, utils, me, setChats, userId, chat, peerInstance } =
+  const { setUtils, utils, me, setChats, userId, chat, peerInstance,peerState } =
     useContext(UseContext);
   const { callVideoCall } = useContext(LoginContext);
   // console.log(utils.onlineUser.get(data._id)?.length > 1);
@@ -135,7 +135,7 @@ const ChatDisplay = ({ data }) => {
         </ButtonGroup>
       </Stack>
       <Stack flexDirection={"row"} marginLeft={"15px"}>
-        {peerInstance.current?.id !== undefined || null ? (
+        {peerState?.id !== undefined || null ? (
           <IconButton
             aria-label="VidoChat"
             onClick={() => {

@@ -4,7 +4,7 @@ import UseContext from "../../../State/UseState/UseContext";
 import ChatUI from "./ChatUi/ChatUI";
 
 const Tab1 = () => {
-  const { me, utils } = useContext(UseContext);
+  const { me, utils, tabData, setTabData } = useContext(UseContext);
   const [diff, setDiff] = useState([]);
   function getCommonObjectsByProperty(array1, array2, property) {
     var commonObjects = array1.filter(function (obj1) {
@@ -18,13 +18,14 @@ const Tab1 = () => {
     let difference = getCommonObjectsByProperty(me.followers, me.following);
 
     setDiff(difference);
+    setTabData((copy) => ({ ...copy, tab1: difference }));
   }, [me.followers, me.following]);
   return (
     <>
       {utils.cuurentUserIdForMsg === null ? (
         <div>
-          {diff !== null
-            ? diff.map((data, i) => {
+          {tabData.tab1 !== null
+            ? tabData.tab1.map((data, i) => {
                 return <ChatDisplay key={i} data={data} />;
               })
             : ""}

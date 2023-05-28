@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const Tab3 = () => {
-  const { me } = useContext(UseContext);
+  const { me, tabData, setTabData } = useContext(UseContext);
   const [diff, setDiff] = useState([]);
 
   useEffect(() => {
@@ -19,6 +19,7 @@ const Tab3 = () => {
         (element) => element._id !== element._id
       );
       console.log(`🚀 ~ difference:`, difference);
+      setTabData((copy) => ({ ...copy, tab3: difference }));
       setDiff(difference);
     }
   }, [me.followers, me.following]);
@@ -27,8 +28,8 @@ const Tab3 = () => {
 
   return (
     <Stack>
-      {diff !== null
-        ? diff.map((data, index) => {
+      {tabData.tab3 !== null
+        ? tabData.tab3.map((data, index) => {
             return <ReqTab key={index} data={data} />;
           })
         : ""}

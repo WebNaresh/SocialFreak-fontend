@@ -19,7 +19,7 @@ const ChatUI = () => {
   return (
     <div style={{ height: "100%" }}>
       <Stack
-        sx={{ height: "90%", overflowY: "auto" }}
+        sx={{ height: "85%", overflowY: "auto" }}
         ref={oneRef}
         padding={"0rem 0rem 3rem 0rem"}
       >

@@ -5,6 +5,7 @@ import {
   Typography,
   IconButton,
   Modal,
+  Stack,
 } from "@mui/material";
 import {
   Cake,
@@ -33,10 +34,9 @@ export default function ProfileInfo({ me }) {
   const { setOpen, open } = useContext(UseContext);
   return (
     <Paper sx={{ marginY: 2 }}>
-      <Typography
+      <Stack
+        direction={"row"}
         sx={{ padding: "10px 5px", display: "flex", alignItems: "center" }}
-        gutterBottom
-        variant="h7"
         component="div"
       >
         <SmsFailed sx={{ marginX: 1 }} fontSize="small" /> Profile Info
@@ -52,16 +52,18 @@ export default function ProfileInfo({ me }) {
         >
           <Edit fontSize="small" />
         </IconButton>
-      </Typography>
-      <Typography
+      </Stack>
+      <Stack
         display={"flex"}
         flexDirection={"column"}
-        margin={2}
-        variant="subtitle2"
+        sx={{
+          margin: 2,
+        }}
         color="gray"
       >
         {" "}
-        <Typography
+        <Stack
+          direction={"row"}
           variant="subtitle2"
           color={"black"}
           margin={"2px 0px"}
@@ -72,10 +74,15 @@ export default function ProfileInfo({ me }) {
           <Typography variant="subtitle2" color="gray">
             {me.nickName}
           </Typography>{" "}
-        </Typography>
-        <Typography variant="subtitle2" color={"black"} display={"flex"}>
+        </Stack>
+        <Stack
+          direction={"row"}
+          variant="subtitle2"
+          color={"black"}
+          display={"flex"}
+        >
           <Work color="disabled" fontSize="small" /> &nbsp; &nbsp;{" "}
-          <Typography variant="subtitle2" color="gray">
+          <Stack variant="subtitle2" color="gray">
             {me.descriptionHighLight === null ? (
               ""
             ) : (
@@ -87,9 +94,10 @@ export default function ProfileInfo({ me }) {
                 }}
               />
             )}
-          </Typography>{" "}
-        </Typography>
-        <Typography
+          </Stack>{" "}
+        </Stack>
+        <Stack
+          direction={"row"}
           variant="subtitle2"
           color={"black"}
           margin={"2px 0px"}
@@ -99,8 +107,9 @@ export default function ProfileInfo({ me }) {
           <Typography variant="subtitle2" color="gray">
             {me.collegeName}
           </Typography>{" "}
-        </Typography>
-        <Typography
+        </Stack>
+        <Stack
+          direction={"row"}
           variant="subtitle2"
           color={"black"}
           margin={"2px 0px"}
@@ -110,8 +119,9 @@ export default function ProfileInfo({ me }) {
           <Typography variant="subtitle2" color="gray">
             {me.location}
           </Typography>{" "}
-        </Typography>
-        <Typography
+        </Stack>
+        <Stack
+          direction={"row"}
           variant="subtitle2"
           color={"black"}
           margin={"2px 0px"}
@@ -142,8 +152,9 @@ export default function ProfileInfo({ me }) {
               </Typography>
             </>
           )}
-        </Typography>
-        <Typography
+        </Stack>
+        <Stack
+          direction={"row"}
           variant="subtitle2"
           color={"black"}
           margin={"2px 0px"}
@@ -153,10 +164,10 @@ export default function ProfileInfo({ me }) {
           <Typography variant="subtitle2" color="gray">
             {me.hobby}
           </Typography>{" "}
-        </Typography>
-        <Typography
+        </Stack>
+        <Stack
+          direction={"row"}
           margin={"2px 0px"}
-          variant="subtitle2"
           color={"black"}
           display={"flex"}
         >
@@ -165,16 +176,11 @@ export default function ProfileInfo({ me }) {
             <Timestamp date={me.birthDate} />
             {/* {me.birthDate} */}
           </Typography>{" "}
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          margin={"2px 0px"}
-          color={"black"}
-          display={"flex"}
-        >
+        </Stack>
+        <Stack margin={"2px 0px"} color={"black"} display={"flex"}>
           <ConnectWithoutContact color="disabled" fontSize="small" /> &nbsp;
           &nbsp;{" "}
-          <Typography variant="subtitle2" color="#3999e7">
+          <Stack variant="subtitle2" color="#3999e7">
             {me.taggedPeople !== null
               ? me.taggedPeople.map((e, index) => {
                   return (
@@ -189,8 +195,8 @@ export default function ProfileInfo({ me }) {
                   );
                 })
               : ""}
-          </Typography>{" "}
-        </Typography>
+          </Stack>{" "}
+        </Stack>
         <span
           style={{
             whiteSpace: "pre-line",
@@ -202,7 +208,8 @@ export default function ProfileInfo({ me }) {
             fontSize: "12px",
           }}
         ></span>
-        <Typography
+        <Stack
+          direction={"row"}
           variant="subtitle2"
           margin={"2px 0px"}
           color={"black"}
@@ -214,7 +221,7 @@ export default function ProfileInfo({ me }) {
             fontSize="small"
           />{" "}
           &nbsp; &nbsp;{" "}
-          <Typography variant="subtitle2" color="#3999e7">
+          <Stack variant="subtitle2" color="#3999e7">
             {me.hashTags !== null
               ? me.hashTags.map((e, index) => {
                   return (
@@ -224,9 +231,9 @@ export default function ProfileInfo({ me }) {
                   );
                 })
               : ""}
-          </Typography>{" "}
-        </Typography>
-      </Typography>
+          </Stack>{" "}
+        </Stack>
+      </Stack>
       <Modal
         open={open.profileInfo}
         onClose={() => handleCloseInfo(setOpen, open)}

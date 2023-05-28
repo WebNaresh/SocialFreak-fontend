@@ -50,7 +50,7 @@ export default function Post({ data }) {
         }
       });
   };
-  
+
   useEffect(() => {
     if (data.likes.includes(me._id)) {
       setLike(true);
@@ -90,8 +90,8 @@ export default function Post({ data }) {
             backgroundColor: "#dadada",
           }}
           indicators={false}
-          navButtonsAlwaysVisible={data.image.length>1}
-          navButtonsAlwaysInvisible={data.image.length<=1}
+          navButtonsAlwaysVisible={data.image.length > 1}
+          navButtonsAlwaysInvisible={data.image.length <= 1}
         >
           {!data.views.includes(me._id)
             ? data.image.map((item, i) => (
@@ -187,25 +187,25 @@ export default function Post({ data }) {
             </Typography>
 
             {/* <Stack> */}
-            <Typography
-              sx={{
-                flexDirection: "row",
-                width: "min-content",
-              }}
-              variant="subtitle2"
-              color={"#3999e7"}
-              display={"flex"}
-            >
-              {data.hashTag.map((data, key) => {
-                return (
-                  <Link key={key} href="#" underline="none" color={"#3999e7"}>
-                    &nbsp; @{data}
-                  </Link>
-                );
-              })}
-            </Typography>
             {/* </Stack> */}
           </Stack>
+          <Typography
+            sx={{
+              flexDirection: "row",
+              width: "min-content",
+            }}
+            variant="subtitle2"
+            color={"#3999e7"}
+            display={"flex"}
+          >
+            {data.hashTag.map((data, key) => {
+              return (
+                <Link key={key} href="#" underline="none" color={"#3999e7"}>
+                  @{data}
+                </Link>
+              );
+            })}
+          </Typography>
           <Stack>
             <Typography
               sx={{ cursor: "pointer", flexDirection: "column" }}

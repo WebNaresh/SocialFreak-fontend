@@ -34,6 +34,10 @@ import {
   handleOpenCreate,
 } from "../../State/Function/Fuction";
 import { Modal } from "@material-ui/core";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -76,8 +80,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function TopNav() {
-  const { me, setOpen, open, data, setData, utils, removeCookie, setMe } =
-    useContext(UseContext);
+  const {
+    me,
+    setOpen,
+    open,
+    data,
+    setData,
+    utils,
+    removeCookie,
+    setMe,
+    setUtils,
+    userId,
+    setChats,
+    chat,
+  } = useContext(UseContext);
   const { handleLoader } = useContext(TestContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   // const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -86,6 +102,14 @@ export default function TopNav() {
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
+    setUtils((utils) => ({
+      ...utils,
+      cuurentUserIdForMsg: null,
+      chatSpinner: false,
+    }));
+    userId.current = null;
+    setChats([]);
+    chat.current = [];
   };
 
   // const handleMobileMenuClose = () => {
@@ -93,7 +117,7 @@ export default function TopNav() {
   // };
   const removeCookieFromBack = () => {
     handleLoader(true, "#E36049", 4000);
-    removeCookie("login");
+    removeCookie("login", { expires: new Date(0) });
     console.log("worked");
     setTimeout(() => {
       setMe({
@@ -143,8 +167,8 @@ export default function TopNav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <Link to={"/profile"}>
+      <Link to={"/profile"}>
+        <MenuItem onClick={handleMenuClose}>
           {" "}
           <Avatar
             sx={{ width: 30, height: 30, marginRight: 1 }}
@@ -153,27 +177,30 @@ export default function TopNav() {
             alt="wait"
           />{" "}
           Setting{" "}
-        </Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <Link to={"/messages"}>
+        </MenuItem>
+      </Link>
+      <Link to={"/messages"}>
+        <MenuItem onClick={handleMenuClose}>
           <Chat sx={{ marginX: 1 }} fontSize="small" />
           Chat{" "}
-        </Link>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        {me?._id === null || undefined ? (
-          <Link to={"/login"}>
-            {" "}
+        </MenuItem>
+      </Link>
+
+      {me?._id === null || undefined ? (
+        <Link to={"/login"}>
+          {" "}
+          <MenuItem onClick={handleMenuClose}>
             <Login sx={{ marginX: 1 }} fontSize="small"></Login> Login
-          </Link>
-        ) : (
-          <Link onClick={removeCookieFromBack} to={"/login"}>
+          </MenuItem>
+        </Link>
+      ) : (
+        <Link onClick={removeCookieFromBack} to={"/login"}>
+          <MenuItem onClick={handleMenuClose}>
             {" "}
             <Logout sx={{ marginX: 1 }} fontSize="small"></Logout> Logout
-          </Link>
-        )}
-      </MenuItem>
+          </MenuItem>
+        </Link>
+      )}
     </Menu>
   );
 
@@ -226,7 +253,9 @@ export default function TopNav() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="
+Search
+"
               inputProps={{ "aria-label": "search" }}
             />
           </Search>

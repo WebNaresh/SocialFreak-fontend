@@ -27,12 +27,12 @@ export default function ProfileCard() {
     <>
       <Card sx={{ marginBottom: 2 }}>
         <CardMedia
+          children={null}
           sx={{ height: 100 }}
           image={me.backgroundPicture !== null ? me.backgroundPicture : ""}
           src={me.backgroundPicture !== null ? me.backgroundPicture : ""}
           title={`${me.userName} background pic`}
           style={{ backgroundPosition: "center", backgroundColor: "GrayText" }}
-          children
           component={"div"}
         />
         <IconButton
@@ -89,7 +89,7 @@ export default function ProfileCard() {
           <Typography gutterBottom variant="h7" component="div">
             {me.userName}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Stack variant="body2" color="text.secondary">
             {me.descriptionHighLight === null ? (
               ""
             ) : (
@@ -101,7 +101,7 @@ export default function ProfileCard() {
                 }}
               />
             )}
-          </Typography>
+          </Stack>
         </CardContent>
         <CardActions
           sx={{

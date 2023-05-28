@@ -24,6 +24,8 @@ export const UseState = (props) => {
 
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
 
+  const [peerState, setPeerState] = useState(null);
+
   const [backdrop, setBackdrop] = useState(false);
 
   const [stream, setStream] = useState(null);
@@ -70,7 +72,6 @@ export const UseState = (props) => {
     friends: null,
     userSuggestion: [],
   });
-  console.log(`🚀 ~ me:`, me);
   const [moments, SetMoments] = useState([
     {
       coverPhoto:
@@ -131,6 +132,12 @@ export const UseState = (props) => {
     chat: [],
     messageNotification: [],
     appNotification: [],
+  });
+
+  const [tabData, setTabData] = useState({
+    tab1: [],
+    tab2: [],
+    tab3: [],
   });
   const [theme, setTheme] = useState({
     primary: "#b0bec5",
@@ -216,6 +223,10 @@ export const UseState = (props) => {
         callingRef,
         theme,
         setTheme,
+        tabData,
+        setTabData,
+        peerState,
+        setPeerState,
       }}
     >
       {props.children}

@@ -62,59 +62,63 @@ export default function BasicSpeedDial() {
     },
   }));
   return (
-    //
-    <Box
-      sx={{
-        flexGrow: 1,
-        zIndex: 12500,
-        position: "fixed",
-        bottom: 60,
-        right: 16,
-      }}
-    >
-      <SpeedDial
-        id="speedo"
-        ariaLabel="SpeedDial basic example"
-        onClick={() => setBackdrop(true)}
-        sx={{
-          transition: "transform 0.8s ease-out",
-          ":hover": {
-            "#but": {
-              transform: "rotate(-360deg) ",
-              animation: "none",
-            },
-          },
-        }}
-        icon={
-          <StyledBadge
-            badgeContent={utils.appNotification.length}
-            color="primary"
-          >
-            <NavigationOutlined
-              sx={{
-                transition: "transform 0.8s ease-out",
-              }}
-              id="but"
-              color="action"
-            />
-          </StyledBadge>
-        }
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
+    <>
+      {utils.cuurentUserIdForMsg === null ? (
+        <Box
+          sx={{
+            flexGrow: 1,
+            zIndex: 12500,
+            position: "fixed",
+            bottom: 60,
+            right: 16,
+          }}
+        >
+          <SpeedDial
+            id="speedo"
+            ariaLabel="SpeedDial basic example"
+            onClick={() => setBackdrop(true)}
             sx={{
+              transition: "transform 0.8s ease-out",
               ":hover": {
-                transform: "rotate(360deg) scale(1.5)",
+                "#but": {
+                  transform: "rotate(-360deg) ",
+                  animation: "none",
+                },
               },
-              transition: "transform 0.5s ease-out",
             }}
-          />
-        ))}
-      </SpeedDial>
-    </Box>
-    //
+            icon={
+              <StyledBadge
+                badgeContent={utils.appNotification.length}
+                color="primary"
+              >
+                <NavigationOutlined
+                  sx={{
+                    transition: "transform 0.8s ease-out",
+                  }}
+                  id="but"
+                  color="action"
+                />
+              </StyledBadge>
+            }
+          >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                sx={{
+                  ":hover": {
+                    transform: "rotate(360deg) scale(1.5)",
+                  },
+                  transition: "transform 0.5s ease-out",
+                }}
+              />
+            ))}
+          </SpeedDial>
+        </Box>
+      ) : (
+        ""
+      )}
+    </>
   );
 }

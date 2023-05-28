@@ -30,11 +30,14 @@ export const UseEffectState = (props) => {
     }, 1000);
 
     if (me._id === null) {
+      console.log(cookies["login"]);
+
       if (cookies["login"]) {
         jwt_decode(cookies["login"]);
         const data = {
           id: jwt_decode(cookies["login"]).user,
         };
+        console.log(`🚀 ~ data:`, data);
         const config = { headers: { "Content-Type": "application/json" } };
         axios
           .post(process.env.REACT_APP_REGISTER_WITH_ID, data, config)
@@ -42,8 +45,14 @@ export const UseEffectState = (props) => {
             redirect("/login");
           })
           .then((response) => {
+            function addDays(date, days) {
+              const result = new Date(date);
+              result.setDate(result.getDate() + days);
+              return result;
+            }
+            const expirationDate = addDays(new Date(), 30);
             setCookie("login", response.data.token, {
-              maxAge: 30 * 24 * 60 * 60,
+              expires: expirationDate,
             });
             setMe({
               ...me,
@@ -73,15 +82,6 @@ export const UseEffectState = (props) => {
         redirect("/");
       } else {
         redirect("/login");
-      }
-    }
-    if (location.pathname !== "/chat") {
-      if (stream !== null || undefined) {
-        stream.getTracks().forEach(function (track) {
-          track.stop();
-        });
-
-        // setStream(null);
       }
     }
 

@@ -1,4 +1,11 @@
-import { Stack, Paper } from "@mui/material";
+import {
+  Stack,
+  Paper,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+} from "@mui/material";
 import { useRef } from "react";
 import { useContext } from "react";
 import LoginContext from "../../State/Login/LoginContext";
@@ -6,7 +13,9 @@ import UseContext from "../../State/UseState/UseContext";
 import Chat from "../Chat/Chat";
 import MainScroll from "../Main/MainScroll";
 import Profile from "../Profile/Profile";
+import Skeleton from "./SkeletonCard";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { ExpandMore } from "@mui/icons-material";
 
 const Home = () => {
   const { getPosts } = useContext(LoginContext);
@@ -20,7 +29,7 @@ const Home = () => {
     <Stack
       flexDirection={"row"}
       sx={{ background: "#eeeeee" }}
-      width={"100vw"}
+      width={"100%"}
       height={"90vh"}
     >
       <Stack
@@ -55,6 +64,8 @@ const Home = () => {
       </Stack>
       <Stack
         sx={{
+          boxSizing: "border-box",
+          margin: "10px 0",
           width: {
             xs: "100vw",
             sm: "100vw",
@@ -76,7 +87,11 @@ const Home = () => {
           next={fetchMoreData}
           hasMore={true}
           height={"90vh"}
-          loader={<h4>Loading...</h4>}
+          style={{
+            padding: "10px",
+            boxSizing: "border-box",
+          }}
+          loader={<Skeleton />}
           endMessage={
             <p style={{ textAlign: "center" }}>
               <b>Yay! You have seen it all</b>

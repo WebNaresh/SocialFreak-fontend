@@ -30,7 +30,7 @@ const VIdeoChat = () => {
 
   return (
     <>
-      <Stack position={"absolute"}>
+      <Stack zIndex={2} position={"absolute"}>
         <Stack height={"100vh"}>
           <video
             src=""

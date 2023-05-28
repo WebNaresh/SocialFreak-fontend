@@ -72,29 +72,9 @@ function a11yProps(index) {
 
 export default function TabPanel1() {
   const [value, setValue] = React.useState(0);
-  const { utils, setUtils, me, setChats, oneRef, socket, userId, chat } =
+  const { utils, setUtils, me, setChats, tabData, socket, userId, chat } =
     useContext(UseContext);
 
-  const [msg, setMsg] = useState("");
-  let sendMessage = () => {
-    const data = {
-      message: [msg],
-      reciever: utils.cuurentUserIdForMsg,
-      sender: me,
-    };
-    const data1 = {
-      message: [msg],
-      reciever: utils.cuurentUserIdForMsg,
-      sender: me,
-    };
-
-    socket.current.emit("send-Message", data);
-
-    setChats((chat) => [...chat, data1]);
-    chat.current = [...chat.current, data1];
-
-    setMsg("");
-  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -107,12 +87,6 @@ export default function TabPanel1() {
       color: "white",
     },
   }));
-  let handleKeyDown = (event) => {
-    if (event.keyCode === 13) {
-      // Check for Enter key (keycode 13)
-      sendMessage(); // Call your function here
-    }
-  };
 
   return (
     <Box
@@ -161,6 +135,16 @@ export default function TabPanel1() {
             {...a11yProps(0)}
           />
           <Tab
+            onClick={() => {
+              setUtils((utils) => ({
+                ...utils,
+                cuurentUserIdForMsg: null,
+                chatSpinner: false,
+              }));
+              userId.current = null;
+              setChats([]);
+              chat.current = [];
+            }}
             // disabled={me.userSuggestion?.length === 0 ? true : false}
             label={
               <StyledBadge
@@ -174,9 +158,19 @@ export default function TabPanel1() {
             {...a11yProps(1)}
           />
           <Tab
+            onClick={() => {
+              setUtils((utils) => ({
+                ...utils,
+                cuurentUserIdForMsg: null,
+                chatSpinner: false,
+              }));
+              userId.current = null;
+              setChats([]);
+              chat.current = [];
+            }}
             // disabled={me.followers?.length === 0 ? true : false}
             label={
-              <StyledBadge badgeContent={me.followers?.length} color="error">
+              <StyledBadge badgeContent={tabData.tab3.length} color="error">
                 Request
               </StyledBadge>
             }
@@ -225,68 +219,6 @@ export default function TabPanel1() {
             ""
           )}
           <Tab1 />
-          {utils.cuurentUserIdForMsg == null ? (
-            ""
-          ) : (
-            <>
-              <TextField
-                onKeyDown={handleKeyDown}
-                value={msg}
-                onChange={(e) => {
-                  setMsg(e.currentTarget.value);
-                }}
-                id="filled-basic1"
-                placeholder="Write Message ..."
-                variant="filled"
-                sx={{
-                  position: "fixed",
-                  width: "22rem",
-                  bottom: "2rem",
-                  right: "10px",
-                }}
-                InputProps={{
-                  style: { borderRadius: "100px", margin: "0px 15px" },
-                  disableUnderline: true,
-                  endAdornment: (
-                    <InputAdornment
-                      sx={{
-                        marginTop: "0px !important",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      position="start"
-                    >
-                      <IconButton
-                        disabled={msg.length >= 1 ? false : true}
-                        onClick={sendMessage}
-                        sx={{ padding: "0px" }}
-                      >
-                        <Send />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                  startAdornment: (
-                    <InputAdornment
-                      sx={{
-                        marginTop: "0px !important",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      position="start"
-                    >
-                      <Avatar
-                        variant="circular"
-                        src={me.profilePicture}
-                        sx={{ width: "35px", height: "35px" }}
-                      />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </>
-          )}
         </TabPanel>
       </Stack>
       <TabPanel
