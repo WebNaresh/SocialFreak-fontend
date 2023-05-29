@@ -72,6 +72,7 @@ export const UseState = (props) => {
     friends: null,
     userSuggestion: [],
   });
+  console.log(`🚀 ~ me:`, me);
   const [moments, SetMoments] = useState([
     {
       coverPhoto:
