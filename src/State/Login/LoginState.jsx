@@ -60,29 +60,7 @@ export const LoginState = (props) => {
         setCookie("login", response.data.token, {
           expires: expirationDate,
         });
-        setMe({
-          ...me,
-          backgroundPicture: response.data.user.backgroundPicture,
-          birthDate: response.data.user.birthDate,
-          collegeName: response.data.user.collegeName,
-          descriptionHighLight: response.data.user.descriptionHighLight,
-          followers: response.data.user.followers,
-          following: response.data.user.following,
-          hashTags: response.data.user.hashTags,
-          hobby: response.data.user.hobby,
-          memories: response.data.user.memories,
-          post: response.data.user.post,
-          profilePicture: response.data.user.profilePicture,
-          relationShip: response.data.user.relationShip,
-          taggedPeople: response.data.user.taggedPeople,
-          userEmail: response.data.user.userEmail,
-          userName: response.data.user.userName,
-          _id: response.data.user._id,
-          location: response.data.user.location,
-          nickName: response.data.user.nickName,
-          friends: response.data.user.friends,
-          userSuggestion: response.data.user.userSuggestion,
-        });
+        setMeUniVersal(response);
 
         socket.current.emit("add-user", response.data.user._id);
         redirect("/");
@@ -105,29 +83,7 @@ export const LoginState = (props) => {
         setCookie("login", response.data.token, {
           maxAge: 30 * 24 * 60 * 60,
         });
-        setMe({
-          ...me,
-          backgroundPicture: response.data.user.backgroundPicture,
-          birthDate: response.data.user.birthDate,
-          collegeName: response.data.user.collegeName,
-          descriptionHighLight: response.data.user.descriptionHighLight,
-          followers: response.data.user.followers,
-          following: response.data.user.following,
-          hashTags: response.data.user.hashTags,
-          hobby: response.data.user.hobby,
-          memories: response.data.user.memories,
-          post: response.data.user.post,
-          profilePicture: response.data.user.profilePicture,
-          relationShip: response.data.user.relationShip,
-          taggedPeople: response.data.user.taggedPeople,
-          userEmail: response.data.user.userEmail,
-          userName: response.data.user.userName,
-          _id: response.data.user._id,
-          location: response.data.user.location,
-          nickName: response.data.user.nickName,
-          friends: response.data.user.friends,
-          userSuggestion: response.data.user.userSuggestion,
-        });
+        setMeUniVersal(response);
 
         redirect("/");
         socket.current.emit("add-user", response.data.user._id);
@@ -151,27 +107,7 @@ export const LoginState = (props) => {
       )
       .catch((errors) => {})
       .then((response) => {
-        setMe({
-          ...me,
-          backgroundPicture: response.data.user.backgroundPicture,
-          birthDate: response.data.user.birthDate,
-          collegeName: response.data.user.collegeName,
-          descriptionHighLight: response.data.user.descriptionHighLight,
-          followers: response.data.user.followers,
-          following: response.data.user.following,
-          hashTags: response.data.user.hashTags,
-          hobby: response.data.user.hobby,
-          memories: response.data.user.memories,
-          post: response.data.user.post,
-          profilePicture: response.data.user.profilePicture,
-          relationShip: response.data.user.relationShip,
-          taggedPeople: response.data.user.taggedPeople,
-          userEmail: response.data.user.userEmail,
-          userName: response.data.user.userName,
-          _id: response.data.user._id,
-          location: response.data.user.location,
-          nickName: response.data.user.nickName,
-        });
+        setMeUniVersal(response);
         setFormData({
           ...formData,
           selectedProfilePic: null,
@@ -189,33 +125,26 @@ export const LoginState = (props) => {
     const formDataD = new FormData();
     formDataD.append("file", file);
     formDataD.append("upload_preset", "y7gvucmq");
-    axios
-      .post(process.env.REACT_APP_UPDATE_CLUDINARY_LINK, formDataD)
-      .then(async (res) => {
-        if (string === "profile") {
-          handleLoader();
-          setFormData({
-            ...formData,
-            profileLink: res.data.url,
-            selectedProfilePic: null,
-          });
-        } else if (string === "background") {
-          handleLoader();
-          setFormData({
-            ...formData,
-            backgroundLink: res.data.url,
-            selectedBackgroundPic: null,
-          });
-        } else {
-          await res.data.url;
-          imageArray.push(res.data.url);
-          handleLoader();
-          setData({
-            ...data,
-            uploadedImages: imageArray,
-          });
-        }
+    const response = axios.post(
+      process.env.REACT_APP_UPDATE_CLUDINARY_LINK,
+      formDataD
+    );
+    // .then(async (res) => {
+    if (string === "profile") {
+      handleLoader();
+      setFormData({
+        ...formData,
+        profileLink: response.data.url,
+        selectedProfilePic: null,
       });
+    } else if (string === "background") {
+      handleLoader();
+      setFormData({
+        ...formData,
+        backgroundLink: response.data.url,
+        selectedBackgroundPic: null,
+      });
+    }
   };
 
   const updateProfileInfoToBackend = (info) => {
@@ -256,14 +185,10 @@ export const LoginState = (props) => {
       profileInfo: false,
     });
   };
-  const uploadFile = (files) => {
-    files.forEach((element) => {
-      uploadToCloudinary(element, "another");
-    });
-  };
-  const handlePost = () => {
+
+  const handlePost = (images) => {
     const data1 = {
-      imagesArray: data.uploadedImages,
+      imagesArray: images,
       title: data.title,
       taggedPeople: data.taggedPeopleArray,
       hashTags: data.hashtagArray,
@@ -329,7 +254,6 @@ export const LoginState = (props) => {
   const addPeerId = async () => {};
   const callVideoCall = (id) => {
     redirect("/chat");
-    // console.log(peerState?._id === null || undefined);
     // if (peerState?._id) {
     //   const peer = new Peer(me._id);
     //   peerState = peer;
@@ -375,11 +299,64 @@ export const LoginState = (props) => {
 
     setCallAlert(false);
   };
-  const disconnect = React.useCallback(() => {
-    availableConnection.current.close();
-    availableConnection.current = undefined;
-  }, [availableConnection.current]);
+  const uploadImagesAndSendToServer = async (files) => {
+    try {
+      const uploadedImages = [];
 
+      for (const file of files) {
+        const uploadedImage = await uploadToCloudinary2(file);
+        uploadedImages.push(uploadedImage);
+      }
+
+      await handlePost(uploadedImages);
+
+      // Code to execute after uploading images and sending them to the server
+    } catch (error) {
+      // Handle any errors that occurred during the process
+    }
+  };
+  async function uploadToCloudinary2(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "y7gvucmq");
+
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_UPDATE_CLUDINARY_LINK,
+        formData
+      );
+
+      return response.data.secure_url;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  let setMeUniVersal = (response) => {
+    setMe({
+      ...me,
+      backgroundPicture: response.data.user.backgroundPicture,
+      birthDate: response.data.user.birthDate,
+      collegeName: response.data.user.collegeName,
+      descriptionHighLight: response.data.user.descriptionHighLight,
+      followers: response.data.user.followers,
+      following: response.data.user.following,
+      hashTags: response.data.user.hashTags,
+      hobby: response.data.user.hobby,
+      memories: response.data.user.memories,
+      post: response.data.user.post,
+      profilePicture: response.data.user.profilePicture,
+      relationShip: response.data.user.relationShip,
+      taggedPeople: response.data.user.taggedPeople,
+      userEmail: response.data.user.userEmail,
+      userName: response.data.user.userName,
+      _id: response.data.user._id,
+      location: response.data.user.location,
+      nickName: response.data.user.nickName,
+      friends: response.data.user.friends,
+      userSuggestion: response.data.user.userSuggestion,
+    });
+  };
   return (
     <LoginContext.Provider
       value={{
@@ -390,7 +367,6 @@ export const LoginState = (props) => {
         updateDataFromBackend,
         uploadToCloudinary,
         updateProfileInfoToBackend,
-        uploadFile,
         handlePost,
         requestToView,
         getPosts,
@@ -398,6 +374,8 @@ export const LoginState = (props) => {
         myFun,
         callVideoCall,
         acceptCall,
+        uploadImagesAndSendToServer,
+        setMeUniVersal,
       }}
     >
       {props.children}

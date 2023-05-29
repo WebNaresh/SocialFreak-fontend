@@ -192,8 +192,9 @@ export default function Post({ data }) {
           <Typography
             sx={{
               flexDirection: "row",
-              width: "min-content",
+              width: "max-content",
             }}
+            flexDirection={"row"}
             variant="subtitle2"
             color={"#3999e7"}
             display={"flex"}
@@ -201,7 +202,7 @@ export default function Post({ data }) {
             {data.hashTag.map((data, key) => {
               return (
                 <Link key={key} href="#" underline="none" color={"#3999e7"}>
-                  @{data}
+                  @{data.userName}
                 </Link>
               );
             })}
@@ -216,7 +217,7 @@ export default function Post({ data }) {
               {data.taggedPeople.map((data, i) => {
                 return (
                   <Link href="#" key={i} underline="none" color={"#3999e7"}>
-                    #{data}
+                    #{data.userName}
                   </Link>
                 );
               })}

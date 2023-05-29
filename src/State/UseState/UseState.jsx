@@ -139,6 +139,7 @@ export const UseState = (props) => {
     tab2: [],
     tab3: [],
   });
+  console.log(`🚀 ~ tabData:`, tabData);
   const [theme, setTheme] = useState({
     primary: "#b0bec5",
     body: "",
@@ -158,14 +159,15 @@ export const UseState = (props) => {
   });
   const [data, setData] = useState({
     title: "Add an Title",
-    hashtagArray: ["example"],
-    taggedPeopleArray: ["example"],
+    hashtagArray: [],
+    taggedPeopleArray: [],
     uploadedImages: [],
     imageArray: [],
     files: null,
     buttonDisable: true,
     handleuploadIcon: false,
   });
+  console.log(`🚀 ~ data:`, data);
   const [allLink, setAllLink] = useState({
     getPostLink: `https://socialfreak-backend.onrender.com/post/allPost/`,
   });

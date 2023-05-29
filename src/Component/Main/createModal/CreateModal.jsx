@@ -12,6 +12,8 @@ import {
   Button,
   Autocomplete,
   Divider,
+  Chip,
+  Box,
 } from "@mui/material";
 import { Edit, Upload } from "@mui/icons-material";
 import { useContext } from "react";
@@ -20,11 +22,11 @@ import LoginContext from "../../../State/Login/LoginContext";
 import Carousel from "react-material-ui-carousel";
 
 const CreateModal = React.forwardRef(() => {
-  const { me, data, setData } = useContext(UseContext);
-  const { uploadFile, handlePost } = useContext(LoginContext);
+  const { me, data, setData, tabData } = useContext(UseContext);
+  const { uploadImagesAndSendToServer } = useContext(LoginContext);
   const uploadRef = React.useRef(null);
 
-  const relationBox = [];
+  const relationBox = [{ label: "hello", id: 1 }];
 
   // const [upload, setUpload] = useState(null);
   // uploadToCloudinary(e.target.files[0], setUpload)
@@ -161,18 +163,6 @@ const CreateModal = React.forwardRef(() => {
                   >
                     <Edit />
                   </IconButton>
-                  {data.handleuploadIcon === true ? (
-                    <IconButton
-                      onClick={() => uploadFile(data.files)}
-                      sx={{ height: 40, width: 40 }}
-                      aria-label=""
-                      className="rotate360"
-                    >
-                      <Upload />
-                    </IconButton>
-                  ) : (
-                    ""
-                  )}
                 </Paper>
               </Stack>
               <Stack alignItems={"center"}>
@@ -201,10 +191,27 @@ const CreateModal = React.forwardRef(() => {
                 />
                 <Autocomplete
                   id="combo-box-demo"
-                  options={relationBox}
+                  options={tabData.tab1}
+                  onInputChange={(e1, e) => console.log(e)}
                   freeSolo
                   multiple
                   defaultValue={data.taggedPeopleArray}
+                  renderOption={(props, option) => (
+                    <Box
+                      component="li"
+                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                      {...props}
+                    >
+                      <Avatar
+                        variant="circular"
+                        src={option.profilePicture}
+                        alt={option.userName}
+                      />
+                      <Typography margin={"10px"} variant="body1">
+                        {option.userName}
+                      </Typography>
+                    </Box>
+                  )}
                   sx={{
                     margin: "0.5rem 0rem",
                     width: "90%",
@@ -214,9 +221,10 @@ const CreateModal = React.forwardRef(() => {
                     },
                   }}
                   onChange={(event, newValue) => {
+                    console.log(`🚀 ~ newValue:`, newValue);
                     setData({
                       ...data,
-                      taggedPeopleArray: newValue,
+                      taggedPeopleArray: [...data.taggedPeopleArray, newValue],
                     });
                   }}
                   renderInput={(params) => (
@@ -227,11 +235,39 @@ const CreateModal = React.forwardRef(() => {
                       label="Tagged People"
                     />
                   )}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        key={index}
+                        variant="filled"
+                        color="info"
+                        label={option.userName}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
                 />
                 <Autocomplete
                   id="combo-box-demo"
-                  options={relationBox}
+                  options={tabData.tab1}
+                  onInputChange={(e1, e) => console.log(e)}
                   defaultValue={data.hashtagArray}
+                  renderOption={(props, option) => (
+                    <Box
+                      component="li"
+                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                      {...props}
+                    >
+                      <Avatar
+                        variant="circular"
+                        src={option.profilePicture}
+                        alt={option.userName}
+                      />
+                      <Typography margin={"10px"} variant="body1">
+                        {option.userName}
+                      </Typography>
+                    </Box>
+                  )}
                   sx={{
                     margin: "0.5rem 0rem",
                     width: "90%",
@@ -249,9 +285,21 @@ const CreateModal = React.forwardRef(() => {
                     });
                   }}
                   color="primary"
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        key={index}
+                        variant="filled"
+                        color="info"
+                        label={option.userName}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      // color="secondary"
                       variant="filled"
                       id="userName"
                       label="HashTags"
@@ -288,7 +336,7 @@ const CreateModal = React.forwardRef(() => {
             }}
           >
             <Button
-              disabled={data.buttonDisable}
+              disabled={!data.handleuploadIcon}
               sx={{
                 width: "100%",
                 height: "100%",
@@ -299,7 +347,7 @@ const CreateModal = React.forwardRef(() => {
               color="primary"
               onClick={(e) => {
                 e.preventDefault();
-                handlePost(data);
+                uploadImagesAndSendToServer(data.files);
               }}
             >
               Post

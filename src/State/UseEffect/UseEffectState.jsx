@@ -14,13 +14,12 @@ export const UseEffectState = (props) => {
     data,
     setData,
     stream,
-    removeCookie,
     cookies,
     setCookie,
     setMe,
     socket,
   } = useContext(UseContext);
-  const { getPosts, getFriends } = useContext(LoginContext);
+  const { getPosts, getFriends, setMeUniVersal } = useContext(LoginContext);
   const redirect = useNavigate();
   const state = { name: "harry", class: "5b" };
   useEffect(() => {
@@ -30,14 +29,11 @@ export const UseEffectState = (props) => {
     }, 1000);
 
     if (me._id === null) {
-      console.log(cookies["login"]);
-
       if (cookies["login"]) {
         jwt_decode(cookies["login"]);
         const data = {
           id: jwt_decode(cookies["login"]).user,
         };
-        console.log(`🚀 ~ data:`, data);
         const config = { headers: { "Content-Type": "application/json" } };
         axios
           .post(process.env.REACT_APP_REGISTER_WITH_ID, data, config)
@@ -54,29 +50,7 @@ export const UseEffectState = (props) => {
             setCookie("login", response.data.token, {
               expires: expirationDate,
             });
-            setMe({
-              ...me,
-              backgroundPicture: response.data.user.backgroundPicture,
-              birthDate: response.data.user.birthDate,
-              collegeName: response.data.user.collegeName,
-              descriptionHighLight: response.data.user.descriptionHighLight,
-              followers: response.data.user.followers,
-              following: response.data.user.following,
-              hashTags: response.data.user.hashTags,
-              hobby: response.data.user.hobby,
-              memories: response.data.user.memories,
-              post: response.data.user.post,
-              profilePicture: response.data.user.profilePicture,
-              relationShip: response.data.user.relationShip,
-              taggedPeople: response.data.user.taggedPeople,
-              userEmail: response.data.user.userEmail,
-              userName: response.data.user.userName,
-              _id: response.data.user._id,
-              location: response.data.user.location,
-              nickName: response.data.user.nickName,
-              friends: response.data.user.friends,
-              userSuggestion: response.data.user.userSuggestion,
-            });
+            setMeUniVersal(response);
             socket.current.emit("add-user", response.data.user._id);
           });
         redirect("/");

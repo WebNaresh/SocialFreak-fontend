@@ -277,8 +277,8 @@ Search
                 setData({
                   ...data,
                   title: "Add an Title",
-                  hashtagArray: ["example"],
-                  taggedPeopleArray: ["example"],
+                  hashtagArray: [],
+                  taggedPeopleArray: [],
                   uploadedImages: [],
                   imageArray: [],
                   files: null,
