@@ -91,19 +91,6 @@ export const SocketState = (props) => {
 
     //eslint-disable-next-line
   }, []);
-  // useEffect(() => {
-  //   if (peerState?._id === null) {
-  //     console.log(`🚀 ~ peerState?._id: is null`, peerState._id);
-  //     // while (true) {
-  //     const peer = new Peer(me._id);
-  //     setPeerState(peer);
-  //     console.log(`🚀 ~ peer:`, peer);
-  //     // if (peerState._id !== null) {
-  //     //   break;
-  //     // }
-  //     // }
-  //   }
-  // }, [peerState]);
 
   useEffect(() => {
     const closeHandler = () => {
@@ -141,9 +128,13 @@ export const SocketState = (props) => {
 
       peerState.on("call", handler);
       peerState.on("disconnected", () => {
+        console.log(`🚀 ~ "disconnected":`, "disconnected");
         // if (availableConnection.current === null) {
-        peerState.reconnect();
+        // peerState.reconnect();
         // }
+        const peer = new Peer(me._id);
+        // peerState = peer;
+        setPeerState(peer);
       });
       peerState.on("connection", (connection) => {
         connection.send();
@@ -174,21 +165,3 @@ export const SocketState = (props) => {
   );
 };
 export default SocketState;
-
-// let suggestedUser = me.userSuggestion.filter(
-//   (ele) => ele._id !== commingPost._id
-// );
-// let newFollow = me.followers.push(commingPost);
-// if (!me.followers.includes(commingPost)) {
-//   setMe((Copy) => ({
-//     ...Copy,
-//     friends: [...Copy.friends, commingPost],
-//     userSuggestion: Copy.userSuggestion.filter(
-//       (ele) => ele._id !== commingPost._id
-//     ),
-//     following: Copy.following.filter(
-//       (ele) => ele._id !== commingPost._id
-//     ),
-//     followers: [...Copy.friends, commingPost],
-//   }));
-// }
