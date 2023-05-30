@@ -22,6 +22,8 @@ import { useState } from "react";
 import LoginContext from "../../../State/Login/LoginContext";
 import { useContext } from "react";
 import { handleOpenComment } from "../../../State/Function/Fuction";
+import Visible from "./Visisbility/Visible";
+// import Visible from "./Visisbility/Visible";
 
 export default function Post({ data }) {
   const { me, open, setOpen, utils, setUtils } = React.useContext(UseContext);
@@ -93,51 +95,57 @@ export default function Post({ data }) {
           navButtonsAlwaysVisible={data.image.length > 1}
           navButtonsAlwaysInvisible={data.image.length <= 1}
         >
-          {!data.views.includes(me._id)
-            ? data.image.map((item, i) => (
+          {!data.views.includes(me._id) ? (
+            <>
+              {" "}
+              {data.image.map((item, i) => (
                 <VisibilitySensor
                   key={i}
                   onChange={(isVisible) => {
                     setState2(isVisible);
                   }}
                 >
-                  <CardMedia
-                    src={item}
-                    image={item}
-                    sx={{
-                      height: "24rem",
-                      display: "flex",
-                      flexDirection: "row-reverse",
-                      backgroundColor: "#b0bec5",
-                    }}
-                    style={{
-                      backgroundPosition: "center",
-                      objectFit: "cover",
-                      zIndex: "-1",
-                      backgroundSize: "contain",
-                    }}
-                  />
+                  {/* // <CardMedia
+                  //   src={item}
+                  //   image={item}
+                  //   sx={{
+                  //     height: "24rem",
+                  //     display: "flex",
+                  //     flexDirection: "row-reverse",
+                  //     backgroundColor: "#b0bec5",
+                  //   }}
+                  //   style={{
+                  //     backgroundPosition: "center",
+                  //     objectFit: "cover",
+                  //     zIndex: "-1",
+                  //     backgroundSize: "contain",
+                  //   }}
+                  // /> */}
+                  <Visible item={item} />
                 </VisibilitySensor>
-              ))
-            : data.image.map((item, i) => (
-                <CardMedia
-                  key={i}
-                  src={item}
-                  image={item}
-                  sx={{
-                    height: "24rem",
-                    display: "flex",
-                    flexDirection: "row-reverse",
-                    backgroundColor: "#b0bec5",
-                  }}
-                  style={{
-                    backgroundPosition: "center",
-                    objectFit: "cover",
-                    zIndex: "-1",
-                    backgroundSize: "contain",
-                  }}
-                />
               ))}
+            </>
+          ) : (
+            data.image.map((item, i) => (
+              <CardMedia
+                key={i}
+                src={item}
+                image={item}
+                sx={{
+                  height: "24rem",
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                  backgroundColor: "#b0bec5",
+                }}
+                style={{
+                  backgroundPosition: "center",
+                  objectFit: "cover",
+                  zIndex: "-1",
+                  backgroundSize: "contain",
+                }}
+              />
+            ))
+          )}
         </Carousel>
         <Stack
           position={"relative"}

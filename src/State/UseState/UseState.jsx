@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import UseContext from "./UseContext";
 import { useCookies } from "react-cookie";
-import { colors } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const UseState = (props) => {
@@ -72,7 +71,6 @@ export const UseState = (props) => {
     friends: null,
     userSuggestion: [],
   });
-  console.log(`🚀 ~ me:`, me);
   const [moments, SetMoments] = useState([
     {
       coverPhoto:
@@ -140,7 +138,6 @@ export const UseState = (props) => {
     tab2: [],
     tab3: [],
   });
-  console.log(`🚀 ~ tabData:`, tabData);
   const [theme, setTheme] = useState({
     primary: "#b0bec5",
     body: "",
@@ -168,7 +165,6 @@ export const UseState = (props) => {
     buttonDisable: true,
     handleuploadIcon: false,
   });
-  console.log(`🚀 ~ data:`, data);
   const [allLink, setAllLink] = useState({
     getPostLink: `https://socialfreak-backend.onrender.com/post/allPost/`,
   });

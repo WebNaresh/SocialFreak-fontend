@@ -7,12 +7,8 @@ import dayjs from "dayjs";
 const ChatUI = () => {
   const { chat, me, oneRef, chats } = useContext(UseContext);
   useEffect(() => {
-    oneRef.current.scrollIntoView();
-    console.log(
-      `🚀 ~  oneRef.current.scrollHeight:`,
-      (oneRef.current.scrollTop += oneRef.current.scrollHeight)
-    );
-    console.log(`🚀 ~  oneRef.current.scrollTop:`, oneRef);
+    oneRef.current.scrollTop += oneRef.current.scrollHeight;
+
     // eslint-disable-next-line
   }, [chats]);
 

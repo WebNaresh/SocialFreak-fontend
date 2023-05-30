@@ -91,19 +91,19 @@ export const SocketState = (props) => {
 
     //eslint-disable-next-line
   }, []);
-  useEffect(() => {
-    if (peerState?._id === null) {
-      console.log(`🚀 ~ peerState?._id: is null`, peerState._id);
-      // while (true) {
-      const peer = new Peer(me._id);
-      setPeerState(peer);
-      console.log(`🚀 ~ peer:`, peer);
-      // if (peerState._id !== null) {
-      //   break;
-      // }
-      // }
-    }
-  }, [peerState]);
+  // useEffect(() => {
+  //   if (peerState?._id === null) {
+  //     console.log(`🚀 ~ peerState?._id: is null`, peerState._id);
+  //     // while (true) {
+  //     const peer = new Peer(me._id);
+  //     setPeerState(peer);
+  //     console.log(`🚀 ~ peer:`, peer);
+  //     // if (peerState._id !== null) {
+  //     //   break;
+  //     // }
+  //     // }
+  //   }
+  // }, [peerState]);
 
   useEffect(() => {
     const closeHandler = () => {
@@ -140,8 +140,11 @@ export const SocketState = (props) => {
       };
 
       peerState.on("call", handler);
-      peerState.on("disconnected", () => {});
-      peerState.on("open", (id) => {});
+      peerState.on("disconnected", () => {
+        // if (availableConnection.current === null) {
+        peerState.reconnect();
+        // }
+      });
       peerState.on("connection", (connection) => {
         connection.send();
         connection["caller"] = connection.peer;

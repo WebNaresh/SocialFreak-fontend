@@ -2,7 +2,6 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 
 import {
-  Add,
   AddAPhotoOutlined,
   Chat,
   Login,
@@ -34,10 +33,6 @@ import {
   handleOpenCreate,
 } from "../../State/Function/Fuction";
 import { Modal } from "@material-ui/core";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -93,10 +88,10 @@ export default function TopNav() {
     userId,
     setChats,
     chat,
+    peerState,
   } = useContext(UseContext);
   const { handleLoader } = useContext(TestContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -112,9 +107,6 @@ export default function TopNav() {
     chat.current = [];
   };
 
-  // const handleMobileMenuClose = () => {
-  //   setMobileMoreAnchorEl(null);
-  // };
   const removeCookieFromBack = () => {
     handleLoader(true, "#E36049", 4000);
     removeCookie("login", { expires: new Date(0) });
@@ -203,8 +195,6 @@ export default function TopNav() {
       )}
     </Menu>
   );
-
-  // const mobileMenuId = "primary-search-account-menu-mobile";
 
   return (
     <Box
@@ -307,12 +297,26 @@ Search
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Badge
-                badgeContent={utils.messageNotification.length}
-                color="error"
-              >
-                <Avatar variant="circular" src={me.profilePicture} alt="wait" />
-              </Badge>
+              {peerState?._id === null || undefined ? (
+                <Badge badgeContent={""} color="info">
+                  <Avatar
+                    variant="circular"
+                    src={me.profilePicture}
+                    alt="wait"
+                  />
+                </Badge>
+              ) : (
+                <Badge
+                  badgeContent={`${utils.messageNotification.length}`}
+                  color="error"
+                >
+                  <Avatar
+                    variant="circular"
+                    src={me.profilePicture}
+                    alt="wait"
+                  />
+                </Badge>
+              )}
             </IconButton>
           </Box>
         </Toolbar>

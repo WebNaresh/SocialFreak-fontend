@@ -16,9 +16,6 @@ const App = () => {
         <Route exact path="/map" element={<Test />} />
         <Route exact path="/videoChat" element={<VIdeoChat />} />
         <Route exact path="/messages" element={<Chat />} />
-        {/* <Route exact path="/" element={<NameInput />} />
-        <Route exact path="/overview" element={<Overview />} />
-        <Route exact path="/call" element={<Call />} /> */}
       </Routes>
     </>
   );

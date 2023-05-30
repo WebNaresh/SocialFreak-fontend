@@ -14,7 +14,6 @@ export const LoginState = (props) => {
     open,
     formData,
     setFormData,
-    setData,
     data,
     posts,
     setPosts,
@@ -23,8 +22,6 @@ export const LoginState = (props) => {
     allLink,
     socket,
     setChats,
-    peerInstance,
-    peerId,
     setCookie,
     availableConnection,
     userVideo,
@@ -32,11 +29,9 @@ export const LoginState = (props) => {
     callingRef,
     setStream,
     myVideo,
-    removeCookie,
     peerState,
     setPeerState,
   } = useContext(UseContext);
-  const imageArray = [];
   const { handleLoader } = useContext(TestContext);
 
   const handleFaceBookLogin = (responese) => {
@@ -156,29 +151,8 @@ export const LoginState = (props) => {
         info,
         config
       )
-      .catch((errors) => {})
       .then((response) => {
-        setMe({
-          ...me,
-          backgroundPicture: response.data.user.backgroundPicture,
-          birthDate: response.data.user.birthDate,
-          collegeName: response.data.user.collegeName,
-          descriptionHighLight: response.data.user.descriptionHighLight,
-          followers: response.data.user.followers,
-          following: response.data.user.following,
-          hashTags: response.data.user.hashTags,
-          hobby: response.data.user.hobby,
-          memories: response.data.user.memories,
-          post: response.data.user.post,
-          profilePicture: response.data.user.profilePicture,
-          relationShip: response.data.user.relationShip,
-          taggedPeople: response.data.user.taggedPeople,
-          userEmail: response.data.user.userEmail,
-          userName: response.data.user.userName,
-          _id: response.data.user._id,
-          location: response.data.user.location,
-          nickName: response.data.user.nickName,
-        });
+        setMeUniVersal(response);
       });
     setOpen({
       ...open,
@@ -251,13 +225,8 @@ export const LoginState = (props) => {
       }));
     }
   };
-  const addPeerId = async () => {};
   const callVideoCall = (id) => {
     redirect("/chat");
-    // if (peerState?._id) {
-    //   const peer = new Peer(me._id);
-    //   peerState = peer;
-    // }
 
     const connection = peerState.connect(id);
     connection.send("data");

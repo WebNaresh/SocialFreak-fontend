@@ -15,17 +15,24 @@ import { LoginState } from "./State/Login/LoginState";
 import SocketState from "./State/Socket/ScoketState";
 import CallAlert from "./utils/AppAlert/CallAlert";
 import TextField1 from "./utils/TextField/TextField1";
+import { useState } from "react";
 // mulitple screen size xs,sm,md,lg,xl
 
 function App() {
+  const [uiColors, setUiColors] = useState({
+    primary: colors.blueGrey[200],
+    secondary: colors.blue[300],
+  });
   const theme = createTheme({
     palette: {
-      primary: {
-        // main: colors.blueGrey[200],
-        main: colors.blueGrey[200],
-      },
+      primary: { main: uiColors.primary },
+      // {
+      // main: colors.blueGrey[200],
+      // main: colors.blueGrey[200],
+      // uiColors.primary
+      // }
       secondary: {
-        main: colors.blue[300],
+        main: uiColors.secondary,
       },
     },
   });

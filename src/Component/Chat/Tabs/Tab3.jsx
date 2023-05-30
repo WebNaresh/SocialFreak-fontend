@@ -2,12 +2,10 @@ import { Stack } from "@mui/material";
 import React, { useContext } from "react";
 import UseContext from "../../../State/UseState/UseContext";
 import ReqTab from "../ReqDisplay/RequestTab";
-import { useState } from "react";
 import { useEffect } from "react";
 
 const Tab3 = () => {
   const { me, tabData, setTabData } = useContext(UseContext);
-  const [diff, setDiff] = useState([]);
   function findUniqueElements(array1, array2, property) {
     const uniqueElements = [];
 
@@ -34,22 +32,12 @@ const Tab3 = () => {
     return uniqueElements;
   }
 
-  // Example usage
-  const array1 = [1, 2, 3, 4, 5];
-  const array2 = [4, 5, 6, 7, 8];
-
-  const uniqueArray = findUniqueElements(me.followers, me.following);
-  console.log(uniqueArray);
-
   useEffect(() => {
     let difference = findUniqueElements(me.followers, me.following, "_id");
-    console.log(`🚀 ~ difference:`, difference);
 
     setTabData((copy) => ({ ...copy, tab3: difference }));
-    setDiff(difference);
+    // eslint-disable-next-line
   }, [me.followers, me.following]);
-
-  // const difference = arr1.filter((element) => !arr2.includes(element));
 
   return (
     <Stack>

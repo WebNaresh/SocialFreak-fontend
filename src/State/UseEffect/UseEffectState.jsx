@@ -13,11 +13,10 @@ export const UseEffectState = (props) => {
     me,
     data,
     setData,
-    stream,
     cookies,
     setCookie,
-    setMe,
     socket,
+    peerState,
   } = useContext(UseContext);
   const { getPosts, getFriends, setMeUniVersal } = useContext(LoginContext);
   const redirect = useNavigate();
@@ -68,13 +67,8 @@ export const UseEffectState = (props) => {
       getPosts("firstTime");
       getFriends();
     }
+    // eslint-disable-next-line
   }, [me._id]);
-  // useEffect(() => {
-  //   if (me._id === null) {
-  //     redirect("/login");
-  //   } else {
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (
@@ -94,7 +88,17 @@ export const UseEffectState = (props) => {
     }
     // eslint-disable-next-line
   }, [data.uploadedImages.length]);
-
+  useEffect(() => {
+    if (peerState) {
+      if (peerState.open === false) {
+        console.log("peerState.open is null");
+        // Handle the case when peerState.open is null
+      } else {
+        console.log("peerState.open:", peerState.open);
+        // Handle the case when peerState.id is not null
+      }
+    }
+  }, [peerState]);
   return (
     <UseEffectContext.Provider value={{ state }}>
       {props.children}
