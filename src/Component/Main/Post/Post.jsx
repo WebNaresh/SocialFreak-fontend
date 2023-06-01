@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Link, Stack, Chip } from "@mui/material";
+import { Link, Stack, Chip, Menu, MenuItem, Button } from "@mui/material";
 import { Comment, VisibilityOutlined } from "@mui/icons-material";
 import Carousel from "react-material-ui-carousel";
 import dayjs from "dayjs";
@@ -26,11 +26,21 @@ import Visible from "./Visisbility/Visible";
 // import Visible from "./Visisbility/Visible";
 
 export default function Post({ data }) {
-  const { me, open, setOpen, utils, setUtils } = React.useContext(UseContext);
+  const { me, open, setOpen, utils, setUtils, posts, setPosts, setMe } =
+    React.useContext(UseContext);
   const [like, setLike] = React.useState(false);
   const [state, setstate] = useState(0);
   const [state2, setState2] = useState(false);
   const { requestToView } = useContext(LoginContext);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open2 = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLikeButton = (id, response) => {
     const data1 = {
       postId: id,
@@ -67,6 +77,30 @@ export default function Post({ data }) {
 
     // eslint-disable-next-line
   }, [state2 === true]);
+  const handleDelete = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_DELETE_POST}${data._id}`
+      );
+      if (response.status === 200) {
+        console.log(response);
+        const updatedPosts = posts.filter((post) => post._id !== data._id);
+        const newPost = me.post.filter((post) => post._id !== data._id);
+        setMe((copy) => ({ ...copy, post: newPost }));
+        setPosts(updatedPosts);
+
+        // Post deleted successfully
+        // Perform any necessary actions, such as updating the state or showing a success message
+      } else {
+        // Handle error if the delete request was not successful
+        // Display an error message or perform any necessary error handling
+      }
+    } catch (error) {
+      // Handle error if the delete request failed
+      // Display an error message or perform any necessary error handling
+    }
+    handleClose();
+  };
 
   return (
     <>
@@ -76,9 +110,45 @@ export default function Post({ data }) {
             <Avatar src={data.userId.profilePicture} aria-label="recipe" />
           }
           action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
+            <>
+              {/* <IconButton onClick={handleMenuOpen} aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={isMenuOpen}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleMenuClose}>Menu Item 1</MenuItem>
+                <MenuItem onClick={handleMenuClose}>Menu Item 2</MenuItem>
+                <MenuItem onClick={handleMenuClose}>Menu Item 3</MenuItem>
+              </Menu> */}
+              <IconButton
+                id="basic-button"
+                aria-controls={open2 ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open2 ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open2}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                {data.userId._id === me._id ? (
+                  <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                ) : (
+                  ""
+                )}
+                <MenuItem onClick={handleClose}>Report</MenuItem>
+              </Menu>
+            </>
           }
           title={data.userId.userName}
           subheader={`${dayjs(data.createdAt).format("LLL")}    `}
@@ -98,32 +168,20 @@ export default function Post({ data }) {
           {!data.views.includes(me._id) ? (
             <>
               {" "}
-              {data.image.map((item, i) => (
-                <VisibilitySensor
-                  key={i}
-                  onChange={(isVisible) => {
-                    setState2(isVisible);
-                  }}
-                >
-                  {/* // <CardMedia
-                  //   src={item}
-                  //   image={item}
-                  //   sx={{
-                  //     height: "24rem",
-                  //     display: "flex",
-                  //     flexDirection: "row-reverse",
-                  //     backgroundColor: "#b0bec5",
-                  //   }}
-                  //   style={{
-                  //     backgroundPosition: "center",
-                  //     objectFit: "cover",
-                  //     zIndex: "-1",
-                  //     backgroundSize: "contain",
-                  //   }}
-                  // /> */}
-                  <Visible item={item} />
-                </VisibilitySensor>
-              ))}
+              {data.image.map((item, i) => {
+                return (
+                  <>
+                    <VisibilitySensor
+                      key={i}
+                      onChange={(isVisible) => {
+                        setState2(isVisible);
+                      }}
+                    >
+                      <Visible item={item} />
+                    </VisibilitySensor>
+                  </>
+                );
+              })}
             </>
           ) : (
             data.image.map((item, i) => (
@@ -193,9 +251,6 @@ export default function Post({ data }) {
             >
               {data.title}
             </Typography>
-
-            {/* <Stack> */}
-            {/* </Stack> */}
           </Stack>
           <Typography
             sx={{
@@ -362,30 +417,3 @@ export default function Post({ data }) {
     </>
   );
 }
-
-//             <Stack
-//               padding={".5rem 1rem"}
-//               flexDirection={"row"}
-//               alignItems={"center"}
-//             >
-//               <Avatar
-//                 variant="circular"
-//                 src={data.comments[1].userId.profilePicture}
-//               />
-//               <Chip
-//                 variant="filled"
-//                 sizes="small"
-//                 colors="primary"
-//                 label={data.comments[1].comment}
-//                 sx={{
-//                   width: "fit-content",
-//                   height: "25px",
-//                   margin: "0px 10px",
-//                   cursor: "pointer",
-//                 }}
-//               />
-
-//               <Typography variant="body2" fontSize={"10px"} color="primary">
-//                 {dayjs(data.comments[1].createdAt).fromNow()}
-//               </Typography>
-//             </Stack>

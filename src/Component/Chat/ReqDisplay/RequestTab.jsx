@@ -26,6 +26,7 @@ export default function ReqTab({ data }) {
       addableId: data._id,
       userId: me._id,
     };
+    console.log(`🚀 ~ data1:`, data1);
     socket.current.emit("userwantofollowback", data1);
     console.log(me.following.filter((ele) => ele._id !== data._id));
     setMe((Copy) => ({

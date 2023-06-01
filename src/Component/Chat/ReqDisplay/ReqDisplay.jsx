@@ -28,7 +28,7 @@ export default function ReqDisplay({ data }) {
     setMe({
       ...me,
       userSuggestion: suggestedUser,
-      following: [me.following, data],
+      following: [...me.following, data],
     });
   };
   const handleClick2 = () => {

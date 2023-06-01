@@ -32,13 +32,6 @@ const Tab3 = () => {
     return uniqueElements;
   }
 
-  useEffect(() => {
-    let difference = findUniqueElements(me.followers, me.following, "_id");
-
-    setTabData((copy) => ({ ...copy, tab3: difference }));
-    // eslint-disable-next-line
-  }, [me.followers, me.following]);
-
   return (
     <Stack>
       {tabData.tab3 !== null

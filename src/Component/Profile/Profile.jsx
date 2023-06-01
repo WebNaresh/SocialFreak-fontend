@@ -5,6 +5,7 @@ import ProfileCard from "./ProfileCard/ProfileCard";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import { useContext } from "react";
 import UseContext from "../../State/UseState/UseContext";
+import Post from "../Main/Post/Post";
 
 const Profile = () => {
   const location = useLocation();
@@ -15,6 +16,9 @@ const Profile = () => {
     >
       <ProfileCard me={me} setMe={setMe} />
       <ProfileInfo me={me} />
+      {me.post?.map((data, key) => {
+        return <Post key={key} data={data} />;
+      })}
       <Mansoory me={me} />
     </div>
   );

@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import {
   AddAPhotoOutlined,
   Chat,
+  Home,
   Login,
   Logout,
   Search as SearchIcon,
@@ -90,6 +91,7 @@ export default function TopNav() {
     chat,
     peerState,
   } = useContext(UseContext);
+
   const { handleLoader } = useContext(TestContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -159,37 +161,135 @@ export default function TopNav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <Link to={"/"}>
+        <MenuItem
+          onClick={handleMenuClose}
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <Home sx={{ marginX: 1, fontSize: 25 }} />
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              paddingLeft: "4px",
+              alignItems: "center",
+            }}
+          >
+            Home
+          </div>{" "}
+        </MenuItem>
+      </Link>
       <Link to={"/profile"}>
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem
+          onClick={handleMenuClose}
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
           {" "}
           <Avatar
-            sx={{ width: 30, height: 30, marginRight: 1 }}
+            sx={{ width: 25, height: 25, marginX: 1 }}
             variant="circular"
             src={me.profilePicture}
             alt="wait"
           />{" "}
-          Setting{" "}
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              paddingLeft: "4px",
+              alignItems: "center",
+            }}
+          >
+            Setting
+          </div>{" "}
         </MenuItem>
       </Link>
       <Link to={"/messages"}>
-        <MenuItem onClick={handleMenuClose}>
-          <Chat sx={{ marginX: 1 }} fontSize="small" />
-          Chat{" "}
+        <MenuItem
+          onClick={handleMenuClose}
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <Chat sx={{ marginX: 1, fontSize: 25 }} />
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              paddingLeft: "4px",
+              alignItems: "center",
+            }}
+          >
+            Chat
+          </div>{" "}
         </MenuItem>
       </Link>
 
       {me?._id === null || undefined ? (
         <Link to={"/login"}>
           {" "}
-          <MenuItem onClick={handleMenuClose}>
-            <Login sx={{ marginX: 1 }} fontSize="small"></Login> Login
+          <MenuItem
+            onClick={handleMenuClose}
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Login sx={{ marginX: 1, fontSize: 25 }}></Login>{" "}
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                paddingLeft: "4px",
+                alignItems: "center",
+              }}
+            >
+              Login
+            </div>
           </MenuItem>
         </Link>
       ) : (
         <Link onClick={removeCookieFromBack} to={"/login"}>
-          <MenuItem onClick={handleMenuClose}>
+          <MenuItem
+            onClick={handleMenuClose}
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
             {" "}
-            <Logout sx={{ marginX: 1 }} fontSize="small"></Logout> Logout
+            <Logout sx={{ marginX: 1, fontSize: 25 }}></Logout>{" "}
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                paddingLeft: "4px",
+                alignItems: "center",
+              }}
+            >
+              Logout
+            </div>
           </MenuItem>
         </Link>
       )}
@@ -243,9 +343,7 @@ export default function TopNav() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="
-Search
-"
+              placeholder="Search"
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
@@ -307,7 +405,7 @@ Search
                 </Badge>
               ) : (
                 <Badge
-                  badgeContent={`${utils.messageNotification.length}`}
+                  badgeContent={utils.messageNotification.length}
                   color="error"
                 >
                   <Avatar

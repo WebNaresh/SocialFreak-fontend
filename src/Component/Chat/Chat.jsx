@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   InputAdornment,
   Paper,
@@ -8,17 +8,19 @@ import {
 } from "@mui/material/";
 import { Search } from "@mui/icons-material";
 import TabPanel1 from "./Tabs/TabPanel";
+import UseContext from "../../State/UseState/UseContext";
 
 const Chat = () => {
+  const { TextOrKeyBoard } = useContext(UseContext);
   return (
     <Paper
       sx={{
         height: {
-          xs: "92vh",
-          sm: "92vh",
-          md: "91vh",
-          lg: "91vh",
-          xl: "91vh",
+          xs: TextOrKeyBoard ? "92vh" : "50vh",
+          sm: TextOrKeyBoard ? "92vh" : "50vh",
+          md: TextOrKeyBoard ? "92vh" : "50vh",
+          lg: TextOrKeyBoard ? "92vh" : "50vh",
+          xl: TextOrKeyBoard ? "92vh" : "50vh",
         },
       }}
     >

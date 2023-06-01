@@ -16,9 +16,17 @@ export const UseEffectState = (props) => {
     cookies,
     setCookie,
     socket,
-    peerState,
+    setTabData,
+    tabData,
+    removeCookie,
   } = useContext(UseContext);
-  const { getPosts, getFriends, setMeUniVersal } = useContext(LoginContext);
+  const {
+    getPosts,
+    getFriends,
+    setMeUniVersal,
+    findUniqueElements,
+    getCommonObjectsByProperty,
+  } = useContext(LoginContext);
   const redirect = useNavigate();
   const state = { name: "harry", class: "5b" };
   useEffect(() => {
@@ -40,17 +48,22 @@ export const UseEffectState = (props) => {
             redirect("/login");
           })
           .then((response) => {
-            function addDays(date, days) {
-              const result = new Date(date);
-              result.setDate(result.getDate() + days);
-              return result;
+            if (response?.data === undefined) {
+              removeCookie("login", { expires: new Date(0) });
+              return;
+            } else {
+              function addDays(date, days) {
+                const result = new Date(date);
+                result.setDate(result.getDate() + days);
+                return result;
+              }
+              const expirationDate = addDays(new Date(), 30);
+              setCookie("login", response.data.token, {
+                expires: expirationDate,
+              });
+              setMeUniVersal(response);
+              socket.current.emit("add-user", response.data.user._id);
             }
-            const expirationDate = addDays(new Date(), 30);
-            setCookie("login", response.data.token, {
-              expires: expirationDate,
-            });
-            setMeUniVersal(response);
-            socket.current.emit("add-user", response.data.user._id);
           });
         redirect("/");
       } else {
@@ -89,16 +102,19 @@ export const UseEffectState = (props) => {
     // eslint-disable-next-line
   }, [data.uploadedImages.length]);
   useEffect(() => {
-    if (peerState) {
-      if (peerState.open === false) {
-        console.log("peerState.open is null");
-        // Handle the case when peerState.open is null
-      } else {
-        console.log("peerState.open:", peerState.open);
-        // Handle the case when peerState.id is not null
-      }
-    }
-  }, [peerState]);
+    let difference = getCommonObjectsByProperty(me.followers, me.following);
+    console.log(`🚀 ~ difference:`, difference);
+
+    setTabData((copy) => ({ ...copy, tab1: difference }));
+    //eslint-disable-next-line
+  }, [me.followers, me.following]);
+  useEffect(() => {
+    let difference = findUniqueElements(me.followers, me.following, "_id");
+    console.log(`🚀 ~ difference1:`, difference);
+
+    setTabData((copy) => ({ ...copy, tab3: difference }));
+    // eslint-disable-next-line
+  }, [me.followers, me.following]);
   return (
     <UseEffectContext.Provider value={{ state }}>
       {props.children}
