@@ -195,6 +195,7 @@ const CreateModal = React.forwardRef(() => {
                   onInputChange={(e1, e) => console.log(e)}
                   freeSolo
                   multiple
+                  getOptionLabel={(option) => option.userName}
                   defaultValue={data.taggedPeopleArray}
                   renderOption={(props, option) => (
                     <Box
@@ -222,10 +223,17 @@ const CreateModal = React.forwardRef(() => {
                   }}
                   onChange={(event, newValue) => {
                     console.log(`🚀 ~ newValue:`, newValue);
-                    setData({
-                      ...data,
-                      taggedPeopleArray: [...data.taggedPeopleArray, newValue],
-                    });
+                    console.log(`🚀 ~ taggedPeopleArray:`, [
+                      ...data.taggedPeopleArray,
+                    ]);
+
+                    setData((copy) => ({
+                      ...copy,
+                      taggedPeopleArray: [
+                        // ...data.taggedPeopleArray,
+                        ...newValue,
+                      ],
+                    }));
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -252,6 +260,7 @@ const CreateModal = React.forwardRef(() => {
                   options={tabData.tab1}
                   onInputChange={(e1, e) => console.log(e)}
                   defaultValue={data.hashtagArray}
+                  getOptionLabel={(option) => option.userName}
                   renderOption={(props, option) => (
                     <Box
                       component="li"

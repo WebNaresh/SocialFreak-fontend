@@ -85,50 +85,11 @@ export const UseState = (props) => {
     friends: null,
     userSuggestion: [],
   });
-  console.log(`🚀 ~ me:`, me);
+  // console.log(`🚀 ~ me:`, me);
 
   // State for moments
-  const [moments, SetMoments] = useState([
-    {
-      coverPhoto:
-        "https://images.unsplash.com/photo-1619198511074-680af0a21527?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-      backgroundPicture:
-        "https://images.unsplash.com/photo-1619198831203-6c48a27075f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-      userName: "Dev fei",
-      from: "",
-    },
-    {
-      coverPhoto:
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=928&q=80",
-      backgroundPicture:
-        "https://images.unsplash.com/photo-1535704882196-765e5fc62a53?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80",
-      userName: "xiomi fei",
-      from: "",
-    },
-    {
-      coverPhoto:
-        "https://images.unsplash.com/photo-1475823678248-624fc6f85785?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-      backgroundPicture:
-        "https://images.unsplash.com/photo-1508449405506-2f559e868bdd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-      userName: "xyne me",
-      from: "",
-    },
-    {
-      coverPhoto:
-        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-      backgroundPicture:
-        "https://images.unsplash.com/photo-1593484330639-614d0634f68f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-      userName: "Shirley Setia",
-      from: "",
-    },
-    {
-      coverPhoto:
-        "https://images.unsplash.com/photo-1622804136680-46dc2a8f0598?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-      backgroundPicture:
-        "https://images.unsplash.com/photo-1533729590644-695ded775a63?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80",
-      userName: "Xing Fei",
-    },
-  ]);
+  const [moments, SetMoments] = useState([]);
+  console.log(`🚀 ~ moments:`, moments);
 
   // State for posts
   const [posts, setPosts] = useState([]);
@@ -163,6 +124,7 @@ export const UseState = (props) => {
     buttonDisable: true,
     handleuploadIcon: false,
   });
+  console.log(`🚀 ~ data:`, data);
 
   // State for utilities
   const [utils, setUtils] = useState({

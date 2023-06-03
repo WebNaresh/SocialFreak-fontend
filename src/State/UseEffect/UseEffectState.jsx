@@ -25,6 +25,7 @@ export const UseEffectState = (props) => {
     setMeUniVersal,
     findUniqueElements,
     getCommonObjectsByProperty,
+    fetchMoments,
   } = useContext(LoginContext);
   const redirect = useNavigate();
   const state = { name: "harry", class: "5b" };
@@ -34,22 +35,19 @@ export const UseEffectState = (props) => {
         if (!me._id) {
           if (cookies["login"]) {
             const decodedToken = jwt_decode(cookies["login"]);
-            const data = {
-              id: decodedToken.user,
-            };
+            const data = { id: decodedToken.user };
             const config = { headers: { "Content-Type": "application/json" } };
+
             const response = await axios.post(
               process.env.REACT_APP_REGISTER_WITH_ID,
               data,
               config
             );
+
             if (response?.data) {
-              function addDays(date, days) {
-                const result = new Date(date);
-                result.setDate(result.getDate() + days);
-                return result;
-              }
-              const expirationDate = addDays(new Date(), 30);
+              const expirationDate = new Date();
+              expirationDate.setDate(expirationDate.getDate() + 30);
+
               setCookie("login", response.data.token, {
                 expires: expirationDate,
               });
@@ -81,6 +79,8 @@ export const UseEffectState = (props) => {
     if (me._id === null) {
     } else {
       getPosts("firstTime");
+      fetchMoments();
+
       getFriends();
     }
     // eslint-disable-next-line

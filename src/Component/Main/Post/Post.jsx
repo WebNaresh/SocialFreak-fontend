@@ -28,7 +28,6 @@ import Visible from "./Visisbility/Visible";
 // import Visible from "./Visisbility/Visible";
 
 export default function Post({ data }) {
-  console.log(`🚀 ~ data:`, data);
   const { me, open, setOpen, utils, setUtils, posts, setPosts, setMe } =
     React.useContext(UseContext);
   const [like, setLike] = React.useState(false);
@@ -86,7 +85,6 @@ export default function Post({ data }) {
         `${process.env.REACT_APP_DELETE_POST}${data._id}`
       );
       if (response.status === 200) {
-        console.log(response);
         const updatedPosts = posts.filter((post) => post._id !== data._id);
         const newPost = me.post.filter((post) => post._id !== data._id);
         setMe((copy) => ({ ...copy, post: newPost }));
@@ -110,7 +108,7 @@ export default function Post({ data }) {
       <Card sx={{ maxWidth: "100%", margin: "10px 0px" }}>
         <CardHeader
           avatar={
-            <Link1 to={`/${data._id}`}>
+            <Link1 to={`/${data.userId.userName}`}>
               <Avatar src={data.userId.profilePicture} aria-label="recipe" />
             </Link1>
           }
@@ -143,9 +141,13 @@ export default function Post({ data }) {
               </Menu>
             </>
           }
-          title={<Link1 to={`/${data.userName}`}>{data.userId.userName}</Link1>}
+          title={
+            <Link1 to={`/${data.userId.userName}`}>
+              {data.userId.userName}
+            </Link1>
+          }
           subheader={
-            <Link1 to={`/${data.userName}`}>
+            <Link1 to={`/${data.userId.userName}`}>
               {dayjs(data.createdAt).format("LLL")}
             </Link1>
           }
@@ -260,7 +262,6 @@ export default function Post({ data }) {
             display={"flex"}
           >
             {data.taggedPeople.map((copy, key) => {
-              console.log(`🚀 ~ copy:`, copy);
               return (
                 <Link1
                   key={key}

@@ -21,7 +21,7 @@ export const LoginState = (props) => {
     setPosts,
     utils,
     setUtils,
-    allLink,
+    SetMoments,
     socket,
     setChats,
     setCookie,
@@ -212,13 +212,14 @@ export const LoginState = (props) => {
   };
 
   // Function to handle post creation
-  const handlePost = (images) => {
+  const handlePost = async (images) => {
     const data1 = {
       imagesArray: images,
       title: data.title,
       taggedPeople: data.taggedPeopleArray,
       hashTags: data.hashtagArray,
     };
+    console.log(`🚀 ~ data1:`, data1);
 
     setOpen({
       ...open,
@@ -227,7 +228,7 @@ export const LoginState = (props) => {
 
     handleLoader(true, "#fff", 4000);
     const config = { headers: { "Content-Type": "application/json" } };
-    axios
+    await axios
       .post(`${process.env.REACT_APP_CREATE_POST}${me._id}`, data1, config)
       .catch((errors) => {})
       .then((response) => {
@@ -441,6 +442,55 @@ export const LoginState = (props) => {
 
     return commonObjects;
   }
+  async function handleStatus(files) {
+    handleLoader();
+    try {
+      const uploadedImages = [];
+
+      for (const file of files) {
+        const uploadedImage = await uploadToCloudinary2(file);
+        uploadedImages.push(uploadedImage);
+      }
+      // userId, Message, images, localDate;
+
+      const data1 = {
+        images: uploadedImages,
+        Message: data.title,
+        localDate: new Date(),
+      };
+      console.log(`🚀 ~ data1:`, data1);
+
+      setOpen({
+        ...open,
+        statusModal: false,
+      });
+
+      handleLoader(true, "#fff", 4000);
+      const config = { headers: { "Content-Type": "application/json" } };
+      await axios
+        .post(`${process.env.REACT_APP_CREATE_STATUS}${me._id}`, data1, config)
+        .catch((errors) => {})
+        .then((response) => {
+          SetMoments((copy) => [...copy, ...response.data.moments]);
+          handleLoader();
+        });
+
+      // Code to execute after uploading images and sending them to the server
+    } catch (error) {
+      // Handle any errors that occurred during the process
+    }
+  }
+  const fetchMoments = async () => {
+    const config = { headers: { "Content-Type": "application/json" } };
+    await axios
+      .post(process.env.REACT_APP_GET_STATUS, config)
+      .catch((errors) => {
+        console.log(errors);
+      })
+      .then((response) => {
+        SetMoments((copy) => [...copy, ...response.data.moments]);
+      });
+  };
   return (
     <LoginContext.Provider
       value={{
@@ -462,6 +512,8 @@ export const LoginState = (props) => {
         setMeUniVersal,
         findUniqueElements,
         getCommonObjectsByProperty,
+        handleStatus,
+        fetchMoments,
       }}
     >
       {props.children}

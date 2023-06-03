@@ -3,12 +3,23 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
 } from "@mui/icons-material";
-import { Paper, Stack, Avatar, Typography, Fab, Modal } from "@mui/material";
+import {
+  Paper,
+  Stack,
+  Avatar,
+  Typography,
+  Fab,
+  Modal,
+  IconButton,
+} from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import UseContext from "../../../State/UseState/UseContext";
-import { handleCloseStatus } from "../../../State/Function/Fuction";
+import {
+  handleCloseStatus,
+  handleOpenStatus,
+} from "../../../State/Function/Fuction";
 import StatusCreateModal from "../../../AllModal/StatusModal/StatusCreateModal";
 
 const Status = () => {
@@ -31,8 +42,12 @@ const Status = () => {
         sx={{
           height: "150px",
           objectFit: "contain",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
           width: "80px",
-          background: `url(${info.backgroundPicture}) center no-repeat`,
+          background: `url(${info.Image}) center no-repeat`,
           backgroundSize: "contain",
           margin: "5px 5px",
           cursor: "pointer",
@@ -44,17 +59,16 @@ const Status = () => {
           },
         }}
       >
-        <Stack width={"100px"}></Stack>
         {info.userName === "Add Your Own Stories" ? (
           <>
-            <Avatar
+            <IconButton
+              onClick={() => handleOpenStatus(setOpen, open)}
               variant="circular"
               alt="no"
               sx={{
                 width: "40px",
                 height: "40px",
-                margin: "auto",
-                top: "60px",
+                margin: 2,
                 boxShadow: "2px 7px 23px #605c5c",
                 transition: "0.3s ease-in-out",
                 ":hover": { boxShadow: "2px 3px 20px 8px #181818" },
@@ -62,12 +76,11 @@ const Status = () => {
               }}
             >
               <Add />
-            </Avatar>
+            </IconButton>
             <Typography
               sx={{
                 textAlign: "center",
                 position: "relative",
-                bottom: "-64px",
                 fontSize: "11px",
                 padding: "4px",
                 width: "64px",
@@ -84,29 +97,57 @@ const Status = () => {
         ) : (
           <>
             {" "}
-            <div className="story">
-              <Avatar
-                variant="circular"
-                src={info.coverPhoto}
-                alt="no"
-                sx={{
-                  width: "40px",
-                  height: "40px",
-                  margin: "auto",
-                  top: "60px",
-                  boxShadow: "2px 7px 23px #605c5c",
-                  transition: "0.3s ease-in-out",
-                  ":hover": { boxShadow: "2px 3px 20px 8px #181818" },
+            <div
+              className="story"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
                 }}
-              ></Avatar>
-              <svg viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="30" />
-              </svg>
+              >
+                <Avatar
+                  variant="circular"
+                  src={info.userId.profilePicture}
+                  alt="no"
+                  sx={{
+                    width: "50px",
+                    height: "50px",
+                    margin: "auto",
+                    boxShadow: "2px 7px 23px #605c5c",
+                    transition: "0.3s ease-in-out",
+                    ":hover": { boxShadow: "2px 3px 20px 8px #181818" },
+                    position: "absolute",
+                    left: "0px",
+                    right: "0px",
+                  }}
+                ></Avatar>
+                <svg
+                  style={{
+                    position: "absolute",
+                    left: "0px",
+                    right: "0px",
+                    height: "90px",
+                    width: "90px",
+                    margin: "auto",
+                  }}
+                  viewBox="0 0 100 100"
+                >
+                  <circle cx="50" cy="50" r="30" />
+                </svg>
+              </div>
               <Typography
                 sx={{
                   textAlign: "center",
                   position: "relative",
-                  bottom: "8px",
+                  bottom: "-50px",
                   fontSize: "11px",
                   background: "#00000070",
                   width: "inherit",
@@ -116,7 +157,7 @@ const Status = () => {
                 variant="body2"
                 color="#ffffff"
               >
-                {info.userName}
+                {info.userId.userName}
               </Typography>
             </div>
           </>
@@ -182,17 +223,6 @@ const Status = () => {
         {moments.map((info, i) => {
           return <StatusComponent key={i} info={info} />;
         })}
-
-        {/* <StatusComponent />
-      <StatusComponent />
-      <StatusComponent />
-      <StatusComponent />
-      <StatusComponent />
-      <StatusComponent />
-      <StatusComponent />
-      <StatusComponent />
-      <StatusComponent />
-      <StatusComponent /> */}
       </Stack>
       <Modal
         open={open.statusModal}
