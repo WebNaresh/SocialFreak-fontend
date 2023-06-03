@@ -46,3 +46,15 @@ export const handleCloseComment = (setOpen, open) => {
     commentModal: false,
   });
 };
+export const handleOpenStatus = (setOpen, open) => {
+  setOpen({
+    ...open,
+    statusModal: true,
+  });
+};
+export const handleCloseStatus = (setOpen, open) => {
+  setOpen({
+    ...open,
+    statusModal: false,
+  });
+};

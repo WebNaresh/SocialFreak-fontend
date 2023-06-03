@@ -24,11 +24,11 @@ import {
   Menu,
 } from "@mui/material/";
 import Typewriter from "typewriter-effect";
+import CreateModal from "../../AllModal/CreateModal/CreateModal";
 import { useContext } from "react";
 import UseContext from "../../State/UseState/UseContext";
 import TestContext from "../../State/Test/TestContext";
 import { Link } from "react-router-dom";
-import CreateModal from "../../Component/Main/createModal/CreateModal";
 import {
   handleCloseCreate,
   handleOpenCreate,

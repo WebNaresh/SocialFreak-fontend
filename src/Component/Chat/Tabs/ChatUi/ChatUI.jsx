@@ -1,6 +1,6 @@
 import { Stack } from "@mui/system";
 import React, { useContext, useEffect } from "react";
-import { Chip, Typography, Avatar } from "@mui/material";
+import { Chip, Typography, Avatar, Paper } from "@mui/material";
 import UseContext from "../../../../State/UseState/UseContext";
 import dayjs from "dayjs";
 
@@ -82,22 +82,39 @@ const MyChat = ({ data }) => {
               <Stack
                 padding={".5rem 1rem"}
                 flexDirection={"row-reverse"}
-                alignItems={"center"}
+                alignItems={"baseline"}
               >
                 <Avatar variant="circular" src={data.sender.profilePicture} />
-                <Chip
+                {/* <Chip
                   variant="filled"
                   sizes="small"
                   colors="primary"
                   label={string}
+                  // component={data.sticker?.length > 0 ? "img" : "div"}
                   sx={{
                     width: "fit-content",
                     height: "25px",
                     margin: "0px 10px",
                     cursor: "pointer",
                   }}
-                />
-
+                /> */}
+                <Paper
+                  sx={{
+                    ":hover": {
+                      background: `linear-gradient(rgb(196 196 196 / 50%), rgb(196 196 196 / 50%)), url(https://th.bing.com/th/id/OIP.BuYFGy2AEIUJbnPdgPOpzgHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7)`,
+                      backgroundSize: "contain",
+                    },
+                    backgroundPosition: "center",
+                    padding: "10px",
+                    height: "80px",
+                    width: "80px",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s ease",
+                    background: `url(https://th.bing.com/th/id/OIP.BuYFGy2AEIUJbnPdgPOpzgHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7})`,
+                    backgroundClip: "content-box",
+                    backgroundSize: "contain",
+                  }}
+                ></Paper>
                 <Typography variant="body2" fontSize={"10px"} color="primary">
                   {dayjs(data.createdAt).fromNow()}
                   {/* {data.date} */}

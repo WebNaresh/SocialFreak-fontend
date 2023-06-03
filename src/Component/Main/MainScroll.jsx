@@ -13,16 +13,10 @@ const MainScroll = () => {
   return (
     <Stack width={"100%"} margin={"auto"}>
       <Status />
-      {/* <InfiniteScroll
-        dataLength={posts.length}
-        next={fetchMoreData}
-        hasMore={true}
-        loader={<h4>Loading...</h4>}
-      > */}
+
       {posts.map((data, key) => {
         return <Post key={key} data={data} />;
       })}
-      {/* </InfiniteScroll> */}
       <Modal
         open={open.commentModal}
         onClose={() => handleCloseComment(setOpen, open)}

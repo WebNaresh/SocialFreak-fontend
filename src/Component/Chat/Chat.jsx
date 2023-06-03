@@ -16,6 +16,11 @@ const Chat = () => {
     <Paper
       sx={{
         height: {
+          // xs: "92vh",
+          // sm: "92vh",
+          // md: "92vh",
+          // lg: "92vh",
+          // xl: "92vh",
           xs: TextOrKeyBoard ? "92vh" : "50vh",
           sm: TextOrKeyBoard ? "92vh" : "50vh",
           md: TextOrKeyBoard ? "92vh" : "50vh",
@@ -24,7 +29,9 @@ const Chat = () => {
         },
       }}
     >
-      <div style={{ height: "14%" }}>
+      <div
+        style={{ height: "14%", display: TextOrKeyBoard ? "block" : "none" }}
+      >
         <Stack>
           <Typography
             variant="subtitle2"

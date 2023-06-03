@@ -143,45 +143,36 @@ const TextField1 = () => {
                   boxSizing: "border-box",
                   height: "40vh",
                   overflowY: "scroll",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  gap: "10px",
+                  padding: "10px",
+                  width: "100%",
                 }}
               >
-                {" "}
-                <ImageList variant="masonry" cols={4} gap={12}>
-                  {itemData.map((item) => (
-                    <ImageListItem
-                      sx={{
-                        height: "130px !important ",
-                        width: "130px",
-                      }}
-                      key={item.img}
-                    >
-                      <img
-                        src={`${item.img}?w=248&fit=crop&auto=format`}
-                        srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                        alt={item.title}
-                        loading="lazy"
-                      />
-                      {/* <ImageListItemBar
-                        sx={{
-                          height: "25px",
-                        }}
-                        // title={item.title}
-                        // subtitle={item.author}
-                        // actionIcon={
-                        //   <IconButton
-                        //     sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                        //     aria-label={`info about ${item.title}`}
-                        //   >
-                        //     <Info />
-                        //   </IconButton>
-                        // }
-                      /> */}
-                    </ImageListItem>
-                  ))}
-                </ImageList>
+                {itemData.map((item, index) => (
+                  <Paper
+                    key={index}
+                    className={`item ${item.cols === 2 ? "double" : ""}`}
+                    sx={{
+                      ":hover": {
+                        background: `linear-gradient(rgb(196 196 196 / 50%), rgb(196 196 196 / 50%)), url(${item.img})`,
+                        backgroundSize: "contain",
+                      },
+                      gridRowEnd: `span ${item.rows || 1}`,
+                      backgroundPosition: "center",
+                      padding: "10px",
+                      height: "80px",
+                      width: "80px",
+                      cursor: "pointer",
+                      transition: "background-color 0.3s ease",
+                      background: `url(${item.img})`,
+                      backgroundClip: "content-box",
+                      backgroundSize: "contain",
+                      margin: "0px 15px",
+                    }}
+                  ></Paper>
+                ))}
               </Paper>
             ) : (
               ""

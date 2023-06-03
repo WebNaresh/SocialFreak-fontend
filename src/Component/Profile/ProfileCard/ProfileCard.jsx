@@ -12,13 +12,13 @@ import {
 } from "@mui/material";
 import Typewriter from "typewriter-effect";
 import { Edit } from "@mui/icons-material";
-import UpdateProfileCard from "./Update/UpdateProfileCard";
 import { useContext } from "react";
 import UseContext from "../../../State/UseState/UseContext";
 import {
   handleOpenCard,
   handleCloseCard,
 } from "../../../State/Function/Fuction";
+import UpdateProfileCard from "../../../AllModal/ProfileCardModal/UpdateProfileCard";
 
 export default function ProfileCard() {
   const { me, open, setOpen, setFormData, formData } = useContext(UseContext);

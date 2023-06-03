@@ -25,10 +25,10 @@ import {
   handleCloseInfo,
   handleOpenInfo,
 } from "../../../State/Function/Fuction";
-import UpdateProfileInfo from "./Update/UpdateProfileInfo";
 import { useContext } from "react";
 import UseContext from "../../../State/UseState/UseContext";
 import Timestamp from "react-timestamp";
+import UpdateProfileInfo from "../../../AllModal/ProfileInfo/UpdateProfileInfo";
 
 export default function ProfileInfo({ me }) {
   const { setOpen, open } = useContext(UseContext);

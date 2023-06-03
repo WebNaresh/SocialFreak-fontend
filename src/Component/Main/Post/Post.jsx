@@ -10,7 +10,9 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Link, Stack, Chip, Menu, MenuItem, Button } from "@mui/material";
+import { Stack, Chip, Menu, MenuItem, Button } from "@mui/material";
+import { Link as Link1 } from "react-router-dom";
+
 import { Comment, VisibilityOutlined } from "@mui/icons-material";
 import Carousel from "react-material-ui-carousel";
 import dayjs from "dayjs";
@@ -26,6 +28,7 @@ import Visible from "./Visisbility/Visible";
 // import Visible from "./Visisbility/Visible";
 
 export default function Post({ data }) {
+  console.log(`🚀 ~ data:`, data);
   const { me, open, setOpen, utils, setUtils, posts, setPosts, setMe } =
     React.useContext(UseContext);
   const [like, setLike] = React.useState(false);
@@ -107,22 +110,12 @@ export default function Post({ data }) {
       <Card sx={{ maxWidth: "100%", margin: "10px 0px" }}>
         <CardHeader
           avatar={
-            <Avatar src={data.userId.profilePicture} aria-label="recipe" />
+            <Link1 to={`/${data._id}`}>
+              <Avatar src={data.userId.profilePicture} aria-label="recipe" />
+            </Link1>
           }
           action={
             <>
-              {/* <IconButton onClick={handleMenuOpen} aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-              >
-                <MenuItem onClick={handleMenuClose}>Menu Item 1</MenuItem>
-                <MenuItem onClick={handleMenuClose}>Menu Item 2</MenuItem>
-                <MenuItem onClick={handleMenuClose}>Menu Item 3</MenuItem>
-              </Menu> */}
               <IconButton
                 id="basic-button"
                 aria-controls={open2 ? "basic-menu" : undefined}
@@ -150,8 +143,12 @@ export default function Post({ data }) {
               </Menu>
             </>
           }
-          title={data.userId.userName}
-          subheader={`${dayjs(data.createdAt).format("LLL")}    `}
+          title={<Link1 to={`/${data.userName}`}>{data.userId.userName}</Link1>}
+          subheader={
+            <Link1 to={`/${data.userName}`}>
+              {dayjs(data.createdAt).format("LLL")}
+            </Link1>
+          }
         />
 
         <Carousel
@@ -262,11 +259,17 @@ export default function Post({ data }) {
             color={"#3999e7"}
             display={"flex"}
           >
-            {data.hashTag.map((data, key) => {
+            {data.taggedPeople.map((copy, key) => {
+              console.log(`🚀 ~ copy:`, copy);
               return (
-                <Link key={key} href="#" underline="none" color={"#3999e7"}>
-                  @{data.userName}
-                </Link>
+                <Link1
+                  key={key}
+                  to={`/${copy.userName}`}
+                  underline="none"
+                  color={"#3999e7"}
+                >
+                  @{copy.userName}
+                </Link1>
               );
             })}
           </Typography>
@@ -279,9 +282,14 @@ export default function Post({ data }) {
             >
               {data.taggedPeople.map((data, i) => {
                 return (
-                  <Link href="#" key={i} underline="none" color={"#3999e7"}>
+                  <Link1
+                    to={`/${data.userName}`}
+                    key={i}
+                    underline="none"
+                    color={"#3999e7"}
+                  >
                     #{data.userName}
-                  </Link>
+                  </Link1>
                 );
               })}
             </Typography>

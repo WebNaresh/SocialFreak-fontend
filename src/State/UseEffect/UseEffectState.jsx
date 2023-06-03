@@ -17,7 +17,6 @@ export const UseEffectState = (props) => {
     setCookie,
     socket,
     setTabData,
-    tabData,
     removeCookie,
   } = useContext(UseContext);
   const {
@@ -30,28 +29,21 @@ export const UseEffectState = (props) => {
   const redirect = useNavigate();
   const state = { name: "harry", class: "5b" };
   useEffect(() => {
-    setProgress(10);
-    setTimeout(() => {
-      setProgress(100);
-    }, 1000);
-
-    if (me._id === null) {
-      if (cookies["login"]) {
-        jwt_decode(cookies["login"]);
-        const data = {
-          id: jwt_decode(cookies["login"]).user,
-        };
-        const config = { headers: { "Content-Type": "application/json" } };
-        axios
-          .post(process.env.REACT_APP_REGISTER_WITH_ID, data, config)
-          .catch((errors) => {
-            redirect("/login");
-          })
-          .then((response) => {
-            if (response?.data === undefined) {
-              removeCookie("login", { expires: new Date(0) });
-              return;
-            } else {
+    const handleRegisterWithId = async () => {
+      try {
+        if (!me._id) {
+          if (cookies["login"]) {
+            const decodedToken = jwt_decode(cookies["login"]);
+            const data = {
+              id: decodedToken.user,
+            };
+            const config = { headers: { "Content-Type": "application/json" } };
+            const response = await axios.post(
+              process.env.REACT_APP_REGISTER_WITH_ID,
+              data,
+              config
+            );
+            if (response?.data) {
               function addDays(date, days) {
                 const result = new Date(date);
                 result.setDate(result.getDate() + days);
@@ -63,15 +55,26 @@ export const UseEffectState = (props) => {
               });
               setMeUniVersal(response);
               socket.current.emit("add-user", response.data.user._id);
+              redirect("/");
+            } else {
+              removeCookie("login", { expires: new Date(0) });
             }
-          });
-        redirect("/");
-      } else {
+          } else {
+            redirect("/login");
+          }
+        }
+      } catch (error) {
+        console.log(error);
         redirect("/login");
       }
-    }
+    };
 
-    // eslint-disable-next-line
+    setProgress(10);
+    setTimeout(() => {
+      setProgress(100);
+    }, 1000);
+
+    handleRegisterWithId();
   }, [location.pathname]);
 
   useEffect(() => {
@@ -103,14 +106,12 @@ export const UseEffectState = (props) => {
   }, [data.uploadedImages.length]);
   useEffect(() => {
     let difference = getCommonObjectsByProperty(me.followers, me.following);
-    console.log(`🚀 ~ difference:`, difference);
 
     setTabData((copy) => ({ ...copy, tab1: difference }));
     //eslint-disable-next-line
   }, [me.followers, me.following]);
   useEffect(() => {
     let difference = findUniqueElements(me.followers, me.following, "_id");
-    console.log(`🚀 ~ difference1:`, difference);
 
     setTabData((copy) => ({ ...copy, tab3: difference }));
     // eslint-disable-next-line

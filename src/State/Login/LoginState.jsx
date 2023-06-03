@@ -105,10 +105,25 @@ export const LoginState = (props) => {
   };
 
   // Function to update data from the backend
-  const updateDataFromBackend = () => {
+  const updateDataFromBackend = async () => {
+    let profileLink, backgroundLink;
+
+    if (formData.selectedProfilePic) {
+      profileLink = await uploadToCloudinary(
+        formData.selectedProfilePic,
+        "profile"
+      );
+    }
+    if (formData.selectedBackgroundPic) {
+      backgroundLink = await uploadToCloudinary(
+        formData.selectedBackgroundPic,
+        "background"
+      );
+    }
+
     const data = {
-      profileLink: formData.profileLink,
-      backgroundLink: formData.backgroundLink,
+      profileLink: profileLink ? profileLink : me.profilePicture,
+      backgroundLink: backgroundLink ? backgroundLink : me.backgroundPicture,
       userName: formData.userName,
       hightlight: formData.array,
     };
@@ -117,7 +132,7 @@ export const LoginState = (props) => {
 
     handleLoader();
 
-    axios
+    await axios
       .put(
         `${process.env.REACT_APP_UPDATE_PROFILE_CARD}${me._id}`,
         data,
@@ -147,25 +162,31 @@ export const LoginState = (props) => {
     formDataD.append("file", file);
     formDataD.append("upload_preset", "y7gvucmq");
 
-    const response = axios.post(
-      process.env.REACT_APP_UPDATE_CLUDINARY_LINK,
-      formDataD
-    );
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_UPDATE_CLUDINARY_LINK,
+        formDataD
+      );
 
-    if (string === "profile") {
-      handleLoader();
-      setFormData({
-        ...formData,
-        profileLink: response.data.url,
-        selectedProfilePic: null,
-      });
-    } else if (string === "background") {
-      handleLoader();
-      setFormData({
-        ...formData,
-        backgroundLink: response.data.url,
-        selectedBackgroundPic: null,
-      });
+      if (string === "profile") {
+        handleLoader();
+        setFormData((copy) => ({
+          ...copy,
+          profileLink: response.data.url,
+          selectedProfilePic: null,
+        }));
+        return response.data.url;
+      } else if (string === "background") {
+        handleLoader();
+        setFormData((copy) => ({
+          ...copy,
+          backgroundLink: response.data.url,
+          selectedBackgroundPic: null,
+        }));
+        return response.data.url;
+      }
+    } catch (error) {
+      // Handle any errors that occurred during the upload
     }
   };
 
@@ -400,14 +421,14 @@ export const LoginState = (props) => {
     }
 
     // Iterate over elements in array2
-    for (let i = 0; i < array2.length; i++) {
-      const element = array2[i];
+    // for (let i = 0; i < array2.length; i++) {
+    //   const element = array2[i];
 
-      // Check if element is not present in array1 based on the specified property
-      if (!array1.some((item) => item[property] === element[property])) {
-        uniqueElements.push(element);
-      }
-    }
+    //   // Check if element is not present in array1 based on the specified property
+    //   if (!array1.some((item) => item[property] === element[property])) {
+    //     uniqueElements.push(element);
+    //   }
+    // }
 
     return uniqueElements;
   }

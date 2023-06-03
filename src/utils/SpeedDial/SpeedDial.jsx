@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import UseContextAnother from "../../State/UseState/UseContext";
 import { Fab } from "@material-ui/core";
+import { IconButton } from "@mui/material";
 
 const actions = [
   {
@@ -47,9 +48,19 @@ export default function BasicSpeedDial() {
             right: 16,
           }}
         >
-          <Fab color="default" aria-label="add">
-            <NotificationAdd />
-          </Fab>
+          <Badge badgeContent={2} color="error">
+            <IconButton
+              sx={{
+                height: "60px",
+                width: "60px",
+                backgroundColor: "#b0bec5",
+                outline: "4px solid",
+              }}
+              aria-label=""
+            >
+              <NotificationAdd />
+            </IconButton>
+          </Badge>
         </Box>
       ) : (
         ""

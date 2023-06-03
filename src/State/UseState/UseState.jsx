@@ -139,6 +139,7 @@ export const UseState = (props) => {
     profileInfo: false,
     createModal: false,
     commentModal: false,
+    statusModal: false,
   });
 
   // State for form data

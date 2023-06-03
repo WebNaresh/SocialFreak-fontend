@@ -3,14 +3,16 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
 } from "@mui/icons-material";
-import { Paper, Stack, Avatar, Typography, Fab } from "@mui/material";
+import { Paper, Stack, Avatar, Typography, Fab, Modal } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import UseContext from "../../../State/UseState/UseContext";
+import { handleCloseStatus } from "../../../State/Function/Fuction";
+import StatusCreateModal from "../../../AllModal/StatusModal/StatusCreateModal";
 
 const Status = () => {
-  const { moments, me } = React.useContext(UseContext);
+  const { moments, me, open, setOpen } = React.useContext(UseContext);
   const [scrollKar, setScrollKar] = useState(0);
   const scrollFirst = useRef(null);
   const ScrollY = () => {
@@ -31,7 +33,7 @@ const Status = () => {
           objectFit: "contain",
           width: "80px",
           background: `url(${info.backgroundPicture}) center no-repeat`,
-          backgroundSize: "cover",
+          backgroundSize: "contain",
           margin: "5px 5px",
           cursor: "pointer",
           ":hover": {
@@ -125,12 +127,11 @@ const Status = () => {
   return (
     <Stack
       direction={"row"}
-      
       sx={{
         width: "100%",
         height: "170px",
         position: "relative",
-        paddingTop:"5px"
+        paddingTop: "5px",
       }}
       id="yellow"
     >
@@ -171,16 +172,17 @@ const Status = () => {
             </Fab>
           </Stack>
         )}
-        {moments.map((info, i) => {
-          return <StatusComponent key={i} info={info} />;
-        })}
         <StatusComponent
           info={{
             coverPhoto: me.profilePicture,
-            backgroundPicture: me.backgroundPicture,
+            backgroundPicture: me.profilePicture,
             userName: "Add Your Own Stories",
           }}
         />
+        {moments.map((info, i) => {
+          return <StatusComponent key={i} info={info} />;
+        })}
+
         {/* <StatusComponent />
       <StatusComponent />
       <StatusComponent />
@@ -192,6 +194,15 @@ const Status = () => {
       <StatusComponent />
       <StatusComponent /> */}
       </Stack>
+      <Modal
+        open={open.statusModal}
+        onClose={() => handleCloseStatus(setOpen, open)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        sx={{ zIndex: 2 }}
+      >
+        <StatusCreateModal />
+      </Modal>
     </Stack>
   );
 };

@@ -44,7 +44,6 @@ export const SocketState = (props) => {
     });
 
     socket.current.on("get-msg", (data) => {
-      console.log(`🚀 ~ data:`, data);
       if (userId.current === data.sender?._id) {
         setChats((chat) => [...chat, data]);
         if (
