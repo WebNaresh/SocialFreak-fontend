@@ -17,6 +17,7 @@ import CallAlert from "./utils/AppAlert/CallAlert";
 import TextField1 from "./utils/TextField/TextField1";
 import { useState } from "react";
 // mulitple screen size xs,sm,md,lg,xl
+// mulitple screen size xs,sm,md,lg,xl
 
 function App() {
   const [uiColors, setUiColors] = useState({
