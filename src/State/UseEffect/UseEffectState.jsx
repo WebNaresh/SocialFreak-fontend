@@ -25,7 +25,6 @@ export const UseEffectState = (props) => {
     setMeUniVersal,
     findUniqueElements,
     getCommonObjectsByProperty,
-    fetchMoments,
   } = useContext(LoginContext);
   const redirect = useNavigate();
   const state = { name: "harry", class: "5b" };
@@ -79,7 +78,6 @@ export const UseEffectState = (props) => {
     if (me._id === null) {
     } else {
       getPosts("firstTime");
-      fetchMoments();
 
       getFriends();
     }

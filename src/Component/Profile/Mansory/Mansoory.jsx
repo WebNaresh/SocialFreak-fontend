@@ -11,7 +11,7 @@ export default function Mansoory({ me }) {
         variant="h7"
         component="div"
       >
-        <DynamicFeed sx={{ marginX: 1 }} fontSize="small" /> {me.userName}'s
+        <DynamicFeed sx={{ marginX: 1 }} fontSize="small" /> {me?.userName}'s
         Memories
       </Typography>
       <Divider

@@ -30,7 +30,7 @@ import UseContext from "../../../State/UseState/UseContext";
 import Timestamp from "react-timestamp";
 import UpdateProfileInfo from "../../../AllModal/ProfileInfo/UpdateProfileInfo";
 
-export default function ProfileInfo({ me }) {
+export default function ProfileInfo({ me, string }) {
   const { setOpen, open } = useContext(UseContext);
   return (
     <Paper sx={{ marginY: 2 }}>
@@ -48,6 +48,7 @@ export default function ProfileInfo({ me }) {
             margin: "auto",
             position: "relative",
             left: "20%",
+            visibility: string !== "other" ? "visible" : "hidden",
           }}
         >
           <Edit fontSize="small" />
@@ -72,7 +73,7 @@ export default function ProfileInfo({ me }) {
           <SentimentSatisfiedAlt color="disabled" fontSize="small" /> &nbsp;
           &nbsp;{" "}
           <Typography variant="subtitle2" color="gray">
-            {me.nickName}
+            {me?.nickName}
           </Typography>{" "}
         </Stack>
         <Stack
@@ -83,12 +84,12 @@ export default function ProfileInfo({ me }) {
         >
           <Work color="disabled" fontSize="small" /> &nbsp; &nbsp;{" "}
           <Stack variant="subtitle2" color="gray">
-            {me.descriptionHighLight === null ? (
+            {me?.descriptionHighLight === null ? (
               ""
             ) : (
               <Typewriter
                 options={{
-                  strings: me.descriptionHighLight,
+                  strings: me?.descriptionHighLight,
                   autoStart: true,
                   loop: true,
                 }}
@@ -105,7 +106,7 @@ export default function ProfileInfo({ me }) {
         >
           <School color="disabled" fontSize="small" /> &nbsp; &nbsp;{" "}
           <Typography variant="subtitle2" color="gray">
-            {me.collegeName}
+            {me?.collegeName}
           </Typography>{" "}
         </Stack>
         <Stack
@@ -117,7 +118,7 @@ export default function ProfileInfo({ me }) {
         >
           <LocationOn color="disabled" fontSize="small" /> &nbsp; &nbsp;{" "}
           <Typography variant="subtitle2" color="gray">
-            {me.location}
+            {me?.location}
           </Typography>{" "}
         </Stack>
         <Stack
@@ -127,7 +128,7 @@ export default function ProfileInfo({ me }) {
           margin={"2px 0px"}
           display={"flex"}
         >
-          {me.relationShip === "single" ? (
+          {me?.relationShip === "single" ? (
             <>
               <Favorite color="disabled" fontSize="small" />
               &nbsp; &nbsp;
@@ -135,7 +136,7 @@ export default function ProfileInfo({ me }) {
                 Single
               </Typography>
             </>
-          ) : me.relationShip === "double" ? (
+          ) : me?.relationShip === "double" ? (
             <>
               <Favorite color="disabled" fontSize="small" />
               &nbsp; &nbsp;
@@ -162,7 +163,7 @@ export default function ProfileInfo({ me }) {
         >
           <DownhillSkiing color="disabled" fontSize="small" /> &nbsp; &nbsp;{" "}
           <Typography variant="subtitle2" color="gray">
-            {me.hobby}
+            {me?.hobby}
           </Typography>{" "}
         </Stack>
         <Stack
@@ -173,16 +174,16 @@ export default function ProfileInfo({ me }) {
         >
           <Cake color="disabled" fontSize="small" /> &nbsp; &nbsp;{" "}
           <Typography variant="subtitle2" color="gray">
-            <Timestamp date={me.birthDate} />
-            {/* {me.birthDate} */}
+            <Timestamp date={me?.birthDate} />
+            {/* {me?.birthDate} */}
           </Typography>{" "}
         </Stack>
         <Stack margin={"2px 0px"} color={"black"} display={"flex"}>
           <ConnectWithoutContact color="disabled" fontSize="small" /> &nbsp;
           &nbsp;{" "}
           <Stack variant="subtitle2" color="#3999e7">
-            {me.taggedPeople !== null
-              ? me.taggedPeople.map((e, index) => {
+            {me?.taggedPeople !== null
+              ? me?.taggedPeople.map((e, index) => {
                   return (
                     <MuiLink
                       key={index}
@@ -222,8 +223,8 @@ export default function ProfileInfo({ me }) {
           />{" "}
           &nbsp; &nbsp;{" "}
           <Stack variant="subtitle2" color="#3999e7">
-            {me.hashTags !== null
-              ? me.hashTags.map((e, index) => {
+            {me?.hashTags !== null
+              ? me?.hashTags.map((e, index) => {
                   return (
                     <a key={index} href="/" underline="none" color={"#3999e7"}>
                       #{e}

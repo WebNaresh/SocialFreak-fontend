@@ -167,10 +167,11 @@ const StatusCreateModal = React.forwardRef(() => {
           </Button>
         </CardContent>
       </Card>
-      hel
+      
       <input
         type="file"
         ref={inputRef}
+          multiple
         accept="image/*"
         onChange={(e) => makeUrl(e.target.files)}
       />

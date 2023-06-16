@@ -10,13 +10,14 @@ import TopNav from "./utils/TopNav/TopNav";
 import { colors, createTheme, ThemeProvider } from "@mui/material";
 import BasicSpeedDial from "./utils/SpeedDial/SpeedDial";
 import Backdrop from "./utils/Backdrop/Backdrop";
-
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { LoginState } from "./State/Login/LoginState";
 import SocketState from "./State/Socket/ScoketState";
 import CallAlert from "./utils/AppAlert/CallAlert";
 import TextField1 from "./utils/TextField/TextField1";
 import { useState } from "react";
+import Stories from "./Component/Stories/Stories";
+import Android from "./Component/Stories/Android/Android";
 // mulitple screen size xs,sm,md,lg,xl
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
                     <CallAlert />
                     <TopNav />
                     <Backdrop />
+                    {/* <Android /> */}
                     <Route />
                     <TextField1 />
                     <BasicSpeedDial />

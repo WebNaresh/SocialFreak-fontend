@@ -55,10 +55,10 @@ export default function Post({ data }) {
         // setLike(false);
       })
       .then((response) => {
-        if (response.data.response === "like") {
+        if (response.data?.response === "like") {
           setLike(true);
           setstate(1);
-        } else if (response.data.response === "disLike") {
+        } else if (response.data?.response === "disLike") {
           setLike(false);
           setstate(-1);
         }
@@ -66,15 +66,15 @@ export default function Post({ data }) {
   };
 
   useEffect(() => {
-    if (data.likes.includes(me._id)) {
+    if (data?.likes.includes(me._id)) {
       setLike(true);
     }
 
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    if (data.views.includes(me._id) !== true) {
-      requestToView(data._id);
+    if (data?.views.includes(me._id) !== true) {
+      requestToView(data?._id);
     }
 
     // eslint-disable-next-line
@@ -82,11 +82,11 @@ export default function Post({ data }) {
   const handleDelete = async () => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_DELETE_POST}${data._id}`
+        `${process.env.REACT_APP_DELETE_POST}${data?._id}`
       );
       if (response.status === 200) {
-        const updatedPosts = posts.filter((post) => post._id !== data._id);
-        const newPost = me.post.filter((post) => post._id !== data._id);
+        const updatedPosts = posts.filter((post) => post._id !== data?._id);
+        const newPost = me.post.filter((post) => post._id !== data?._id);
         setMe((copy) => ({ ...copy, post: newPost }));
         setPosts(updatedPosts);
 
@@ -108,8 +108,8 @@ export default function Post({ data }) {
       <Card sx={{ maxWidth: "100%", margin: "10px 0px" }}>
         <CardHeader
           avatar={
-            <Link1 to={`/${data.userId.userName}`}>
-              <Avatar src={data.userId.profilePicture} aria-label="recipe" />
+            <Link1 to={`/${data?.userId?.userName}`} state={data}>
+              <Avatar src={data?.userId?.profilePicture} aria-label="recipe" />
             </Link1>
           }
           action={
@@ -132,7 +132,7 @@ export default function Post({ data }) {
                   "aria-labelledby": "basic-button",
                 }}
               >
-                {data.userId._id === me._id ? (
+                {data?.userId?._id === me._id ? (
                   <MenuItem onClick={handleDelete}>Delete</MenuItem>
                 ) : (
                   ""
@@ -142,13 +142,13 @@ export default function Post({ data }) {
             </>
           }
           title={
-            <Link1 to={`/${data.userId.userName}`}>
-              {data.userId.userName}
+            <Link1 to={`/${data?.userId?.userName}`} state={data}>
+              {data?.userId?.userName}
             </Link1>
           }
           subheader={
-            <Link1 to={`/${data.userId.userName}`}>
-              {dayjs(data.createdAt).format("LLL")}
+            <Link1 to={`/${data?.userId?.userName}`}>
+              {dayjs(data?.createdAt).format("LLL")}
             </Link1>
           }
         />
@@ -161,13 +161,13 @@ export default function Post({ data }) {
             backgroundColor: "#dadada",
           }}
           indicators={false}
-          navButtonsAlwaysVisible={data.image.length > 1}
-          navButtonsAlwaysInvisible={data.image.length <= 1}
+          navButtonsAlwaysVisible={data?.image.length > 1}
+          navButtonsAlwaysInvisible={data?.image.length <= 1}
         >
-          {!data.views.includes(me._id) ? (
+          {!data?.views.includes(me._id) ? (
             <>
               {" "}
-              {data.image.map((item, i) => {
+              {data?.image.map((item, i) => {
                 return (
                   <>
                     <VisibilitySensor
@@ -183,7 +183,7 @@ export default function Post({ data }) {
               })}
             </>
           ) : (
-            data.image.map((item, i) => (
+            data?.image.map((item, i) => (
               <CardMedia
                 key={i}
                 src={item}
@@ -234,9 +234,9 @@ export default function Post({ data }) {
                 sx={{ fontSize: "17px", position: "relative", top: "5px" }}
                 color="disabled"
               />
-              {state2 === true && data.views.includes(me._id) !== true
-                ? data.views.length + 1
-                : data.views.length}
+              {state2 === true && data?.views.includes(me._id) !== true
+                ? data?.views.length + 1
+                : data?.views.length}
             </Typography>
           </IconButton>
         </Stack>
@@ -248,7 +248,7 @@ export default function Post({ data }) {
               color="text.secondary"
               display={"flex"}
             >
-              {data.title}
+              {data?.title}
             </Typography>
           </Stack>
           <Typography
@@ -261,15 +261,15 @@ export default function Post({ data }) {
             color={"#3999e7"}
             display={"flex"}
           >
-            {data.taggedPeople.map((copy, key) => {
+            {data?.taggedPeople.map((copy, key) => {
               return (
                 <Link1
                   key={key}
-                  to={`/${copy.userName}`}
+                  to={`/${copy?.userName}`}
                   underline="none"
                   color={"#3999e7"}
                 >
-                  @{copy.userName}
+                  @{copy?.userName}
                 </Link1>
               );
             })}
@@ -281,15 +281,15 @@ export default function Post({ data }) {
               color={"#3999e7"}
               display={"flex"}
             >
-              {data.taggedPeople.map((data, i) => {
+              {data?.taggedPeople.map((data, i) => {
                 return (
                   <Link1
-                    to={`/${data.userName}`}
+                    to={`/${data?.userName}`}
                     key={i}
                     underline="none"
                     color={"#3999e7"}
                   >
-                    #{data.userName}
+                    #{data?.userName}
                   </Link1>
                 );
               })}
@@ -308,7 +308,7 @@ export default function Post({ data }) {
                     height: "40px",
                   }}
                   onClick={() => {
-                    handleLikeButton(data._id, "like");
+                    handleLikeButton(data?._id, "like");
                     setLike(true);
                   }}
                 >
@@ -318,7 +318,7 @@ export default function Post({ data }) {
                     color="text.secondary"
                     fontSize={"8px"}
                   >
-                    {data.likes.length}
+                    {data?.likes.length}
                   </Typography>
                 </IconButton>
               ) : (
@@ -330,7 +330,7 @@ export default function Post({ data }) {
                     height: "40px",
                   }}
                   onClick={() => {
-                    handleLikeButton(data._id, "disLike");
+                    handleLikeButton(data?._id, "disLike");
                     setLike(false);
                   }}
                 >
@@ -340,7 +340,7 @@ export default function Post({ data }) {
                     color="text.secondary"
                     fontSize={"8px"}
                   >
-                    {data.likes.length + state}
+                    {data?.likes.length + state}
                   </Typography>
                 </IconButton>
               )}
@@ -372,8 +372,8 @@ export default function Post({ data }) {
                 onClick={() => {
                   setUtils({
                     ...utils,
-                    commentArray: data.comments,
-                    currentPostId: data._id,
+                    commentArray: data?.comments,
+                    currentPostId: data?._id,
                   });
                   handleOpenComment(setOpen, open);
                 }}
@@ -389,7 +389,7 @@ export default function Post({ data }) {
               </IconButton>
             </Stack>
             <Stack flexDirection={"column"}>
-              {data.comments.length !== 0 ? (
+              {data?.comments.length !== 0 ? (
                 <Stack
                   padding={".5rem 1rem"}
                   flexDirection={"row"}
@@ -397,13 +397,13 @@ export default function Post({ data }) {
                 >
                   <Avatar
                     variant="circular"
-                    src={data.comments[0].userId.profilePicture}
+                    src={data?.comments[0].userId.profilePicture}
                   />
                   <Chip
                     variant="filled"
                     sizes="small"
                     colors="primary"
-                    label={data.comments[0].comment}
+                    label={data?.comments[0].comment}
                     sx={{
                       width: "fit-content",
                       height: "25px",
@@ -413,7 +413,7 @@ export default function Post({ data }) {
                   />
 
                   <Typography variant="body2" fontSize={"10px"} color="primary">
-                    {dayjs(data.comments[0].createdAt).fromNow()}
+                    {dayjs(data?.comments[0].createdAt).fromNow()}
                   </Typography>
                 </Stack>
               ) : (

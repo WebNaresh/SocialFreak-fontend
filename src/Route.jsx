@@ -6,6 +6,7 @@ import Login from "./Component/Login/Login";
 import Test from "./utils/Test";
 import VIdeoChat from "./Component/VIdeo/VIdeoChat";
 import OtherProfile from "./Component/OtherProfile/OtherProfile";
+import Stories from "./Component/Stories/Stories";
 const App = () => {
   return (
     <>
@@ -18,6 +19,7 @@ const App = () => {
         <Route exact path="/videoChat" element={<VIdeoChat />} />
         <Route exact path="/messages" element={<Chat />} />
         <Route exact path="/:id" element={<OtherProfile />} />
+        <Route exact path="/stories" element={<Stories />} />
       </Routes>
     </>
   );

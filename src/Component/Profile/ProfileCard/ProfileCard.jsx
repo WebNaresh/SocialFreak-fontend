@@ -20,8 +20,8 @@ import {
 } from "../../../State/Function/Fuction";
 import UpdateProfileCard from "../../../AllModal/ProfileCardModal/UpdateProfileCard";
 
-export default function ProfileCard() {
-  const { me, open, setOpen, setFormData, formData } = useContext(UseContext);
+export default function ProfileCard({ me, string }) {
+  const { open, setOpen, setFormData, formData } = useContext(UseContext);
   React.useEffect(() => {}, []);
   return (
     <>
@@ -29,9 +29,9 @@ export default function ProfileCard() {
         <CardMedia
           children={null}
           sx={{ height: 100 }}
-          image={me.backgroundPicture !== null ? me.backgroundPicture : ""}
-          src={me.backgroundPicture !== null ? me.backgroundPicture : ""}
-          title={`${me.userName} background pic`}
+          image={me?.backgroundPicture !== null ? me?.backgroundPicture : ""}
+          src={me?.backgroundPicture !== null ? me?.backgroundPicture : ""}
+          title={`${me?.userName} background pic`}
           style={{ backgroundPosition: "center", backgroundColor: "GrayText" }}
           component={"div"}
         />
@@ -42,10 +42,10 @@ export default function ProfileCard() {
             handleOpenCard(setOpen, open);
             setFormData({
               ...formData,
-              profileLink: me.profilePicture,
-              backgroundLink: me.backgroundPicture,
-              userName: me.userName,
-              array: me.descriptionHighLight,
+              profileLink: me?.profilePicture,
+              backgroundLink: me?.backgroundPicture,
+              userName: me?.userName,
+              array: me?.descriptionHighLight,
               selectedBackgroundPic: null,
               selectedProfilePic: null,
             });
@@ -55,6 +55,7 @@ export default function ProfileCard() {
             position: "relative",
             left: "85%",
             top: "-100px",
+            visibility: string !== "other" ? "visible" : "hidden",
           }}
           color={"primary"}
         >
@@ -70,10 +71,10 @@ export default function ProfileCard() {
             boxShadow: "2px 7px 23px #605c5c",
           }}
           variant="circular"
-          src={me.profilePicture}
+          src={me?.profilePicture}
           style={{ backgroundPosition: "inherit" }}
           alt="wait"
-          title={`${me.userName} profile pic`}
+          title={`${me?.userName} profile pic`}
         />{" "}
         <CardContent
           sx={{
@@ -87,15 +88,15 @@ export default function ProfileCard() {
           }}
         >
           <Typography gutterBottom variant="h7" component="div">
-            {me.userName}
+            {me?.userName}
           </Typography>
           <Stack variant="body2" color="text.secondary">
-            {me.descriptionHighLight === null ? (
+            {me?.descriptionHighLight === null ? (
               ""
             ) : (
               <Typewriter
                 options={{
-                  strings: me.descriptionHighLight,
+                  strings: me?.descriptionHighLight,
                   autoStart: true,
                   loop: true,
                 }}
@@ -119,7 +120,7 @@ export default function ProfileCard() {
               variant="body2"
               component="div"
             >
-              {me.followers?.length}
+              {me?.followers?.length}
             </Typography>
             <Typography
               fontSize="0.7rem"
@@ -143,7 +144,7 @@ export default function ProfileCard() {
               variant="body2"
               component="div"
             >
-              {me.following?.length}
+              {me?.following?.length}
             </Typography>
             <Typography
               margin={"auto"}
@@ -161,7 +162,7 @@ export default function ProfileCard() {
               variant="body2"
               component="div"
             >
-              {me.post?.length}
+              {me?.post?.length}
             </Typography>
             <Typography
               margin={"auto"}

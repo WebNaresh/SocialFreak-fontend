@@ -23,6 +23,7 @@ export const LoginState = (props) => {
     setUtils,
     SetMoments,
     socket,
+    moments,
     setChats,
     setCookie,
     availableConnection,
@@ -454,7 +455,7 @@ export const LoginState = (props) => {
       // userId, Message, images, localDate;
 
       const data1 = {
-        images: uploadedImages,
+        images: uploadedImages[0],
         Message: data.title,
         localDate: new Date(),
       };
@@ -471,7 +472,35 @@ export const LoginState = (props) => {
         .post(`${process.env.REACT_APP_CREATE_STATUS}${me._id}`, data1, config)
         .catch((errors) => {})
         .then((response) => {
-          SetMoments((copy) => [...copy, ...response.data.moments]);
+          console.log(`🚀 ~ response:`, response);
+          // SetMoments((copy) => [...copy, ...response.data.moments]);
+          // Filter the followingUsersArray to find users who are following the user with the provided userId
+          if (response.data.moment.userId === me._id) {
+            setMe((prevMe) => ({
+              ...prevMe,
+              memories: [...prevMe.memories, response.data.moment],
+            }));
+          } else {
+            const followingUsers = me.following.filter((user) => {
+              console.log(
+                `🚀 ~ user._id === response.data.moment.userId:`,
+                user?._id === response?.data?.moment?.userId
+              );
+              if (user?._id === response?.data?.moment?.userId) {
+                user?.following.push(response?.data?.moment?.userId); // Push the userId into the user object
+                return true; // Return true to include the user in the filtered array
+              }
+              return false;
+            });
+            console.log(`🚀 ~ followingUsers:`, followingUsers);
+
+            // Update the `me` state with the filtered following users
+            setMe((prevMe) => ({
+              ...prevMe,
+              following: followingUsers,
+            }));
+          }
+          // ... existing code ...
           handleLoader();
         });
 
@@ -480,17 +509,32 @@ export const LoginState = (props) => {
       // Handle any errors that occurred during the process
     }
   }
-  const fetchMoments = async () => {
-    const config = { headers: { "Content-Type": "application/json" } };
-    await axios
-      .post(process.env.REACT_APP_GET_STATUS, config)
-      .catch((errors) => {
-        console.log(errors);
-      })
-      .then((response) => {
-        SetMoments((copy) => [...copy, ...response.data.moments]);
-      });
-  };
+  // const fetchMoments = async () => {
+  //   const config = { headers: { "Content-Type": "application/json" } };
+  //   await axios
+  //     .post(process.env.REACT_APP_GET_STATUS, config)
+  //     .catch((errors) => {
+  //       console.log(errors);
+  //     })
+  //     .then((response) => {
+  //       // SetMoments((copy) => [...copy, ...response.data.moments]);
+  //       // Filter the followingUsersArray to find users who are following the user with the provided userId
+  //       const followingUsers = me.following.filter((user) => {
+  //         if (user._id === response.data.moment.userId) {
+  //           user.following.push(response.data.moment.userId); // Push the userId into the user object
+  //           return true; // Return true to include the user in the filtered array
+  //         }
+  //         return false;
+  //       });
+  //       console.log(`🚀 ~ followingUsers:`, followingUsers);
+
+  //       // Update the `me` state with the filtered following users
+  //       setMe((prevMe) => ({
+  //         ...prevMe,
+  //         following: followingUsers,
+  //       }));
+  //     });
+  // };
   return (
     <LoginContext.Provider
       value={{
@@ -513,7 +557,7 @@ export const LoginState = (props) => {
         findUniqueElements,
         getCommonObjectsByProperty,
         handleStatus,
-        fetchMoments,
+        // fetchMoments,
       }}
     >
       {props.children}

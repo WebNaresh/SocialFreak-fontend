@@ -1,32 +1,19 @@
 import { Stack, IconButton } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UseContext from "../../State/UseState/UseContext";
-import { Call, CallEnd } from "@mui/icons-material";
+import { Call, CallEnd, MicNone, MicOff } from "@mui/icons-material";
 
 const VIdeoChat = () => {
   const {
     myVideo,
     userVideo,
-    setStream,
-    callInstance,
-    callInstance2,
     redirect,
     availableConnection,
 
     setUtils,
     stream,
   } = useContext(UseContext);
-  // useEffect(() => {
-  //   navigator.mediaDevices
-  //     .getUserMedia({ video: true, audio: true })
-  //     .then((stream) => {
-  //       setStream(stream);
-  //       if (myVideo.current) {
-  //         myVideo.current.srcObject = stream;
-  //       }
-  //     });
-
-  // }, []);
+  const [mic, setMic] = useState(true);
 
   return (
     <>
@@ -46,10 +33,11 @@ const VIdeoChat = () => {
         <Stack
           style={{
             position: "absolute",
-            left: "100px",
-            bottom: "10px",
-            width: "10rem",
-            height: "10rem",
+            left: "30px",
+            bottom: "100px",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            width: "150px",
           }}
         >
           <IconButton
@@ -67,10 +55,37 @@ const VIdeoChat = () => {
                 availableConnection.current.close();
                 availableConnection.current = null;
               }
+              stream.getTracks().forEach((track) => {
+                track.stop();
+              });
               redirect("/");
             }}
           >
             <CallEnd color="primary" fontSize="large" />
+          </IconButton>
+          <IconButton
+            aria-label=""
+            style={{
+              background: "red",
+              height: "60px",
+              width: "60px",
+            }}
+            onClick={() => {
+              console.log("hel");
+              if (stream.getAudioTracks()[0].enabled === true) {
+                stream.getAudioTracks()[0].enabled = false;
+                setMic(false);
+              } else {
+                stream.getAudioTracks()[0].enabled = true;
+                setMic(true);
+              }
+            }}
+          >
+            {mic !== true ? (
+              <MicNone color="primary" fontSize="large" />
+            ) : (
+              <MicOff color="primary" fontSize="large" />
+            )}
           </IconButton>
         </Stack>
 
@@ -78,7 +93,7 @@ const VIdeoChat = () => {
           style={{
             position: "absolute",
             right: "30px",
-            bottom: "30px",
+            bottom: "100px",
             width: "10rem",
             height: "10rem",
           }}
@@ -87,8 +102,10 @@ const VIdeoChat = () => {
             src=""
             ref={myVideo}
             style={{
-              background: "yellow",
+              background: "grayText",
               height: "100%",
+              objectFit: "cover",
+              borderRadius: 10,
             }}
             muted
             autoPlay
