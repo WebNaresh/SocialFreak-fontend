@@ -192,7 +192,7 @@ export default function Post({ data }) {
                   height: "24rem",
                   display: "flex",
                   flexDirection: "row-reverse",
-                  backgroundColor: "#b0bec5",
+                  backgroundColor: "primary.main",
                 }}
                 style={{
                   backgroundPosition: "center",
@@ -207,12 +207,43 @@ export default function Post({ data }) {
         <Stack
           position={"relative"}
           display={"flex"}
-          flexDirection={"row-reverse"}
+          flexDirection={"row"}
           top={"-40px"}
           right={"10px"}
+          justifyContent={"space-between"}
           height={"0px"}
           zIndex={2}
         >
+          {data?.comments.length !== 0 ? (
+            <Stack
+              padding={".5rem 1rem"}
+              flexDirection={"row"}
+              alignItems={"center"}
+            >
+              <Avatar
+                variant="circular"
+                src={data?.comments[0].userId.profilePicture}
+              />
+              <Chip
+                variant="filled"
+                sizes="small"
+                colors="primary"
+                label={data?.comments[0].comment}
+                sx={{
+                  width: "fit-content",
+                  height: "25px",
+                  margin: "0px 10px",
+                  cursor: "pointer",
+                }}
+              />
+
+              <Typography variant="body2" fontSize={"10px"} color="primary">
+                {dayjs(data?.comments[0].createdAt).fromNow()}
+              </Typography>
+            </Stack>
+          ) : (
+            ""
+          )}
           <IconButton
             sx={{
               height: "30px",
@@ -388,7 +419,7 @@ export default function Post({ data }) {
                 </Typography>
               </IconButton>
             </Stack>
-            <Stack flexDirection={"column"}>
+            {/* <Stack flexDirection={"column"}>
               {data?.comments.length !== 0 ? (
                 <Stack
                   padding={".5rem 1rem"}
@@ -419,7 +450,7 @@ export default function Post({ data }) {
               ) : (
                 ""
               )}
-            </Stack>
+            </Stack> */}
           </Stack>
         </CardActions>
       </Card>

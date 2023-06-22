@@ -18,7 +18,7 @@ const VIdeoChat = () => {
   return (
     <>
       <Stack zIndex={2} position={"absolute"}>
-        <Stack height={"100vh"}>
+        <Stack height={"92vh"}>
           <video
             src=""
             style={{
@@ -33,8 +33,8 @@ const VIdeoChat = () => {
         <Stack
           style={{
             position: "absolute",
-            left: "30px",
-            bottom: "100px",
+            left: "1rem",
+            bottom: "1rem",
             flexDirection: "row",
             justifyContent: "space-around",
             width: "150px",
@@ -71,7 +71,6 @@ const VIdeoChat = () => {
               width: "60px",
             }}
             onClick={() => {
-              console.log("hel");
               if (stream.getAudioTracks()[0].enabled === true) {
                 stream.getAudioTracks()[0].enabled = false;
                 setMic(false);
@@ -92,8 +91,8 @@ const VIdeoChat = () => {
         <Stack
           style={{
             position: "absolute",
-            right: "30px",
-            bottom: "100px",
+            right: "1rem",
+            bottom: "1rem",
             width: "10rem",
             height: "10rem",
           }}

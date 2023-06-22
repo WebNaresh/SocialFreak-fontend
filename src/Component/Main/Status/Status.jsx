@@ -196,6 +196,7 @@ const Status = () => {
           width: "100%",
           height: "170px",
           scrollBehavior: "smooth",
+          alignItems: "center",
         }}
         ref={scrollFirst}
       >

@@ -25,10 +25,10 @@ export default function ProfileCard({ me, string }) {
   React.useEffect(() => {}, []);
   return (
     <>
-      <Card sx={{ marginBottom: 2 }}>
+      <Card sx={{ marginBottom: 2, position: "relative" }}>
         <CardMedia
           children={null}
-          sx={{ height: 100 }}
+          sx={{ height: 200 }}
           image={me?.backgroundPicture !== null ? me?.backgroundPicture : ""}
           src={me?.backgroundPicture !== null ? me?.backgroundPicture : ""}
           title={`${me?.userName} background pic`}
@@ -53,8 +53,8 @@ export default function ProfileCard({ me, string }) {
           sx={{
             margin: "auto",
             position: "relative",
-            left: "85%",
-            top: "-100px",
+            left: "90%",
+            top: "-170px",
             visibility: string !== "other" ? "visible" : "hidden",
           }}
           color={"primary"}
@@ -63,12 +63,13 @@ export default function ProfileCard({ me, string }) {
         </IconButton>
         <Avatar
           sx={{
-            width: 50,
-            height: 50,
+            width: 120,
+            height: 120,
             margin: "0px 20px",
-            position: "relative",
-            top: -70,
+            position: "absolute",
+            top: 120,
             boxShadow: "2px 7px 23px #605c5c",
+            objectFit: "contain",
           }}
           variant="circular"
           src={me?.profilePicture}
@@ -82,7 +83,6 @@ export default function ProfileCard({ me, string }) {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            position: "relative",
             bottom: "60px",
             padding: "0px",
           }}

@@ -84,7 +84,11 @@ const CommentModal = () => {
                 flexDirection={"row"}
                 alignItems={"center"}
               >
-                <Avatar variant="circular" src={ele.userId.profilePicture} />
+                <Avatar
+                  variant="circular"
+                  sx={{ objectFit: "contain" }}
+                  src={ele.userId.profilePicture}
+                />
                 <Chip
                   variant="filled"
                   sizes="small"
@@ -110,13 +114,13 @@ const CommentModal = () => {
           fullWidth
           color="info"
           id="filled-basic"
-          label="Comment"
           placeholder="Add a comment .."
           variant="filled"
           value={comment}
           onChange={(e) => {
             setComment(e.currentTarget.value);
           }}
+          g
           style={{
             position: "sticky",
             bottom: "0rem",

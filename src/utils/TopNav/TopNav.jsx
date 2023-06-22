@@ -323,18 +323,20 @@ export default function TopNav() {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div" sx={{ width: 120 }}>
-            <Typewriter
-              options={{
-                strings: [
-                  "SocialFreak",
-                  "SocialMedia",
-                  "SocialGroup",
-                  "SocialFun",
-                ],
-                autoStart: true,
-                loop: true,
-              }}
-            />
+            <Link to={"/"}>
+              <Typewriter
+                options={{
+                  strings: [
+                    "SocialFreak",
+                    "SocialMedia",
+                    "SocialGroup",
+                    "SocialFun",
+                  ],
+                  autoStart: true,
+                  loop: true,
+                }}
+              />
+            </Link>
           </Typography>
           <Search
             sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center" }}

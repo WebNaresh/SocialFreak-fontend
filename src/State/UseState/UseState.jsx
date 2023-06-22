@@ -85,7 +85,6 @@ export const UseState = (props) => {
     friends: null,
     userSuggestion: [],
   });
-  console.log(`🚀 ~ me:`, me);
 
   // State for moments
   const [moments, SetMoments] = useState([]);
