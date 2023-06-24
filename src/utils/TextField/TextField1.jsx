@@ -25,6 +25,7 @@ const TextField1 = () => {
     setTextOrKeyBoard,
   } = useContext(UseContext);
   const [msg, setMsg] = useState("");
+  console.log(`🚀 ~ utils.cuurentUserIdForMsg:`, utils.cuurentUserIdForMsg);
 
   let handleKeyDown = (event) => {
     if (event.keyCode === 13) {
@@ -58,6 +59,7 @@ const TextField1 = () => {
       ) : (
         <>
           <Stack
+            id="hello"
             justifyContent={"center"}
             alignItems={"end"}
             direction={"column"}
@@ -67,7 +69,7 @@ const TextField1 = () => {
               right: "0rem",
               left: "0rem",
               zIndex: 1,
-              display: "none",
+              // display: "none",
             }}
           >
             <TextField
