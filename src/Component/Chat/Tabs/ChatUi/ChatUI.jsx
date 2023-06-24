@@ -85,7 +85,7 @@ const MyChat = ({ data }) => {
                 alignItems={"baseline"}
               >
                 <Avatar variant="circular" src={data.sender.profilePicture} />
-                {/* <Chip
+                <Chip
                   variant="filled"
                   sizes="small"
                   colors="primary"
@@ -97,8 +97,8 @@ const MyChat = ({ data }) => {
                     margin: "0px 10px",
                     cursor: "pointer",
                   }}
-                /> */}
-                <Paper
+                />
+                {/* <Paper
                   sx={{
                     ":hover": {
                       background: `linear-gradient(rgb(196 196 196 / 50%), rgb(196 196 196 / 50%)), url(https://th.bing.com/th/id/OIP.BuYFGy2AEIUJbnPdgPOpzgHaHa?w=175&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7)`,
@@ -114,7 +114,7 @@ const MyChat = ({ data }) => {
                     backgroundClip: "content-box",
                     backgroundSize: "contain",
                   }}
-                ></Paper>
+                ></Paper> */}
                 <Typography variant="body2" fontSize={"10px"} color="primary">
                   {dayjs(data.createdAt).fromNow()}
                   {/* {data.date} */}
